@@ -1,0 +1,22 @@
+--- openjdk-src-8u-1/hotspot/src/share/vm/oops/cpCache.hpp~	2015-10-21 22:10:21.000000000 +0000
++++ openjdk-src-8u-1/hotspot/src/share/vm/oops/cpCache.hpp	2016-05-06 13:34:01.386006384 +0000
+@@ -191,7 +191,7 @@
+     field_index_mask           = right_n_bits(field_index_bits),
+     parameter_size_bits        = 8,  // subset of field_index_mask, range is 0..255
+     parameter_size_mask        = right_n_bits(parameter_size_bits),
+-    option_bits_mask           = ~(((-1) << tos_state_shift) | (field_index_mask | parameter_size_mask))
++    option_bits_mask           = ~(((~1) << tos_state_shift) | (field_index_mask | parameter_size_mask))
+   };
+ 
+   // specific bit definitions for the indices field:
+--- openjdk-src-8u-1/hotspot/make/linux/makefiles/vm.make~	2015-10-21 22:10:21.000000000 +0000
++++ openjdk-src-8u-1/hotspot/make/linux/makefiles/vm.make	2016-05-06 13:39:50.670957757 +0000
+@@ -97,7 +97,7 @@
+   ${BUILD_TARGET}    \
+   ${BUILD_USER}      \
+   ${HS_LIB_ARCH}     \
+-  ${VM_DISTRO}
++  ${VM_DISTRO} -std=gnu++98 -Wno-error -fno-delete-null-pointer-checks -fno-guess-branch-probability
+ 
+ # This is VERY important! The version define must only be supplied to vm_version.o
+ # If not, ccache will not re-use the cache at all, since the version string might contain

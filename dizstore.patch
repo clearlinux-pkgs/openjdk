@@ -1,0 +1,13 @@
+Store .diz debug info uncompressed so that binary deltas work better
+
+--- openjdk-src-8u-1/make/common/NativeCompilation.gmk~	2015-10-21 22:10:21.000000000 +0000
++++ openjdk-src-8u-1/make/common/NativeCompilation.gmk	2017-10-01 20:40:19.097485684 +0000
+@@ -475,7 +475,7 @@
+             $$($1_OBJECT_DIR)/$$(LIBRARY_PREFIX)$$($1_LIBRARY).diz : $$($1_TARGET) \
+                 $$($1_OBJECT_DIR)/$$(LIBRARY_PREFIX)$$($1_LIBRARY).debuginfo
+ 		$(CD) $$($1_OBJECT_DIR) \
+-		&& $(ZIP) -q $$@ $$(LIBRARY_PREFIX)$$($1_LIBRARY).debuginfo
++		&& $(ZIP)  --compression-method store  -q $$@ $$(LIBRARY_PREFIX)$$($1_LIBRARY).debuginfo
+           endif
+ endif # no MacOS X support yet
+         else
