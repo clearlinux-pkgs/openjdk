@@ -1,8 +1,8 @@
 Name     : openjdk
 Version  : 8
-Release  : 25
-URL      : http://localhost/cgit/projects/jdk8/snapshot/openjdk-src-8u-1.tar.gz 
-Source0  : http://localhost/cgit/projects/jdk8/snapshot/openjdk-src-8u-1.tar.gz 
+Release  : 27
+URL      : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-152-16b.tar.gz
+Source0  : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-152-16b.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GPL-2.0 Apache-2.0 BSD-2-Clause BSD-3-Clause BSD-4-Clause HPND ICU LGPL-2.1 Libpng MIT MPL-2.0-no-copyleft-exception SAX-PD Unicode-TOU W3C
@@ -72,7 +72,7 @@ Provides : libjli.so(SUNWprivate_1.1)(64bit)
 lib components for the openjdk package.
 
 %prep
-%setup -q -n openjdk-src-8u-1
+%setup -q -n jdk8-openjdk-src-8u-152-16b
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
@@ -619,7 +619,6 @@ ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/xjc %{buildroot}/usr/bin/xjc
 /usr/lib/jvm/java-1.8.0-openjdk/bin/unpack200
 
 %files lib
-/usr/lib64/libjli.so
 /usr/lib/jvm/java-1.8.0-openjdk/jre/lib/amd64/jli/libjli.diz
 /usr/lib/jvm/java-1.8.0-openjdk/jre/lib/amd64/jli/libjli.so
 /usr/lib/jvm/java-1.8.0-openjdk/jre/lib/amd64/jvm.cfg
@@ -743,12 +742,14 @@ ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/xjc %{buildroot}/usr/bin/xjc
 /usr/lib/jvm/java-1.8.0-openjdk/jre/lib/psfontj2d.properties
 /usr/lib/jvm/java-1.8.0-openjdk/jre/lib/resources.jar
 /usr/lib/jvm/java-1.8.0-openjdk/jre/lib/rt.jar
-/usr/lib/jvm/java-1.8.0-openjdk/jre/lib/security/US_export_policy.jar
 /usr/lib/jvm/java-1.8.0-openjdk/jre/lib/security/blacklisted.certs
 /usr/lib/jvm/java-1.8.0-openjdk/jre/lib/security/cacerts
 /usr/lib/jvm/java-1.8.0-openjdk/jre/lib/security/java.policy
 /usr/lib/jvm/java-1.8.0-openjdk/jre/lib/security/java.security
-/usr/lib/jvm/java-1.8.0-openjdk/jre/lib/security/local_policy.jar
+/usr/lib/jvm/java-1.8.0-openjdk/jre/lib/security/policy/limited/US_export_policy.jar
+/usr/lib/jvm/java-1.8.0-openjdk/jre/lib/security/policy/limited/local_policy.jar
+/usr/lib/jvm/java-1.8.0-openjdk/jre/lib/security/policy/unlimited/US_export_policy.jar
+/usr/lib/jvm/java-1.8.0-openjdk/jre/lib/security/policy/unlimited/local_policy.jar
 /usr/lib/jvm/java-1.8.0-openjdk/jre/lib/sound.properties
 /usr/lib/jvm/java-1.8.0-openjdk/jre/lib/tzdb.dat
 /usr/lib/jvm/java-1.8.0-openjdk/lib/amd64/jli/libjli.so
@@ -761,6 +762,7 @@ ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/xjc %{buildroot}/usr/bin/xjc
 /usr/lib/jvm/java-1.8.0-openjdk/lib/orb.idl
 /usr/lib/jvm/java-1.8.0-openjdk/lib/sa-jdi.jar
 /usr/lib/jvm/java-1.8.0-openjdk/lib/tools.jar
+/usr/lib64/libjli.so
 
 %files dev
 /usr/bin/appletviewer
