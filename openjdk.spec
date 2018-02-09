@@ -1,8 +1,8 @@
 Name     : openjdk
 Version  : 8
-Release  : 28
-URL      : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-152-16b.tar.gz
-Source0  : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-152-16b.tar.gz
+Release  : 29
+URL      : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-162-b12.tar.gz
+Source0  : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-162-b12.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GPL-2.0 Apache-2.0 BSD-2-Clause BSD-3-Clause BSD-4-Clause HPND ICU LGPL-2.1 Libpng MIT MPL-2.0-no-copyleft-exception SAX-PD Unicode-TOU W3C
@@ -72,7 +72,7 @@ Provides : libjli.so(SUNWprivate_1.1)(64bit)
 lib components for the openjdk package.
 
 %prep
-%setup -q -n jdk8-openjdk-src-8u-152-16b
+%setup -q -n jdk8-openjdk-src-8u-162-b12
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
@@ -102,7 +102,7 @@ make install
 popd
 
 # Remove all the binaries installed in /usr/lib/bin. All of them are 
-# symlinks and will be created in post
+# symlinks and will be created later
 rm -rf %{buildroot}/usr/lib/bin
 
 # Change the directory name
