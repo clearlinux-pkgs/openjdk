@@ -1,6 +1,6 @@
 Name     : openjdk
 Version  : 8
-Release  : 30
+Release  : 31
 URL      : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-162-b12.tar.gz
 Source0  : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-162-b12.tar.gz
 Summary  : No detailed summary available
@@ -18,11 +18,7 @@ BuildRequires : libXt-dev
 BuildRequires : libXrender-dev
 BuildRequires : libXi-dev
 BuildRequires : libXext-dev
-BuildRequires : xproto-dev
-BuildRequires : xextproto-dev
-BuildRequires : kbproto-dev
-BuildRequires : renderproto-dev
-BuildRequires : inputproto-dev
+BuildRequires : xorgproto-dev
 BuildRequires : cups-dev
 BuildRequires : freetype-dev
 BuildRequires : alsa-lib-dev
