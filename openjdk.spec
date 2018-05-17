@@ -1,6 +1,6 @@
 Name     : openjdk
 Version  : 8
-Release  : 32
+Release  : 33
 URL      : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-162-b12.tar.gz
 Source0  : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-162-b12.tar.gz
 Summary  : No detailed summary available
@@ -74,7 +74,7 @@ lib components for the openjdk package.
 %patch3 -p1
 %build
 CLR_TRUST_STORE=%{_builddir}/trust-store clrtrust generate
-export CXXFLAGS="$CXXFLAGS -std=gnu++98 -Wno-error -fno-delete-null-pointer-checks"
+export CXXFLAGS="$CXXFLAGS -std=gnu++98 -Wno-error -fno-delete-null-pointer-checks -fno-guess-branch-probability"
 export CXXFLAGS_JDK="$CXXFLAGS"
 export SYSDEFS="$CXXFLAGS"
 bash configure \
@@ -89,7 +89,7 @@ bash configure \
 --prefix=%{buildroot}/usr/lib
 
 %install
-export CXXFLAGS="$CXXFLAGS -std=gnu++98 -Wno-error -fno-delete-null-pointer-checks"
+export CXXFLAGS="$CXXFLAGS -std=gnu++98 -Wno-error -fno-delete-null-pointer-checks -fno-guess-branch-probability"
 export CXXFLAGS_JDK="$CXXFLAGS"
 export SYSDEFS="$CXXFLAGS"
 pushd build/linux-x86_64-normal-server-release/
