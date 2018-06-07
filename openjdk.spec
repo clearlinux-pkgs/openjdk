@@ -1,6 +1,6 @@
 Name     : openjdk
 Version  : 8
-Release  : 33
+Release  : 34
 URL      : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-162-b12.tar.gz
 Source0  : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-162-b12.tar.gz
 Summary  : No detailed summary available
