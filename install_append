@@ -1,0 +1,61 @@
+# Remove all the binaries installed in /usr/lib/bin. All of them are 
+# symlinks and will be created later
+rm -rf %{buildroot}/usr/lib/bin
+
+# Change the directory name
+pushd %{buildroot}/usr/lib/jvm
+mv openjdk-1.8.0-internal java-1.8.0-openjdk
+popd
+
+# Remove the copied keystore and link it to the runtime store
+rm -f %{buildroot}/usr/lib/jvm/java-1.8.0-openjdk/jre/lib/security/cacerts
+ln -s /var/cache/ca-certs/compat/ca-roots.keystore %{buildroot}/usr/lib/jvm/java-1.8.0-openjdk/jre/lib/security/cacerts
+
+mkdir -p %{buildroot}/usr/lib64
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/lib/amd64/jli/libjli.so %{buildroot}/usr/lib64/libjli.so
+
+mkdir -p %{buildroot}/usr/bin
+# Basic binaries
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/java %{buildroot}/usr/bin/java
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jjs %{buildroot}/usr/bin/jjs
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/keytool %{buildroot}/usr/bin/keytool
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/orbd %{buildroot}/usr/bin/orbd
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/pack200 %{buildroot}/usr/bin/pack200
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/policytool %{buildroot}/usr/bin/policytool
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/rmid %{buildroot}/usr/bin/rmid
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/rmiregistry %{buildroot}/usr/bin/rmiregistry
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/servertool %{buildroot}/usr/bin/servertool
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/tnameserv %{buildroot}/usr/bin/tnameserv
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/unpack200 %{buildroot}/usr/bin/unpack200
+
+# Dev binaries
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/appletviewer %{buildroot}/usr/bin/appletviewer
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/extcheck %{buildroot}/usr/bin/extcheck
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/idlj %{buildroot}/usr/bin/idlj
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jar %{buildroot}/usr/bin/jar
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jarsigner %{buildroot}/usr/bin/jarsigner
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/java-rmi.cgi %{buildroot}/usr/bin/java-rmi.cgi
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/javac %{buildroot}/usr/bin/javac
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/javadoc %{buildroot}/usr/bin/javadoc
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/javah %{buildroot}/usr/bin/javah
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/javap %{buildroot}/usr/bin/javap
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jcmd %{buildroot}/usr/bin/jcmd
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jconsole %{buildroot}/usr/bin/jconsole
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jdb %{buildroot}/usr/bin/jdb
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jdeps %{buildroot}/usr/bin/jdeps
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jhat %{buildroot}/usr/bin/jhat
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jinfo %{buildroot}/usr/bin/jinfo
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jmap %{buildroot}/usr/bin/jmap
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jps %{buildroot}/usr/bin/jps
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jrunscript %{buildroot}/usr/bin/jrunscript
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jsadebugd %{buildroot}/usr/bin/jsadebugd
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jstack %{buildroot}/usr/bin/jstack
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jstat %{buildroot}/usr/bin/jstat
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jstatd %{buildroot}/usr/bin/jstatd
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/native2ascii %{buildroot}/usr/bin/native2ascii
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/rmic %{buildroot}/usr/bin/rmic
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/schemagen %{buildroot}/usr/bin/schemagen
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/serialver %{buildroot}/usr/bin/serialver
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/wsgen %{buildroot}/usr/bin/wsgen
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/wsimport %{buildroot}/usr/bin/wsimport
+ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/xjc %{buildroot}/usr/bin/xjc

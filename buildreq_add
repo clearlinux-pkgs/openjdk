@@ -1,3 +1,34 @@
 # This file contains additional build requirements that did not get
 # picked up automatically. One name per line, no whitespace.
+alsa-lib-dev
+ca-certs
 ccache
+cups-dev
+freetype-dev
+libX11-dev
+libXext-dev
+libXi-dev
+libXrender-dev
+libXt-dev
+libXtst-dev
+openjdk
+openjdk-dev
+zip
+openjdk
+openjdk-dev
+zip
+libX11-dev
+libXtst-dev
+libXt-dev
+libXrender-dev
+libXi-dev
+libXext-dev
+xorgproto-dev
+cups-dev
+freetype-dev
+alsa-lib-dev
+ccache
+ca-certs
+openssl-dev
+nss-dev
+glibc-bin
