@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 8u.162.b12
-Release  : 35
+Release  : 36
 URL      : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-162-b12.tar.gz
 Source0  : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-162-b12.tar.gz
 Summary  : No detailed summary available
@@ -14,6 +14,7 @@ License  : BSD-3-Clause GPL-2.0 ICU Libpng MIT SAX-PD
 Requires: openjdk-bin
 Requires: openjdk-lib
 Requires: openjdk-license
+Requires: openjdk-extras
 BuildRequires : alsa-lib-dev
 BuildRequires : ca-certs
 BuildRequires : ccache
@@ -27,11 +28,8 @@ BuildRequires : libXrender-dev
 BuildRequires : libXt-dev
 BuildRequires : libXtst-dev
 BuildRequires : libjpeg-turbo-dev
-BuildRequires : nss-dev
 BuildRequires : openjdk
 BuildRequires : openjdk-dev
-BuildRequires : openssl-dev
-BuildRequires : xorgproto-dev
 BuildRequires : zip
 Patch1: disable-doclint-by-default.patch
 Patch2: build.patch
@@ -69,6 +67,14 @@ Group: Documentation
 
 %description doc
 doc components for the openjdk package.
+
+
+%package extras
+Summary: extras components for the openjdk package.
+Group: Default
+
+%description extras
+extras components for the openjdk package.
 
 
 %package lib
@@ -116,12 +122,12 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1537578910
+export SOURCE_DATE_EPOCH=1537893399
 unset LD_AS_NEEDED
 make all WARNINGS_ARE_ERRORS=
 
 %install
-export SOURCE_DATE_EPOCH=1537578910
+export SOURCE_DATE_EPOCH=1537893399
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/doc/openjdk
 cp LICENSE %{buildroot}/usr/share/doc/openjdk/LICENSE
@@ -887,6 +893,7 @@ ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/xjc %{buildroot}/usr/bin/xjc
 
 %files dev
 %defattr(-,root,root,-)
+%exclude /usr/lib64/libjli.so
 /usr/lib/jvm/java-1.8.0-openjdk/include/classfile_constants.h
 /usr/lib/jvm/java-1.8.0-openjdk/include/jawt.h
 /usr/lib/jvm/java-1.8.0-openjdk/include/jdwpTransport.h
@@ -895,11 +902,14 @@ ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/xjc %{buildroot}/usr/bin/xjc
 /usr/lib/jvm/java-1.8.0-openjdk/include/jvmticmlr.h
 /usr/lib/jvm/java-1.8.0-openjdk/include/linux/jawt_md.h
 /usr/lib/jvm/java-1.8.0-openjdk/include/linux/jni_md.h
-/usr/lib64/libjli.so
 
 %files doc
 %defattr(0644,root,root,0755)
 %doc /usr/share/doc/openjdk/*
+
+%files extras
+%defattr(-,root,root,-)
+/usr/lib64/libjli.so
 
 %files lib
 %defattr(-,root,root,-)
