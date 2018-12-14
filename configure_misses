@@ -1,6 +1,7 @@
 Configure miss: gdiff
 Configure miss: nawk
 Configure miss: cygpath
+Configure miss: greadlink
 Configure miss: SetFile
 Configure miss: presence of closed sources
 Configure miss: if closed source is suppressed (openjdk-only)
@@ -16,12 +17,13 @@ Configure miss: 7z
 Configure miss: wget
 Configure miss: lftp
 Configure miss: ftp
-Configure miss: jtreg
 Configure miss: /usr/bin/x86_64-generic-linux-gcc option to accept ISO C89
 Configure miss: otool
 Configure miss: gobjcopy
 Configure miss: gobjdump
 Configure miss: broken SuSE 'ld' which only understands anonymous version tags in executables
+Configure miss: jtreg
+Configure miss: what type of native debug symbols to use (this will override previous settings)
 Configure miss: if we should bundle freetype
 Configure miss: whether to use sjavac
-Configure miss: if ccache supports precompiled headers
+Configure miss: is ccache enabled

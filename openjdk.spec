@@ -4,16 +4,16 @@
 #
 %define keepstatic 1
 Name     : openjdk
-Version  : 8u.162.b12
-Release  : 36
-URL      : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-162-b12.tar.gz
-Source0  : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-162-b12.tar.gz
+Version  : 8u.192.b12
+Release  : 37
+URL      : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-192-b12.tar.gz
+Source0  : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-192-b12.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause GPL-2.0 ICU Libpng MIT SAX-PD
-Requires: openjdk-bin
-Requires: openjdk-lib
-Requires: openjdk-license
+Requires: openjdk-bin = %{version}-%{release}
+Requires: openjdk-lib = %{version}-%{release}
+Requires: openjdk-license = %{version}-%{release}
 Requires: openjdk-extras
 BuildRequires : alsa-lib-dev
 BuildRequires : ca-certs
@@ -61,14 +61,6 @@ Provides: openjdk-devel = %{version}-%{release}
 dev components for the openjdk package.
 
 
-%package doc
-Summary: doc components for the openjdk package.
-Group: Documentation
-
-%description doc
-doc components for the openjdk package.
-
-
 %package extras
 Summary: extras components for the openjdk package.
 Group: Default
@@ -95,7 +87,7 @@ license components for the openjdk package.
 
 
 %prep
-%setup -q -n jdk8-openjdk-src-8u-162-b12
+%setup -q -n jdk8-openjdk-src-8u-192-b12
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
@@ -122,29 +114,30 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1537893399
+export SOURCE_DATE_EPOCH=1544810023
 unset LD_AS_NEEDED
 make all WARNINGS_ARE_ERRORS=
 
+
 %install
-export SOURCE_DATE_EPOCH=1537893399
+export SOURCE_DATE_EPOCH=1544810023
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/share/doc/openjdk
-cp LICENSE %{buildroot}/usr/share/doc/openjdk/LICENSE
-cp corba/LICENSE %{buildroot}/usr/share/doc/openjdk/corba_LICENSE
-cp hotspot/LICENSE %{buildroot}/usr/share/doc/openjdk/hotspot_LICENSE
-cp jaxp/LICENSE %{buildroot}/usr/share/doc/openjdk/jaxp_LICENSE
-cp jaxp/src/org/xml/sax/COPYING %{buildroot}/usr/share/doc/openjdk/jaxp_src_org_xml_sax_COPYING
-cp jaxp/src/org/xml/sax/COPYING.txt %{buildroot}/usr/share/doc/openjdk/jaxp_src_org_xml_sax_COPYING.txt
-cp jaxws/LICENSE %{buildroot}/usr/share/doc/openjdk/jaxws_LICENSE
-cp jdk/LICENSE %{buildroot}/usr/share/doc/openjdk/jdk_LICENSE
-cp jdk/src/share/classes/sun/util/cldr/resources/21_0_1/LICENSE %{buildroot}/usr/share/doc/openjdk/jdk_src_share_classes_sun_util_cldr_resources_21_0_1_LICENSE
-cp jdk/src/share/native/sun/awt/giflib/COPYING %{buildroot}/usr/share/doc/openjdk/jdk_src_share_native_sun_awt_giflib_COPYING
-cp jdk/src/share/native/sun/awt/libpng/LICENSE %{buildroot}/usr/share/doc/openjdk/jdk_src_share_native_sun_awt_libpng_LICENSE
-cp jdk/src/solaris/native/sun/security/smartcardio/MUSCLE/COPYING %{buildroot}/usr/share/doc/openjdk/jdk_src_solaris_native_sun_security_smartcardio_MUSCLE_COPYING
-cp jdk/test/javax/xml/ws/xsanymixed/CopyingResponse.java %{buildroot}/usr/share/doc/openjdk/jdk_test_javax_xml_ws_xsanymixed_CopyingResponse.java
-cp langtools/LICENSE %{buildroot}/usr/share/doc/openjdk/langtools_LICENSE
-cp nashorn/LICENSE %{buildroot}/usr/share/doc/openjdk/nashorn_LICENSE
+mkdir -p %{buildroot}/usr/share/package-licenses/openjdk
+cp LICENSE %{buildroot}/usr/share/package-licenses/openjdk/LICENSE
+cp corba/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/corba_LICENSE
+cp hotspot/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/hotspot_LICENSE
+cp jaxp/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/jaxp_LICENSE
+cp jaxp/src/org/xml/sax/COPYING %{buildroot}/usr/share/package-licenses/openjdk/jaxp_src_org_xml_sax_COPYING
+cp jaxp/src/org/xml/sax/COPYING.txt %{buildroot}/usr/share/package-licenses/openjdk/jaxp_src_org_xml_sax_COPYING.txt
+cp jaxws/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/jaxws_LICENSE
+cp jdk/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/jdk_LICENSE
+cp jdk/src/share/classes/sun/util/cldr/resources/21_0_1/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/jdk_src_share_classes_sun_util_cldr_resources_21_0_1_LICENSE
+cp jdk/src/share/native/sun/awt/giflib/COPYING %{buildroot}/usr/share/package-licenses/openjdk/jdk_src_share_native_sun_awt_giflib_COPYING
+cp jdk/src/share/native/sun/awt/libpng/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/jdk_src_share_native_sun_awt_libpng_LICENSE
+cp jdk/src/solaris/native/sun/security/smartcardio/MUSCLE/COPYING %{buildroot}/usr/share/package-licenses/openjdk/jdk_src_solaris_native_sun_security_smartcardio_MUSCLE_COPYING
+cp jdk/test/javax/xml/ws/xsanymixed/CopyingResponse.java %{buildroot}/usr/share/package-licenses/openjdk/jdk_test_javax_xml_ws_xsanymixed_CopyingResponse.java
+cp langtools/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/langtools_LICENSE
+cp nashorn/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/nashorn_LICENSE
 %make_install
 ## install_append content
 rm -rf %{buildroot}/usr/lib/bin
@@ -903,10 +896,6 @@ ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/xjc %{buildroot}/usr/bin/xjc
 /usr/lib/jvm/java-1.8.0-openjdk/include/linux/jawt_md.h
 /usr/lib/jvm/java-1.8.0-openjdk/include/linux/jni_md.h
 
-%files doc
-%defattr(0644,root,root,0755)
-%doc /usr/share/doc/openjdk/*
-
 %files extras
 %defattr(-,root,root,-)
 /usr/lib64/libjli.so
@@ -963,18 +952,19 @@ ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/xjc %{buildroot}/usr/bin/xjc
 /usr/lib/jvm/java-1.8.0-openjdk/lib/amd64/libjawt.so
 
 %files license
-%defattr(-,root,root,-)
-/usr/share/doc/openjdk/LICENSE
-/usr/share/doc/openjdk/corba_LICENSE
-/usr/share/doc/openjdk/hotspot_LICENSE
-/usr/share/doc/openjdk/jaxp_LICENSE
-/usr/share/doc/openjdk/jaxp_src_org_xml_sax_COPYING
-/usr/share/doc/openjdk/jaxp_src_org_xml_sax_COPYING.txt
-/usr/share/doc/openjdk/jaxws_LICENSE
-/usr/share/doc/openjdk/jdk_LICENSE
-/usr/share/doc/openjdk/jdk_src_share_classes_sun_util_cldr_resources_21_0_1_LICENSE
-/usr/share/doc/openjdk/jdk_src_share_native_sun_awt_giflib_COPYING
-/usr/share/doc/openjdk/jdk_src_share_native_sun_awt_libpng_LICENSE
-/usr/share/doc/openjdk/jdk_src_solaris_native_sun_security_smartcardio_MUSCLE_COPYING
-/usr/share/doc/openjdk/langtools_LICENSE
-/usr/share/doc/openjdk/nashorn_LICENSE
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/openjdk/LICENSE
+/usr/share/package-licenses/openjdk/corba_LICENSE
+/usr/share/package-licenses/openjdk/hotspot_LICENSE
+/usr/share/package-licenses/openjdk/jaxp_LICENSE
+/usr/share/package-licenses/openjdk/jaxp_src_org_xml_sax_COPYING
+/usr/share/package-licenses/openjdk/jaxp_src_org_xml_sax_COPYING.txt
+/usr/share/package-licenses/openjdk/jaxws_LICENSE
+/usr/share/package-licenses/openjdk/jdk_LICENSE
+/usr/share/package-licenses/openjdk/jdk_src_share_classes_sun_util_cldr_resources_21_0_1_LICENSE
+/usr/share/package-licenses/openjdk/jdk_src_share_native_sun_awt_giflib_COPYING
+/usr/share/package-licenses/openjdk/jdk_src_share_native_sun_awt_libpng_LICENSE
+/usr/share/package-licenses/openjdk/jdk_src_solaris_native_sun_security_smartcardio_MUSCLE_COPYING
+/usr/share/package-licenses/openjdk/jdk_test_javax_xml_ws_xsanymixed_CopyingResponse.java
+/usr/share/package-licenses/openjdk/langtools_LICENSE
+/usr/share/package-licenses/openjdk/nashorn_LICENSE

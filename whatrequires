@@ -1,0 +1,11 @@
+# This file contains recursive sources that require this package
+apache-hadoop
+compat-opencv-soname34
+cups
+libreoffice
+octave
+opencv
+openjdk
+openjdk9
+swig
+tensorflow
