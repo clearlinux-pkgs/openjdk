@@ -1,4 +1,5 @@
 # This file contains recursive sources that require this package
+apache-ant
 apache-hadoop
 compat-opencv-soname34
 cups

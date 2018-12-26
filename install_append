@@ -12,7 +12,7 @@ rm -f %{buildroot}/usr/lib/jvm/java-1.8.0-openjdk/jre/lib/security/cacerts
 ln -s /var/cache/ca-certs/compat/ca-roots.keystore %{buildroot}/usr/lib/jvm/java-1.8.0-openjdk/jre/lib/security/cacerts
 
 mkdir -p %{buildroot}/usr/lib64
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/lib/amd64/jli/libjli.so %{buildroot}/usr/lib64/libjli.so
+ln -s  /usr/lib/jvm/java-1.8.0-openjdk/jre/lib/amd64/jli/libjli.so %{buildroot}/usr/lib64/libjli.so
 
 mkdir -p %{buildroot}/usr/bin
 # Basic binaries

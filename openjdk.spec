@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 8u.192.b12
-Release  : 37
+Release  : 38
 URL      : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-192-b12.tar.gz
 Source0  : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-192-b12.tar.gz
 Summary  : No detailed summary available
@@ -14,7 +14,6 @@ License  : BSD-3-Clause GPL-2.0 ICU Libpng MIT SAX-PD
 Requires: openjdk-bin = %{version}-%{release}
 Requires: openjdk-lib = %{version}-%{release}
 Requires: openjdk-license = %{version}-%{release}
-Requires: openjdk-extras
 BuildRequires : alsa-lib-dev
 BuildRequires : ca-certs
 BuildRequires : ccache
@@ -102,7 +101,7 @@ bash configure \
 --with-boot-jdk=/usr/lib/jvm/java-1.8.0-openjdk \
 --x-includes=/usr/include/ \
 --x-libraries=/usr/lib64 \
---with-extra-cflags="-O3 $CFLAGS -g1" \
+--with-extra-cflags="-O3 -g1" \
 --with-extra-cxxflags="$CXXFLAGS -g1" \
 --with-zlib=system \
 --enable-unlimited-crypto \
@@ -114,13 +113,13 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1544810023
+export SOURCE_DATE_EPOCH=1545854373
 unset LD_AS_NEEDED
 make all WARNINGS_ARE_ERRORS=
 
 
 %install
-export SOURCE_DATE_EPOCH=1544810023
+export SOURCE_DATE_EPOCH=1545854373
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/openjdk
 cp LICENSE %{buildroot}/usr/share/package-licenses/openjdk/LICENSE
@@ -147,7 +146,7 @@ popd
 rm -f %{buildroot}/usr/lib/jvm/java-1.8.0-openjdk/jre/lib/security/cacerts
 ln -s /var/cache/ca-certs/compat/ca-roots.keystore %{buildroot}/usr/lib/jvm/java-1.8.0-openjdk/jre/lib/security/cacerts
 mkdir -p %{buildroot}/usr/lib64
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/lib/amd64/jli/libjli.so %{buildroot}/usr/lib64/libjli.so
+ln -s  /usr/lib/jvm/java-1.8.0-openjdk/jre/lib/amd64/jli/libjli.so %{buildroot}/usr/lib64/libjli.so
 mkdir -p %{buildroot}/usr/bin
 ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/java %{buildroot}/usr/bin/java
 ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jjs %{buildroot}/usr/bin/jjs
@@ -886,7 +885,6 @@ ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/xjc %{buildroot}/usr/bin/xjc
 
 %files dev
 %defattr(-,root,root,-)
-%exclude /usr/lib64/libjli.so
 /usr/lib/jvm/java-1.8.0-openjdk/include/classfile_constants.h
 /usr/lib/jvm/java-1.8.0-openjdk/include/jawt.h
 /usr/lib/jvm/java-1.8.0-openjdk/include/jdwpTransport.h
@@ -902,6 +900,7 @@ ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/xjc %{buildroot}/usr/bin/xjc
 
 %files lib
 %defattr(-,root,root,-)
+%exclude /usr/lib64/libjli.so
 /usr/lib/jvm/java-1.8.0-openjdk/demo/jvmti/compiledMethodLoad/lib/libcompiledMethodLoad.so
 /usr/lib/jvm/java-1.8.0-openjdk/demo/jvmti/gctest/lib/libgctest.so
 /usr/lib/jvm/java-1.8.0-openjdk/demo/jvmti/heapTracker/lib/libheapTracker.so
