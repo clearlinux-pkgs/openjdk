@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 8u.192.b12
-Release  : 38
+Release  : 39
 URL      : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-192-b12.tar.gz
 Source0  : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-192-b12.tar.gz
 Summary  : No detailed summary available
@@ -60,14 +60,6 @@ Provides: openjdk-devel = %{version}-%{release}
 dev components for the openjdk package.
 
 
-%package extras
-Summary: extras components for the openjdk package.
-Group: Default
-
-%description extras
-extras components for the openjdk package.
-
-
 %package lib
 Summary: lib components for the openjdk package.
 Group: Libraries
@@ -113,13 +105,13 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1545854373
+export SOURCE_DATE_EPOCH=1548352263
 unset LD_AS_NEEDED
 make all WARNINGS_ARE_ERRORS=
 
 
 %install
-export SOURCE_DATE_EPOCH=1545854373
+export SOURCE_DATE_EPOCH=1548352263
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/openjdk
 cp LICENSE %{buildroot}/usr/share/package-licenses/openjdk/LICENSE
@@ -894,13 +886,8 @@ ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/xjc %{buildroot}/usr/bin/xjc
 /usr/lib/jvm/java-1.8.0-openjdk/include/linux/jawt_md.h
 /usr/lib/jvm/java-1.8.0-openjdk/include/linux/jni_md.h
 
-%files extras
-%defattr(-,root,root,-)
-/usr/lib64/libjli.so
-
 %files lib
 %defattr(-,root,root,-)
-%exclude /usr/lib64/libjli.so
 /usr/lib/jvm/java-1.8.0-openjdk/demo/jvmti/compiledMethodLoad/lib/libcompiledMethodLoad.so
 /usr/lib/jvm/java-1.8.0-openjdk/demo/jvmti/gctest/lib/libgctest.so
 /usr/lib/jvm/java-1.8.0-openjdk/demo/jvmti/heapTracker/lib/libheapTracker.so
@@ -949,6 +936,7 @@ ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/xjc %{buildroot}/usr/bin/xjc
 /usr/lib/jvm/java-1.8.0-openjdk/jre/lib/amd64/server/libjvm.so
 /usr/lib/jvm/java-1.8.0-openjdk/lib/amd64/jli/libjli.so
 /usr/lib/jvm/java-1.8.0-openjdk/lib/amd64/libjawt.so
+/usr/lib64/libjli.so
 
 %files license
 %defattr(0644,root,root,0755)

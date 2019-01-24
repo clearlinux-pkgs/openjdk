@@ -1,6 +1,7 @@
 # This file contains recursive sources that require this package
 apache-ant
 apache-hadoop
+apache-kafka
 compat-opencv-soname34
 cups
 libreoffice
