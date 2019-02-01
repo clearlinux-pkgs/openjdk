@@ -4,10 +4,10 @@
 #
 %define keepstatic 1
 Name     : openjdk
-Version  : 8u.192.b12
-Release  : 39
-URL      : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-192-b12.tar.gz
-Source0  : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-192-b12.tar.gz
+Version  : 8u.202
+Release  : 40
+URL      : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-202.tar.gz
+Source0  : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-202.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause GPL-2.0 ICU Libpng MIT SAX-PD
@@ -78,7 +78,7 @@ license components for the openjdk package.
 
 
 %prep
-%setup -q -n jdk8-openjdk-src-8u-192-b12
+%setup -q -n jdk8-openjdk-src-8u-202
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
@@ -105,13 +105,13 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1548352263
+export SOURCE_DATE_EPOCH=1549059408
 unset LD_AS_NEEDED
 make all WARNINGS_ARE_ERRORS=
 
 
 %install
-export SOURCE_DATE_EPOCH=1548352263
+export SOURCE_DATE_EPOCH=1549059408
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/openjdk
 cp LICENSE %{buildroot}/usr/share/package-licenses/openjdk/LICENSE
@@ -189,7 +189,9 @@ ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/xjc %{buildroot}/usr/bin/xjc
 /usr/lib/jvm/java-1.8.0-openjdk/LICENSE
 /usr/lib/jvm/java-1.8.0-openjdk/THIRD_PARTY_README
 /usr/lib/jvm/java-1.8.0-openjdk/bin/appletviewer
+/usr/lib/jvm/java-1.8.0-openjdk/bin/clhsdb
 /usr/lib/jvm/java-1.8.0-openjdk/bin/extcheck
+/usr/lib/jvm/java-1.8.0-openjdk/bin/hsdb
 /usr/lib/jvm/java-1.8.0-openjdk/bin/idlj
 /usr/lib/jvm/java-1.8.0-openjdk/bin/jar
 /usr/lib/jvm/java-1.8.0-openjdk/bin/jarsigner
@@ -487,6 +489,8 @@ ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/xjc %{buildroot}/usr/bin/xjc
 /usr/lib/jvm/java-1.8.0-openjdk/jre/ASSEMBLY_EXCEPTION
 /usr/lib/jvm/java-1.8.0-openjdk/jre/LICENSE
 /usr/lib/jvm/java-1.8.0-openjdk/jre/THIRD_PARTY_README
+/usr/lib/jvm/java-1.8.0-openjdk/jre/bin/clhsdb
+/usr/lib/jvm/java-1.8.0-openjdk/jre/bin/hsdb
 /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/java
 /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/jjs
 /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/keytool
