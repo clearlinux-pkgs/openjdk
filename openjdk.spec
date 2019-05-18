@@ -88,7 +88,7 @@ license components for the openjdk package.
 %build
 ## build_prepend content
 CLR_TRUST_STORE=%{_builddir}/trust-store clrtrust generate
-export CXXFLAGS="$CXXFLAGS -std=gnu++98 -Wno-error -fno-delete-null-pointer-checks -fno-guess-branch-probability"
+export CXXFLAGS="$CXXFLAGS -std=gnu++98 -Wno-error -fno-delete-null-pointer-checks -fno-guess-branch-probability -fno-lto"
 export CXXFLAGS_JDK="$CXXFLAGS"
 export SYSDEFS="$CXXFLAGS"
 bash configure \
