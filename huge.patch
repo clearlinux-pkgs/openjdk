@@ -1,0 +1,11 @@
+--- jdk8-openjdk-src-8u-202/hotspot/src/os/linux/vm/os_linux.cpp~	2019-02-01 21:52:41.000000000 +0000
++++ jdk8-openjdk-src-8u-202/hotspot/src/os/linux/vm/os_linux.cpp	2019-05-18 01:27:33.360945174 +0000
+@@ -3532,7 +3532,7 @@
+ 
+     // Don't try UseTransparentHugePages since there are known
+     // performance issues with it turned on. This might change in the future.
+-    UseTransparentHugePages = false;
++    UseTransparentHugePages = true;
+   }
+ 
+   if (UseTransparentHugePages) {

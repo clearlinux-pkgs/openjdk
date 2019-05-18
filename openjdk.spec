@@ -33,6 +33,7 @@ BuildRequires : zip
 Patch1: disable-doclint-by-default.patch
 Patch2: build.patch
 Patch3: dizstore.patch
+Patch4: huge.patch
 
 %description
 This file should be located at the top of the OpenJDK Mercurial root
@@ -82,6 +83,7 @@ license components for the openjdk package.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 ## build_prepend content
