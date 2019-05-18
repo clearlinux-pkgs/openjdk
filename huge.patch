@@ -9,3 +9,14 @@
    }
  
    if (UseTransparentHugePages) {
+--- jdk8-openjdk-src-8u-202/hotspot/make/linux/Makefile~	2019-02-01 21:52:41.000000000 +0000
++++ jdk8-openjdk-src-8u-202/hotspot/make/linux/Makefile	2019-05-18 01:32:54.131940708 +0000
+@@ -233,7 +233,7 @@
+ # Solaris 2.5.1, 2.6).
+ # Disable this check by setting DISABLE_HOTSPOT_OS_VERSION_CHECK=ok.
+ 
+-SUPPORTED_OS_VERSION = 2.4% 2.5% 2.6% 3% 4%
++SUPPORTED_OS_VERSION = 2.4% 2.5% 2.6% 3% 4% 5%
+ OS_VERSION := $(shell uname -r)
+ EMPTY_IF_NOT_SUPPORTED = $(filter $(SUPPORTED_OS_VERSION),$(OS_VERSION))
+ 
