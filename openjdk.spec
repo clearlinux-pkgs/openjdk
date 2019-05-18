@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 8u.202
-Release  : 44
+Release  : 45
 URL      : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-202.tar.gz
 Source0  : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-202.tar.gz
 Summary  : No detailed summary available
