@@ -1,13 +1,13 @@
 CLR_TRUST_STORE=%{_builddir}/trust-store clrtrust generate
-export CXXFLAGS="$CXXFLAGS -std=gnu++98 -Wno-error -fno-delete-null-pointer-checks -fno-guess-branch-probability"
+export CXXFLAGS="$CXXFLAGS -std=gnu++98 -Wno-error -fno-delete-null-pointer-checks -fno-guess-branch-probability -fno-lto"
 export CXXFLAGS_JDK="$CXXFLAGS"
 export SYSDEFS="$CXXFLAGS"
 bash configure \
 --with-boot-jdk=/usr/lib/jvm/java-1.8.0-openjdk \
 --x-includes=/usr/include/ \
 --x-libraries=/usr/lib64 \
---with-extra-cflags="-O3 -g1" \
---with-extra-cxxflags="$CXXFLAGS -g1" \
+--with-extra-cflags="-O3 -g1 -fno-lto" \
+--with-extra-cxxflags="$CXXFLAGS -g1 -fno-lto" \
 --with-zlib=system \
 --enable-unlimited-crypto \
 --with-cacerts-file=%{_builddir}/trust-store/compat/ca-roots.keystore \

@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 8u.202
-Release  : 45
+Release  : 46
 URL      : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-202.tar.gz
 Source0  : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-202.tar.gz
 Summary  : No detailed summary available
@@ -56,6 +56,7 @@ Group: Development
 Requires: openjdk-lib = %{version}-%{release}
 Requires: openjdk-bin = %{version}-%{release}
 Provides: openjdk-devel = %{version}-%{release}
+Requires: openjdk = %{version}-%{release}
 
 %description dev
 dev components for the openjdk package.
@@ -90,7 +91,6 @@ license components for the openjdk package.
 CLR_TRUST_STORE=%{_builddir}/trust-store clrtrust generate
 export CXXFLAGS="$CXXFLAGS -std=gnu++98 -Wno-error -fno-delete-null-pointer-checks -fno-guess-branch-probability -fno-lto"
 export CXXFLAGS_JDK="$CXXFLAGS"
-export CFLAGS="$CFLAGS -fno-lto"
 export SYSDEFS="$CXXFLAGS"
 bash configure \
 --with-boot-jdk=/usr/lib/jvm/java-1.8.0-openjdk \
@@ -107,14 +107,22 @@ pushd build/linux-x86_64-normal-server-release/
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1549059408
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1563322082
 unset LD_AS_NEEDED
+export GCC_IGNORE_WERROR=1
+export AR=gcc-ar
+export RANLIB=gcc-ranlib
+export NM=gcc-nm
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 make all WARNINGS_ARE_ERRORS=
 
 
 %install
-export SOURCE_DATE_EPOCH=1549059408
+export SOURCE_DATE_EPOCH=1563322082
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/openjdk
 cp LICENSE %{buildroot}/usr/share/package-licenses/openjdk/LICENSE
