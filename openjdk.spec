@@ -4,10 +4,10 @@
 #
 %define keepstatic 1
 Name     : openjdk
-Version  : 8u.202
-Release  : 46
-URL      : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-202.tar.gz
-Source0  : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-202.tar.gz
+Version  : 8u.212
+Release  : 47
+URL      : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-212-ga.tar.gz
+Source0  : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-212-ga.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause GPL-2.0 ICU Libpng MIT SAX-PD
@@ -18,6 +18,7 @@ BuildRequires : alsa-lib-dev
 BuildRequires : ca-certs
 BuildRequires : ccache
 BuildRequires : cups-dev
+BuildRequires : fontconfig-dev
 BuildRequires : freetype-dev
 BuildRequires : glibc-bin
 BuildRequires : libX11-dev
@@ -33,7 +34,6 @@ BuildRequires : zip
 Patch1: disable-doclint-by-default.patch
 Patch2: build.patch
 Patch3: dizstore.patch
-Patch4: huge.patch
 
 %description
 This file should be located at the top of the OpenJDK Mercurial root
@@ -80,11 +80,10 @@ license components for the openjdk package.
 
 
 %prep
-%setup -q -n jdk8-openjdk-src-8u-202
+%setup -q -n jdk8-openjdk-src-8u-212-ga
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
 
 %build
 ## build_prepend content
@@ -108,7 +107,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1563322082
+export SOURCE_DATE_EPOCH=1563335544
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
@@ -122,7 +121,7 @@ make all WARNINGS_ARE_ERRORS=
 
 
 %install
-export SOURCE_DATE_EPOCH=1563322082
+export SOURCE_DATE_EPOCH=1563335544
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/openjdk
 cp LICENSE %{buildroot}/usr/share/package-licenses/openjdk/LICENSE
