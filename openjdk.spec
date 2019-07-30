@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 8u.222
-Release  : 49
+Release  : 50
 URL      : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-222-ga.tar.gz
 Source0  : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-222-ga.tar.gz
 Summary  : No detailed summary available
@@ -15,6 +15,8 @@ Requires: openjdk-bin = %{version}-%{release}
 Requires: openjdk-lib = %{version}-%{release}
 Requires: openjdk-license = %{version}-%{release}
 BuildRequires : alsa-lib-dev
+BuildRequires : apache-ant
+BuildRequires : buildreq-mvn
 BuildRequires : ca-certs
 BuildRequires : ccache
 BuildRequires : cups-dev
@@ -100,14 +102,16 @@ bash configure \
 --with-zlib=system \
 --enable-unlimited-crypto \
 --with-cacerts-file=%{_builddir}/trust-store/compat/ca-roots.keystore \
---prefix=%{buildroot}/usr/lib
+--prefix=%{buildroot}/usr/lib \
+--with-milestone="u222" \
+--with-user-release-suffix="ga"
 pushd build/linux-x86_64-normal-server-release/
 ## build_prepend end
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1564100180
+export SOURCE_DATE_EPOCH=1564511185
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
@@ -121,7 +125,7 @@ make all WARNINGS_ARE_ERRORS=
 
 
 %install
-export SOURCE_DATE_EPOCH=1564100180
+export SOURCE_DATE_EPOCH=1564511185
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/openjdk
 cp LICENSE %{buildroot}/usr/share/package-licenses/openjdk/LICENSE
@@ -143,7 +147,7 @@ cp nashorn/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/nashorn_LICEN
 ## install_append content
 rm -rf %{buildroot}/usr/lib/bin
 pushd %{buildroot}/usr/lib/jvm
-mv openjdk-1.8.0-internal java-1.8.0-openjdk
+mv openjdk-1.8.0-u222 java-1.8.0-openjdk
 popd
 rm -f %{buildroot}/usr/lib/jvm/java-1.8.0-openjdk/jre/lib/security/cacerts
 ln -s /var/cache/ca-certs/compat/ca-roots.keystore %{buildroot}/usr/lib/jvm/java-1.8.0-openjdk/jre/lib/security/cacerts
