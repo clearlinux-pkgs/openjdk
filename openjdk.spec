@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 8u.222
-Release  : 51
+Release  : 52
 URL      : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-222-ga.tar.gz
 Source0  : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-222-ga.tar.gz
 Summary  : No detailed summary available
@@ -15,8 +15,6 @@ Requires: openjdk-bin = %{version}-%{release}
 Requires: openjdk-lib = %{version}-%{release}
 Requires: openjdk-license = %{version}-%{release}
 BuildRequires : alsa-lib-dev
-BuildRequires : apache-ant
-BuildRequires : buildreq-mvn
 BuildRequires : ca-certs
 BuildRequires : ccache
 BuildRequires : cups-dev
@@ -111,7 +109,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1564511185
+export SOURCE_DATE_EPOCH=1564769576
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
@@ -125,7 +123,7 @@ make all WARNINGS_ARE_ERRORS=
 
 
 %install
-export SOURCE_DATE_EPOCH=1564511185
+export SOURCE_DATE_EPOCH=1564769576
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/openjdk
 cp LICENSE %{buildroot}/usr/share/package-licenses/openjdk/LICENSE
