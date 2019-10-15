@@ -1,0 +1,16 @@
+diff --git a/hotspot/make/linux/makefiles/adlc.make b/hotspot/make/linux/makefiles/adlc.make
+index 92b8b9b3..b7a294f7 100644
+--- a/hotspot/make/linux/makefiles/adlc.make
++++ b/hotspot/make/linux/makefiles/adlc.make
+@@ -105,9 +105,9 @@ GENERATEDFILES = $(GENERATEDNAMES:%=$(OUTDIR)/%)
+ 
+ all: $(EXEC)
+ 
+-ADLC_LD_FLAGS=
++ADLC_LD_FLAGS=-lpthread
+ ifeq ($(STATIC_CXX), true)
+-  ADLC_LD_FLAGS = $(STATIC_LIBGCC) $(ADLC_STATIC_STDCXX)
++  ADLC_LD_FLAGS += $(STATIC_LIBGCC) $(ADLC_STATIC_STDCXX)
+ endif
+ 
+ 

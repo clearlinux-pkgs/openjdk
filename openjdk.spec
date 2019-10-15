@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 8u.222
-Release  : 52
+Release  : 53
 URL      : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-222-ga.tar.gz
 Source0  : http://localhost/cgit/projects/jdk8/snapshot/jdk8-openjdk-src-8u-222-ga.tar.gz
 Summary  : No detailed summary available
@@ -34,6 +34,7 @@ BuildRequires : zip
 Patch1: disable-doclint-by-default.patch
 Patch2: build.patch
 Patch3: dizstore.patch
+Patch4: add_adlc_pthread_lib.patch
 
 %description
 This file should be located at the top of the OpenJDK Mercurial root
@@ -84,6 +85,7 @@ license components for the openjdk package.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 ## build_prepend content

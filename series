@@ -1,3 +1,4 @@
 disable-doclint-by-default.patch
 build.patch
 dizstore.patch
+add_adlc_pthread_lib.patch
