@@ -24,32 +24,32 @@ Configure miss: what type of native debug symbols to use (this will override pre
 Configure miss: if we should bundle freetype
 Configure miss: whether to use sjavac
 Configure miss: is ccache enabled
-Configure miss: /builddir/build/BUILD/jdk8-openjdk-src-8u-222-ga/jdk/src/share/bin/java.c:732:3: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
+Configure miss: /builddir/build/BUILD/jdk8u232-ga/jdk/src/share/bin/java.c:732:3: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
 
-Configure miss: /builddir/build/BUILD/jdk8-openjdk-src-8u-222-ga/jdk/src/solaris/native/java/net/net_util_md.c:441:9: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
+Configure miss: /builddir/build/BUILD/jdk8u232-ga/jdk/src/solaris/native/java/net/net_util_md.c:441:9: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
 
-Configure miss: /builddir/build/BUILD/jdk8-openjdk-src-8u-222-ga/jdk/src/share/back/log_messages.c:69:33: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
+Configure miss: /builddir/build/BUILD/jdk8u232-ga/jdk/src/share/back/log_messages.c:69:33: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
 
-Configure miss: /builddir/build/BUILD/jdk8-openjdk-src-8u-222-ga/jdk/src/share/native/sun/java2d/opengl/OGLBufImgOps.c:154:13: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
+Configure miss: /builddir/build/BUILD/jdk8u232-ga/jdk/src/share/native/sun/java2d/opengl/OGLBufImgOps.c:154:13: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
 
-Configure miss: /builddir/build/BUILD/jdk8-openjdk-src-8u-222-ga/jdk/src/share/native/sun/java2d/opengl/OGLBufImgOps.c:364:13: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
+Configure miss: /builddir/build/BUILD/jdk8u232-ga/jdk/src/share/native/sun/java2d/opengl/OGLBufImgOps.c:364:13: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
 
-Configure miss: /builddir/build/BUILD/jdk8-openjdk-src-8u-222-ga/jdk/src/share/native/sun/java2d/opengl/OGLBufImgOps.c:596:13: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
+Configure miss: /builddir/build/BUILD/jdk8u232-ga/jdk/src/share/native/sun/java2d/opengl/OGLBufImgOps.c:596:13: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
 
-Configure miss: /builddir/build/BUILD/jdk8-openjdk-src-8u-222-ga/jdk/src/share/native/sun/java2d/opengl/OGLPaints.c:581:9: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
+Configure miss: /builddir/build/BUILD/jdk8u232-ga/jdk/src/share/native/sun/java2d/opengl/OGLPaints.c:581:9: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
 
-Configure miss: /builddir/build/BUILD/jdk8-openjdk-src-8u-222-ga/jdk/src/share/native/sun/java2d/opengl/OGLPaints.c:583:9: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
+Configure miss: /builddir/build/BUILD/jdk8u232-ga/jdk/src/share/native/sun/java2d/opengl/OGLPaints.c:583:9: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
 
-Configure miss: /builddir/build/BUILD/jdk8-openjdk-src-8u-222-ga/jdk/src/share/native/sun/java2d/opengl/OGLPaints.c:585:9: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
+Configure miss: /builddir/build/BUILD/jdk8u232-ga/jdk/src/share/native/sun/java2d/opengl/OGLPaints.c:585:9: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
 
-Configure miss: /builddir/build/BUILD/jdk8-openjdk-src-8u-222-ga/jdk/src/share/native/sun/java2d/opengl/OGLPaints.c:592:13: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
+Configure miss: /builddir/build/BUILD/jdk8u232-ga/jdk/src/share/native/sun/java2d/opengl/OGLPaints.c:592:13: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
 
-Configure miss: /builddir/build/BUILD/jdk8-openjdk-src-8u-222-ga/jdk/src/share/native/sun/java2d/cmm/lcms/cmscgats.c:843:52: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
+Configure miss: /builddir/build/BUILD/jdk8u232-ga/jdk/src/share/native/sun/java2d/cmm/lcms/cmscgats.c:843:52: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
 
-Configure miss: /builddir/build/BUILD/jdk8-openjdk-src-8u-222-ga/jdk/src/share/native/sun/java2d/cmm/lcms/cmscgats.c:1020:44: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
+Configure miss: /builddir/build/BUILD/jdk8u232-ga/jdk/src/share/native/sun/java2d/cmm/lcms/cmscgats.c:1020:44: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
 
-Configure miss: /builddir/build/BUILD/jdk8-openjdk-src-8u-222-ga/jdk/src/share/native/sun/java2d/cmm/lcms/cmscgats.c:1401:31: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
+Configure miss: /builddir/build/BUILD/jdk8u232-ga/jdk/src/share/native/sun/java2d/cmm/lcms/cmscgats.c:1401:31: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
 
-Configure miss: /builddir/build/BUILD/jdk8-openjdk-src-8u-222-ga/jdk/src/share/native/sun/java2d/cmm/lcms/cmscgats.c:2624:28: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
+Configure miss: /builddir/build/BUILD/jdk8u232-ga/jdk/src/share/native/sun/java2d/cmm/lcms/cmscgats.c:2624:28: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
 
-Configure miss: /builddir/build/BUILD/jdk8-openjdk-src-8u-222-ga/jdk/src/share/native/sun/java2d/cmm/lcms/cmscgats.c:2714:28: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
+Configure miss: /builddir/build/BUILD/jdk8u232-ga/jdk/src/share/native/sun/java2d/cmm/lcms/cmscgats.c:2714:28: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]

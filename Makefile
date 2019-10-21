@@ -1,5 +1,5 @@
 PKG_NAME := openjdk
-URL = $(CGIT_BASE_URL)/projects/jdk8/snapshot/jdk8-openjdk-src-8u-222-ga.tar.gz
+URL = https://openjdk-sources.osci.io/openjdk8/openjdk8u232-ga.tar.xz
 ARCHIVES = 
 
 include ../common/Makefile.common
