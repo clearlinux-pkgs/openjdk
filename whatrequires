@@ -1,1 +1,17 @@
 # This file contains recursive sources that require this package
+R-rstudio
+R-rstudio-server
+apache-ant
+apache-flink
+apache-maven
+apache-tomcat
+cassandra
+libreoffice
+octave
+opencv
+openjdk
+rabbitmq-java-client
+swig
+tensorflow
+tensorflow-estimator
+tensorflow-probability

@@ -7,15 +7,16 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 8u.232
-Release  : 54
+Release  : 55
 URL      : https://openjdk-sources.osci.io/openjdk8/openjdk8u232-ga.tar.xz
 Source0  : https://openjdk-sources.osci.io/openjdk8/openjdk8u232-ga.tar.xz
 Source1 : https://openjdk-sources.osci.io/openjdk8/openjdk8u232-ga.tar.xz.sig
 Summary  : No detailed summary available
 Group    : Development/Tools
-License  : MIT
+License  : BSD-3-Clause GPL-2.0 ICU Libpng MIT SAX-PD
 Requires: openjdk-bin = %{version}-%{release}
 Requires: openjdk-lib = %{version}-%{release}
+Requires: openjdk-license = %{version}-%{release}
 BuildRequires : alsa-lib-dev
 BuildRequires : apache-ant
 BuildRequires : buildreq-mvn
@@ -24,6 +25,7 @@ BuildRequires : ccache
 BuildRequires : cups-dev
 BuildRequires : fontconfig-dev
 BuildRequires : freetype-dev
+BuildRequires : glibc-bin
 BuildRequires : libX11-dev
 BuildRequires : libXext-dev
 BuildRequires : libXi-dev
@@ -48,6 +50,7 @@ the following 6 nested repositories:
 %package bin
 Summary: bin components for the openjdk package.
 Group: Binaries
+Requires: openjdk-license = %{version}-%{release}
 
 %description bin
 bin components for the openjdk package.
@@ -68,9 +71,18 @@ dev components for the openjdk package.
 %package lib
 Summary: lib components for the openjdk package.
 Group: Libraries
+Requires: openjdk-license = %{version}-%{release}
 
 %description lib
 lib components for the openjdk package.
+
+
+%package license
+Summary: license components for the openjdk package.
+Group: Default
+
+%description license
+license components for the openjdk package.
 
 
 %prep
@@ -104,7 +116,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1571678626
+export SOURCE_DATE_EPOCH=1571764205
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
@@ -118,8 +130,24 @@ make  all WARNINGS_ARE_ERRORS=
 
 
 %install
-export SOURCE_DATE_EPOCH=1571678626
+export SOURCE_DATE_EPOCH=1571764205
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/package-licenses/openjdk
+cp %{_builddir}/jdk8u232-ga/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u232-ga/corba/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u232-ga/hotspot/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u232-ga/jaxp/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u232-ga/jaxp/src/org/xml/sax/COPYING %{buildroot}/usr/share/package-licenses/openjdk/e674a11d8f800d2568232d051ac9274d0638a299
+cp %{_builddir}/jdk8u232-ga/jaxp/src/org/xml/sax/COPYING.txt %{buildroot}/usr/share/package-licenses/openjdk/c8e72cbeba70e2de46ca307addc1da52149c6c85
+cp %{_builddir}/jdk8u232-ga/jaxws/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u232-ga/jdk/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u232-ga/jdk/src/share/classes/sun/util/cldr/resources/21_0_1/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/d2093a18ed301fea277d599c3df73f685a990c0d
+cp %{_builddir}/jdk8u232-ga/jdk/src/share/native/sun/awt/giflib/COPYING %{buildroot}/usr/share/package-licenses/openjdk/f9c9a2d3495a0766b4cf20d4b90cfe714dab3dc1
+cp %{_builddir}/jdk8u232-ga/jdk/src/share/native/sun/awt/libpng/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/fc3951ba26fe1914759f605696a1d23e3b41766f
+cp %{_builddir}/jdk8u232-ga/jdk/src/solaris/native/sun/security/smartcardio/MUSCLE/COPYING %{buildroot}/usr/share/package-licenses/openjdk/12f0c48a0be5fb271ccd2f1de671e747c511166f
+cp %{_builddir}/jdk8u232-ga/jdk/test/javax/xml/ws/xsanymixed/CopyingResponse.java %{buildroot}/usr/share/package-licenses/openjdk/1bd65fcbcbf5097aa51a0ce8b58e2a8215d84d50
+cp %{_builddir}/jdk8u232-ga/langtools/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u232-ga/nashorn/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
 %make_install
 ## install_append content
 rm -rf %{buildroot}/usr/lib/bin
@@ -930,3 +958,14 @@ ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/xjc %{buildroot}/usr/bin/xjc
 /usr/lib/jvm/java-1.8.0-openjdk/lib/amd64/jli/libjli.so
 /usr/lib/jvm/java-1.8.0-openjdk/lib/amd64/libjawt.so
 /usr/lib64/libjli.so
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/openjdk/12f0c48a0be5fb271ccd2f1de671e747c511166f
+/usr/share/package-licenses/openjdk/1bd65fcbcbf5097aa51a0ce8b58e2a8215d84d50
+/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+/usr/share/package-licenses/openjdk/c8e72cbeba70e2de46ca307addc1da52149c6c85
+/usr/share/package-licenses/openjdk/d2093a18ed301fea277d599c3df73f685a990c0d
+/usr/share/package-licenses/openjdk/e674a11d8f800d2568232d051ac9274d0638a299
+/usr/share/package-licenses/openjdk/f9c9a2d3495a0766b4cf20d4b90cfe714dab3dc1
+/usr/share/package-licenses/openjdk/fc3951ba26fe1914759f605696a1d23e3b41766f
