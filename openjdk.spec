@@ -7,16 +7,16 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 8u.232
-Release  : 55
+Release  : 56
 URL      : https://openjdk-sources.osci.io/openjdk8/openjdk8u232-ga.tar.xz
 Source0  : https://openjdk-sources.osci.io/openjdk8/openjdk8u232-ga.tar.xz
 Source1 : https://openjdk-sources.osci.io/openjdk8/openjdk8u232-ga.tar.xz.sig
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause GPL-2.0 ICU Libpng MIT SAX-PD
-Requires: openjdk-bin = %{version}-%{release}
 Requires: openjdk-lib = %{version}-%{release}
 Requires: openjdk-license = %{version}-%{release}
+Requires: usrbinjava
 BuildRequires : alsa-lib-dev
 BuildRequires : apache-ant
 BuildRequires : buildreq-mvn
@@ -35,6 +35,7 @@ BuildRequires : libXtst-dev
 BuildRequires : libjpeg-turbo-dev
 BuildRequires : openjdk
 BuildRequires : openjdk-dev
+BuildRequires : util-linux
 BuildRequires : zip
 Patch1: disable-doclint-by-default.patch
 Patch2: build.patch
@@ -47,20 +48,10 @@ repository. A full OpenJDK repository set (forest) should also include
 the following 6 nested repositories:
 "jdk", "hotspot", "langtools", "corba", "jaxws"  and "jaxp".
 
-%package bin
-Summary: bin components for the openjdk package.
-Group: Binaries
-Requires: openjdk-license = %{version}-%{release}
-
-%description bin
-bin components for the openjdk package.
-
-
 %package dev
 Summary: dev components for the openjdk package.
 Group: Development
 Requires: openjdk-lib = %{version}-%{release}
-Requires: openjdk-bin = %{version}-%{release}
 Provides: openjdk-devel = %{version}-%{release}
 Requires: openjdk = %{version}-%{release}
 
@@ -87,6 +78,7 @@ license components for the openjdk package.
 
 %prep
 %setup -q -n jdk8u232-ga
+cd %{_builddir}/jdk8u232-ga
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
@@ -116,7 +108,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1571764205
+export SOURCE_DATE_EPOCH=1573059338
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
@@ -130,7 +122,7 @@ make  all WARNINGS_ARE_ERRORS=
 
 
 %install
-export SOURCE_DATE_EPOCH=1571764205
+export SOURCE_DATE_EPOCH=1573059338
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/openjdk
 cp %{_builddir}/jdk8u232-ga/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
@@ -156,50 +148,6 @@ mv openjdk-1.8.0-u232 java-1.8.0-openjdk
 popd
 rm -f %{buildroot}/usr/lib/jvm/java-1.8.0-openjdk/jre/lib/security/cacerts
 ln -s /var/cache/ca-certs/compat/ca-roots.keystore %{buildroot}/usr/lib/jvm/java-1.8.0-openjdk/jre/lib/security/cacerts
-mkdir -p %{buildroot}/usr/lib64
-ln -s  /usr/lib/jvm/java-1.8.0-openjdk/jre/lib/amd64/jli/libjli.so %{buildroot}/usr/lib64/libjli.so
-mkdir -p %{buildroot}/usr/bin
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/java %{buildroot}/usr/bin/java
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jjs %{buildroot}/usr/bin/jjs
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/keytool %{buildroot}/usr/bin/keytool
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/orbd %{buildroot}/usr/bin/orbd
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/pack200 %{buildroot}/usr/bin/pack200
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/policytool %{buildroot}/usr/bin/policytool
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/rmid %{buildroot}/usr/bin/rmid
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/rmiregistry %{buildroot}/usr/bin/rmiregistry
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/servertool %{buildroot}/usr/bin/servertool
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/tnameserv %{buildroot}/usr/bin/tnameserv
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/unpack200 %{buildroot}/usr/bin/unpack200
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/appletviewer %{buildroot}/usr/bin/appletviewer
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/extcheck %{buildroot}/usr/bin/extcheck
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/idlj %{buildroot}/usr/bin/idlj
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jar %{buildroot}/usr/bin/jar
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jarsigner %{buildroot}/usr/bin/jarsigner
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/java-rmi.cgi %{buildroot}/usr/bin/java-rmi.cgi
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/javac %{buildroot}/usr/bin/javac
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/javadoc %{buildroot}/usr/bin/javadoc
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/javah %{buildroot}/usr/bin/javah
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/javap %{buildroot}/usr/bin/javap
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jcmd %{buildroot}/usr/bin/jcmd
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jconsole %{buildroot}/usr/bin/jconsole
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jdb %{buildroot}/usr/bin/jdb
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jdeps %{buildroot}/usr/bin/jdeps
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jhat %{buildroot}/usr/bin/jhat
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jinfo %{buildroot}/usr/bin/jinfo
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jmap %{buildroot}/usr/bin/jmap
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jps %{buildroot}/usr/bin/jps
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jrunscript %{buildroot}/usr/bin/jrunscript
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jsadebugd %{buildroot}/usr/bin/jsadebugd
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jstack %{buildroot}/usr/bin/jstack
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jstat %{buildroot}/usr/bin/jstat
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/jstatd %{buildroot}/usr/bin/jstatd
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/native2ascii %{buildroot}/usr/bin/native2ascii
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/rmic %{buildroot}/usr/bin/rmic
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/schemagen %{buildroot}/usr/bin/schemagen
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/serialver %{buildroot}/usr/bin/serialver
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/wsgen %{buildroot}/usr/bin/wsgen
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/wsimport %{buildroot}/usr/bin/wsimport
-ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/xjc %{buildroot}/usr/bin/xjc
 ## install_append end
 
 %files
@@ -852,50 +800,6 @@ ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/xjc %{buildroot}/usr/bin/xjc
 /usr/lib/jvm/java-1.8.0-openjdk/sample/try-with-resources/src/ZipCat.java
 /usr/lib/jvm/java-1.8.0-openjdk/src.zip
 
-%files bin
-%defattr(-,root,root,-)
-/usr/bin/appletviewer
-/usr/bin/extcheck
-/usr/bin/idlj
-/usr/bin/jar
-/usr/bin/jarsigner
-/usr/bin/java
-/usr/bin/java-rmi.cgi
-/usr/bin/javac
-/usr/bin/javadoc
-/usr/bin/javah
-/usr/bin/javap
-/usr/bin/jcmd
-/usr/bin/jconsole
-/usr/bin/jdb
-/usr/bin/jdeps
-/usr/bin/jhat
-/usr/bin/jinfo
-/usr/bin/jjs
-/usr/bin/jmap
-/usr/bin/jps
-/usr/bin/jrunscript
-/usr/bin/jsadebugd
-/usr/bin/jstack
-/usr/bin/jstat
-/usr/bin/jstatd
-/usr/bin/keytool
-/usr/bin/native2ascii
-/usr/bin/orbd
-/usr/bin/pack200
-/usr/bin/policytool
-/usr/bin/rmic
-/usr/bin/rmid
-/usr/bin/rmiregistry
-/usr/bin/schemagen
-/usr/bin/serialver
-/usr/bin/servertool
-/usr/bin/tnameserv
-/usr/bin/unpack200
-/usr/bin/wsgen
-/usr/bin/wsimport
-/usr/bin/xjc
-
 %files dev
 %defattr(-,root,root,-)
 /usr/lib/jvm/java-1.8.0-openjdk/include/classfile_constants.h
@@ -957,7 +861,6 @@ ln -s /usr/lib/jvm/java-1.8.0-openjdk/bin/xjc %{buildroot}/usr/bin/xjc
 /usr/lib/jvm/java-1.8.0-openjdk/jre/lib/amd64/server/libjvm.so
 /usr/lib/jvm/java-1.8.0-openjdk/lib/amd64/jli/libjli.so
 /usr/lib/jvm/java-1.8.0-openjdk/lib/amd64/libjawt.so
-/usr/lib64/libjli.so
 
 %files license
 %defattr(0644,root,root,0755)
