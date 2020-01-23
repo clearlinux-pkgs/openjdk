@@ -7,10 +7,10 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 8u.232
-Release  : 56
+Release  : 57
 URL      : https://openjdk-sources.osci.io/openjdk8/openjdk8u232-ga.tar.xz
 Source0  : https://openjdk-sources.osci.io/openjdk8/openjdk8u232-ga.tar.xz
-Source1 : https://openjdk-sources.osci.io/openjdk8/openjdk8u232-ga.tar.xz.sig
+Source1  : https://openjdk-sources.osci.io/openjdk8/openjdk8u232-ga.tar.xz.sig
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause GPL-2.0 ICU Libpng MIT SAX-PD
@@ -35,6 +35,7 @@ BuildRequires : libXtst-dev
 BuildRequires : libjpeg-turbo-dev
 BuildRequires : openjdk
 BuildRequires : openjdk-dev
+BuildRequires : usrbinjava
 BuildRequires : util-linux
 BuildRequires : zip
 Patch1: disable-doclint-by-default.patch
@@ -108,7 +109,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1573059338
+export SOURCE_DATE_EPOCH=1579813356
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
@@ -122,7 +123,7 @@ make  all WARNINGS_ARE_ERRORS=
 
 
 %install
-export SOURCE_DATE_EPOCH=1573059338
+export SOURCE_DATE_EPOCH=1579813356
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/openjdk
 cp %{_builddir}/jdk8u232-ga/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
@@ -142,10 +143,16 @@ cp %{_builddir}/jdk8u232-ga/langtools/LICENSE %{buildroot}/usr/share/package-lic
 cp %{_builddir}/jdk8u232-ga/nashorn/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
 %make_install
 ## install_append content
+# Remove all the binaries installed in /usr/lib/bin. All of them are
+# symlinks and will be created later
 rm -rf %{buildroot}/usr/lib/bin
+
+# Change the directory name
 pushd %{buildroot}/usr/lib/jvm
 mv openjdk-1.8.0-u232 java-1.8.0-openjdk
 popd
+
+# Remove the copied keystore and link it to the runtime store
 rm -f %{buildroot}/usr/lib/jvm/java-1.8.0-openjdk/jre/lib/security/cacerts
 ln -s /var/cache/ca-certs/compat/ca-roots.keystore %{buildroot}/usr/lib/jvm/java-1.8.0-openjdk/jre/lib/security/cacerts
 ## install_append end

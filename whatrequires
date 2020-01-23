@@ -5,7 +5,9 @@ apache-ant
 apache-flink
 apache-maven
 apache-tomcat
+automake
 cassandra
+compat-opencv-soname41
 libreoffice
 octave
 opencv
