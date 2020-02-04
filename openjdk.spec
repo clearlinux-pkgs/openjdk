@@ -7,10 +7,10 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 8u.232
-Release  : 57
-URL      : https://openjdk-sources.osci.io/openjdk8/openjdk8u232-ga.tar.xz
-Source0  : https://openjdk-sources.osci.io/openjdk8/openjdk8u232-ga.tar.xz
-Source1  : https://openjdk-sources.osci.io/openjdk8/openjdk8u232-ga.tar.xz.sig
+Release  : 58
+URL      : https://openjdk-sources.osci.io/openjdk8/openjdk8u242-ga.tar.xz
+Source0  : https://openjdk-sources.osci.io/openjdk8/openjdk8u242-ga.tar.xz
+Source1  : https://openjdk-sources.osci.io/openjdk8/openjdk8u242-ga.tar.xz.sig
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause GPL-2.0 ICU Libpng MIT SAX-PD
@@ -78,8 +78,8 @@ license components for the openjdk package.
 
 
 %prep
-%setup -q -n jdk8u232-ga
-cd %{_builddir}/jdk8u232-ga
+%setup -q -n jdk8u242-ga
+cd %{_builddir}/jdk8u242-ga
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
@@ -109,7 +109,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1579813356
+export SOURCE_DATE_EPOCH=1580846165
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
@@ -123,24 +123,24 @@ make  all WARNINGS_ARE_ERRORS=
 
 
 %install
-export SOURCE_DATE_EPOCH=1579813356
+export SOURCE_DATE_EPOCH=1580846165
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/openjdk
-cp %{_builddir}/jdk8u232-ga/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/jdk8u232-ga/corba/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/jdk8u232-ga/hotspot/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/jdk8u232-ga/jaxp/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/jdk8u232-ga/jaxp/src/org/xml/sax/COPYING %{buildroot}/usr/share/package-licenses/openjdk/e674a11d8f800d2568232d051ac9274d0638a299
-cp %{_builddir}/jdk8u232-ga/jaxp/src/org/xml/sax/COPYING.txt %{buildroot}/usr/share/package-licenses/openjdk/c8e72cbeba70e2de46ca307addc1da52149c6c85
-cp %{_builddir}/jdk8u232-ga/jaxws/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/jdk8u232-ga/jdk/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/jdk8u232-ga/jdk/src/share/classes/sun/util/cldr/resources/21_0_1/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/d2093a18ed301fea277d599c3df73f685a990c0d
-cp %{_builddir}/jdk8u232-ga/jdk/src/share/native/sun/awt/giflib/COPYING %{buildroot}/usr/share/package-licenses/openjdk/f9c9a2d3495a0766b4cf20d4b90cfe714dab3dc1
-cp %{_builddir}/jdk8u232-ga/jdk/src/share/native/sun/awt/libpng/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/fc3951ba26fe1914759f605696a1d23e3b41766f
-cp %{_builddir}/jdk8u232-ga/jdk/src/solaris/native/sun/security/smartcardio/MUSCLE/COPYING %{buildroot}/usr/share/package-licenses/openjdk/12f0c48a0be5fb271ccd2f1de671e747c511166f
-cp %{_builddir}/jdk8u232-ga/jdk/test/javax/xml/ws/xsanymixed/CopyingResponse.java %{buildroot}/usr/share/package-licenses/openjdk/1bd65fcbcbf5097aa51a0ce8b58e2a8215d84d50
-cp %{_builddir}/jdk8u232-ga/langtools/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/jdk8u232-ga/nashorn/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u242-ga/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u242-ga/corba/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u242-ga/hotspot/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u242-ga/jaxp/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u242-ga/jaxp/src/org/xml/sax/COPYING %{buildroot}/usr/share/package-licenses/openjdk/e674a11d8f800d2568232d051ac9274d0638a299
+cp %{_builddir}/jdk8u242-ga/jaxp/src/org/xml/sax/COPYING.txt %{buildroot}/usr/share/package-licenses/openjdk/c8e72cbeba70e2de46ca307addc1da52149c6c85
+cp %{_builddir}/jdk8u242-ga/jaxws/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u242-ga/jdk/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u242-ga/jdk/src/share/classes/sun/util/cldr/resources/21_0_1/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/d2093a18ed301fea277d599c3df73f685a990c0d
+cp %{_builddir}/jdk8u242-ga/jdk/src/share/native/sun/awt/giflib/COPYING %{buildroot}/usr/share/package-licenses/openjdk/f9c9a2d3495a0766b4cf20d4b90cfe714dab3dc1
+cp %{_builddir}/jdk8u242-ga/jdk/src/share/native/sun/awt/libpng/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/fc3951ba26fe1914759f605696a1d23e3b41766f
+cp %{_builddir}/jdk8u242-ga/jdk/src/solaris/native/sun/security/smartcardio/MUSCLE/COPYING %{buildroot}/usr/share/package-licenses/openjdk/12f0c48a0be5fb271ccd2f1de671e747c511166f
+cp %{_builddir}/jdk8u242-ga/jdk/test/javax/xml/ws/xsanymixed/CopyingResponse.java %{buildroot}/usr/share/package-licenses/openjdk/1bd65fcbcbf5097aa51a0ce8b58e2a8215d84d50
+cp %{_builddir}/jdk8u242-ga/langtools/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u242-ga/nashorn/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
 %make_install
 ## install_append content
 # Remove all the binaries installed in /usr/lib/bin. All of them are
