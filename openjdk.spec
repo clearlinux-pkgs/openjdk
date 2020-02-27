@@ -7,7 +7,7 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 8u.232
-Release  : 58
+Release  : 59
 URL      : https://openjdk-sources.osci.io/openjdk8/openjdk8u242-ga.tar.xz
 Source0  : https://openjdk-sources.osci.io/openjdk8/openjdk8u242-ga.tar.xz
 Source1  : https://openjdk-sources.osci.io/openjdk8/openjdk8u242-ga.tar.xz.sig
@@ -19,7 +19,6 @@ Requires: openjdk-license = %{version}-%{release}
 Requires: usrbinjava
 BuildRequires : alsa-lib-dev
 BuildRequires : apache-ant
-BuildRequires : buildreq-mvn
 BuildRequires : ca-certs
 BuildRequires : ccache
 BuildRequires : cups-dev
@@ -109,7 +108,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1580846165
+export SOURCE_DATE_EPOCH=1582843747
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
@@ -123,7 +122,7 @@ make  all WARNINGS_ARE_ERRORS=
 
 
 %install
-export SOURCE_DATE_EPOCH=1580846165
+export SOURCE_DATE_EPOCH=1582843747
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/openjdk
 cp %{_builddir}/jdk8u242-ga/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f

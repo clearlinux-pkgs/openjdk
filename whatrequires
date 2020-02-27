@@ -9,7 +9,6 @@ automake
 cassandra
 compat-opencv-soname41
 libreoffice
-octave
 opencv
 openjdk
 rabbitmq-java-client
