@@ -6,8 +6,8 @@
 #
 %define keepstatic 1
 Name     : openjdk
-Version  : 8u.232
-Release  : 59
+Version  : 8u.242
+Release  : 60
 URL      : https://openjdk-sources.osci.io/openjdk8/openjdk8u242-ga.tar.xz
 Source0  : https://openjdk-sources.osci.io/openjdk8/openjdk8u242-ga.tar.xz
 Source1  : https://openjdk-sources.osci.io/openjdk8/openjdk8u242-ga.tar.xz.sig
@@ -100,7 +100,7 @@ bash configure \
 --enable-unlimited-crypto \
 --with-cacerts-file=%{_builddir}/trust-store/compat/ca-roots.keystore \
 --prefix=%{buildroot}/usr/lib \
---with-milestone="u232" \
+--with-milestone="u242" \
 --with-user-release-suffix="ga"
 pushd build/linux-x86_64-normal-server-release/
 ## build_prepend end
@@ -148,7 +148,7 @@ rm -rf %{buildroot}/usr/lib/bin
 
 # Change the directory name
 pushd %{buildroot}/usr/lib/jvm
-mv openjdk-1.8.0-u232 java-1.8.0-openjdk
+mv openjdk-1.8.0-u242 java-1.8.0-openjdk
 popd
 
 # Remove the copied keystore and link it to the runtime store
