@@ -4,7 +4,7 @@ rm -rf %{buildroot}/usr/lib/bin
 
 # Change the directory name
 pushd %{buildroot}/usr/lib/jvm
-mv openjdk-1.8.0-u232 java-1.8.0-openjdk
+mv openjdk-1.8.0-u252 java-1.8.0-openjdk
 popd
 
 # Remove the copied keystore and link it to the runtime store

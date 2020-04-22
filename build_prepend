@@ -12,6 +12,6 @@ bash configure \
 --enable-unlimited-crypto \
 --with-cacerts-file=%{_builddir}/trust-store/compat/ca-roots.keystore \
 --prefix=%{buildroot}/usr/lib \
---with-milestone="u232" \
+--with-milestone="u252" \
 --with-user-release-suffix="ga"
 pushd build/linux-x86_64-normal-server-release/

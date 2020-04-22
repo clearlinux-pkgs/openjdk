@@ -7,7 +7,7 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 8u.252
-Release  : 61
+Release  : 62
 URL      : https://openjdk-sources.osci.io/openjdk8/openjdk8u252-ga.tar.xz
 Source0  : https://openjdk-sources.osci.io/openjdk8/openjdk8u252-ga.tar.xz
 Source1  : https://openjdk-sources.osci.io/openjdk8/openjdk8u252-ga.tar.xz.sig
@@ -99,7 +99,7 @@ bash configure \
 --enable-unlimited-crypto \
 --with-cacerts-file=%{_builddir}/trust-store/compat/ca-roots.keystore \
 --prefix=%{buildroot}/usr/lib \
---with-milestone="u232" \
+--with-milestone="u252" \
 --with-user-release-suffix="ga"
 pushd build/linux-x86_64-normal-server-release/
 ## build_prepend end
@@ -107,7 +107,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1587492504
+export SOURCE_DATE_EPOCH=1587573850
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
@@ -121,7 +121,7 @@ make  all WARNINGS_ARE_ERRORS=
 
 
 %install
-export SOURCE_DATE_EPOCH=1587492504
+export SOURCE_DATE_EPOCH=1587573850
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/openjdk
 cp %{_builddir}/jdk8u252-ga/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
@@ -147,7 +147,7 @@ rm -rf %{buildroot}/usr/lib/bin
 
 # Change the directory name
 pushd %{buildroot}/usr/lib/jvm
-mv openjdk-1.8.0-u232 java-1.8.0-openjdk
+mv openjdk-1.8.0-u252 java-1.8.0-openjdk
 popd
 
 # Remove the copied keystore and link it to the runtime store
