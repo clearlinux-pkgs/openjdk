@@ -7,7 +7,7 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 8u.272
-Release  : 63
+Release  : 64
 URL      : https://openjdk-sources.osci.io/openjdk8/openjdk8u272-ga.tar.xz
 Source0  : https://openjdk-sources.osci.io/openjdk8/openjdk8u272-ga.tar.xz
 Source1  : https://openjdk-sources.osci.io/openjdk8/openjdk8u272-ga.tar.xz.sig
@@ -40,6 +40,7 @@ Patch1: disable-doclint-by-default.patch
 Patch2: build.patch
 Patch3: dizstore.patch
 Patch4: add_adlc_pthread_lib.patch
+Patch5: CVE-2020-14152.patch
 
 %description
 This file should be located at the top of the OpenJDK Mercurial root
@@ -82,6 +83,7 @@ cd %{_builddir}/jdk8u272-ga
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 %build
 ## build_prepend content
@@ -107,21 +109,21 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1603390093
+export SOURCE_DATE_EPOCH=1603409143
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
-export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -mzero-caller-saved-regs=used "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -mzero-caller-saved-regs=used "
 make  all WARNINGS_ARE_ERRORS=
 
 
 %install
-export SOURCE_DATE_EPOCH=1603390093
+export SOURCE_DATE_EPOCH=1603409143
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/openjdk
 cp %{_builddir}/jdk8u272-ga/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
