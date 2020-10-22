@@ -6,11 +6,11 @@
 #
 %define keepstatic 1
 Name     : openjdk
-Version  : 8u.252
-Release  : 62
-URL      : https://openjdk-sources.osci.io/openjdk8/openjdk8u252-ga.tar.xz
-Source0  : https://openjdk-sources.osci.io/openjdk8/openjdk8u252-ga.tar.xz
-Source1  : https://openjdk-sources.osci.io/openjdk8/openjdk8u252-ga.tar.xz.sig
+Version  : 8u.272
+Release  : 63
+URL      : https://openjdk-sources.osci.io/openjdk8/openjdk8u272-ga.tar.xz
+Source0  : https://openjdk-sources.osci.io/openjdk8/openjdk8u272-ga.tar.xz
+Source1  : https://openjdk-sources.osci.io/openjdk8/openjdk8u272-ga.tar.xz.sig
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause GPL-2.0 ICU Libpng MIT SAX-PD
@@ -76,8 +76,8 @@ license components for the openjdk package.
 
 
 %prep
-%setup -q -n jdk8u252-ga
-cd %{_builddir}/jdk8u252-ga
+%setup -q -n jdk8u272-ga
+cd %{_builddir}/jdk8u272-ga
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
@@ -107,7 +107,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1587573850
+export SOURCE_DATE_EPOCH=1603390093
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
@@ -121,24 +121,24 @@ make  all WARNINGS_ARE_ERRORS=
 
 
 %install
-export SOURCE_DATE_EPOCH=1587573850
+export SOURCE_DATE_EPOCH=1603390093
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/openjdk
-cp %{_builddir}/jdk8u252-ga/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/jdk8u252-ga/corba/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/jdk8u252-ga/hotspot/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/jdk8u252-ga/jaxp/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/jdk8u252-ga/jaxp/src/org/xml/sax/COPYING %{buildroot}/usr/share/package-licenses/openjdk/e674a11d8f800d2568232d051ac9274d0638a299
-cp %{_builddir}/jdk8u252-ga/jaxp/src/org/xml/sax/COPYING.txt %{buildroot}/usr/share/package-licenses/openjdk/c8e72cbeba70e2de46ca307addc1da52149c6c85
-cp %{_builddir}/jdk8u252-ga/jaxws/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/jdk8u252-ga/jdk/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/jdk8u252-ga/jdk/src/share/classes/sun/util/cldr/resources/21_0_1/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/d2093a18ed301fea277d599c3df73f685a990c0d
-cp %{_builddir}/jdk8u252-ga/jdk/src/share/native/sun/awt/giflib/COPYING %{buildroot}/usr/share/package-licenses/openjdk/f9c9a2d3495a0766b4cf20d4b90cfe714dab3dc1
-cp %{_builddir}/jdk8u252-ga/jdk/src/share/native/sun/awt/libpng/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/fc3951ba26fe1914759f605696a1d23e3b41766f
-cp %{_builddir}/jdk8u252-ga/jdk/src/solaris/native/sun/security/smartcardio/MUSCLE/COPYING %{buildroot}/usr/share/package-licenses/openjdk/12f0c48a0be5fb271ccd2f1de671e747c511166f
-cp %{_builddir}/jdk8u252-ga/jdk/test/javax/xml/ws/xsanymixed/CopyingResponse.java %{buildroot}/usr/share/package-licenses/openjdk/1bd65fcbcbf5097aa51a0ce8b58e2a8215d84d50
-cp %{_builddir}/jdk8u252-ga/langtools/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/jdk8u252-ga/nashorn/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u272-ga/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u272-ga/corba/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u272-ga/hotspot/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u272-ga/jaxp/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u272-ga/jaxp/src/org/xml/sax/COPYING %{buildroot}/usr/share/package-licenses/openjdk/e674a11d8f800d2568232d051ac9274d0638a299
+cp %{_builddir}/jdk8u272-ga/jaxp/src/org/xml/sax/COPYING.txt %{buildroot}/usr/share/package-licenses/openjdk/c8e72cbeba70e2de46ca307addc1da52149c6c85
+cp %{_builddir}/jdk8u272-ga/jaxws/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u272-ga/jdk/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u272-ga/jdk/src/share/classes/sun/util/cldr/resources/21_0_1/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/d2093a18ed301fea277d599c3df73f685a990c0d
+cp %{_builddir}/jdk8u272-ga/jdk/src/share/native/sun/awt/giflib/COPYING %{buildroot}/usr/share/package-licenses/openjdk/f9c9a2d3495a0766b4cf20d4b90cfe714dab3dc1
+cp %{_builddir}/jdk8u272-ga/jdk/src/share/native/sun/awt/libpng/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/fc3951ba26fe1914759f605696a1d23e3b41766f
+cp %{_builddir}/jdk8u272-ga/jdk/src/solaris/native/sun/security/smartcardio/MUSCLE/COPYING %{buildroot}/usr/share/package-licenses/openjdk/12f0c48a0be5fb271ccd2f1de671e747c511166f
+cp %{_builddir}/jdk8u272-ga/jdk/test/javax/xml/ws/xsanymixed/CopyingResponse.java %{buildroot}/usr/share/package-licenses/openjdk/1bd65fcbcbf5097aa51a0ce8b58e2a8215d84d50
+cp %{_builddir}/jdk8u272-ga/langtools/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u272-ga/nashorn/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
 %make_install
 ## install_append content
 # Remove all the binaries installed in /usr/lib/bin. All of them are
@@ -177,6 +177,7 @@ ln -s /var/cache/ca-certs/compat/ca-roots.keystore %{buildroot}/usr/lib/jvm/java
 /usr/lib/jvm/java-1.8.0-openjdk/bin/jconsole
 /usr/lib/jvm/java-1.8.0-openjdk/bin/jdb
 /usr/lib/jvm/java-1.8.0-openjdk/bin/jdeps
+/usr/lib/jvm/java-1.8.0-openjdk/bin/jfr
 /usr/lib/jvm/java-1.8.0-openjdk/bin/jhat
 /usr/lib/jvm/java-1.8.0-openjdk/bin/jinfo
 /usr/lib/jvm/java-1.8.0-openjdk/bin/jjs
@@ -544,6 +545,9 @@ ln -s /var/cache/ca-certs/compat/ca-roots.keystore %{buildroot}/usr/lib/jvm/java
 /usr/lib/jvm/java-1.8.0-openjdk/jre/lib/jce.jar
 /usr/lib/jvm/java-1.8.0-openjdk/jre/lib/jexec
 /usr/lib/jvm/java-1.8.0-openjdk/jre/lib/jexec.diz
+/usr/lib/jvm/java-1.8.0-openjdk/jre/lib/jfr.jar
+/usr/lib/jvm/java-1.8.0-openjdk/jre/lib/jfr/default.jfc
+/usr/lib/jvm/java-1.8.0-openjdk/jre/lib/jfr/profile.jfc
 /usr/lib/jvm/java-1.8.0-openjdk/jre/lib/jsse.jar
 /usr/lib/jvm/java-1.8.0-openjdk/jre/lib/jvm.hprof.txt
 /usr/lib/jvm/java-1.8.0-openjdk/jre/lib/logging.properties
