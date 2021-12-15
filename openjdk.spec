@@ -6,11 +6,11 @@
 #
 %define keepstatic 1
 Name     : openjdk
-Version  : 8u.272
+Version  : 8u.312
 Release  : 65
-URL      : https://openjdk-sources.osci.io/openjdk8/openjdk8u272-ga.tar.xz
-Source0  : https://openjdk-sources.osci.io/openjdk8/openjdk8u272-ga.tar.xz
-Source1  : https://openjdk-sources.osci.io/openjdk8/openjdk8u272-ga.tar.xz.sig
+URL      : https://openjdk-sources.osci.io/openjdk8/openjdk8u312-ga.tar.xz
+Source0  : https://openjdk-sources.osci.io/openjdk8/openjdk8u312-ga.tar.xz
+Source1  : https://openjdk-sources.osci.io/openjdk8/openjdk8u312-ga.tar.xz.sig
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause GPL-2.0 ICU Libpng MIT SAX-PD
@@ -77,11 +77,11 @@ license components for the openjdk package.
 
 
 %prep
-%setup -q -n jdk8u272-ga
-cd %{_builddir}/jdk8u272-ga
+%setup -q -n jdk8u312-ga
+cd %{_builddir}/jdk8u312-ga
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
+#%patch3 -p1
 %patch4 -p1
 %patch5 -p1
 
@@ -126,21 +126,21 @@ make  all WARNINGS_ARE_ERRORS=
 export SOURCE_DATE_EPOCH=1603409143
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/openjdk
-cp %{_builddir}/jdk8u272-ga/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/jdk8u272-ga/corba/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/jdk8u272-ga/hotspot/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/jdk8u272-ga/jaxp/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/jdk8u272-ga/jaxp/src/org/xml/sax/COPYING %{buildroot}/usr/share/package-licenses/openjdk/e674a11d8f800d2568232d051ac9274d0638a299
-cp %{_builddir}/jdk8u272-ga/jaxp/src/org/xml/sax/COPYING.txt %{buildroot}/usr/share/package-licenses/openjdk/c8e72cbeba70e2de46ca307addc1da52149c6c85
-cp %{_builddir}/jdk8u272-ga/jaxws/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/jdk8u272-ga/jdk/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/jdk8u272-ga/jdk/src/share/classes/sun/util/cldr/resources/21_0_1/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/d2093a18ed301fea277d599c3df73f685a990c0d
-cp %{_builddir}/jdk8u272-ga/jdk/src/share/native/sun/awt/giflib/COPYING %{buildroot}/usr/share/package-licenses/openjdk/f9c9a2d3495a0766b4cf20d4b90cfe714dab3dc1
-cp %{_builddir}/jdk8u272-ga/jdk/src/share/native/sun/awt/libpng/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/fc3951ba26fe1914759f605696a1d23e3b41766f
-cp %{_builddir}/jdk8u272-ga/jdk/src/solaris/native/sun/security/smartcardio/MUSCLE/COPYING %{buildroot}/usr/share/package-licenses/openjdk/12f0c48a0be5fb271ccd2f1de671e747c511166f
-cp %{_builddir}/jdk8u272-ga/jdk/test/javax/xml/ws/xsanymixed/CopyingResponse.java %{buildroot}/usr/share/package-licenses/openjdk/1bd65fcbcbf5097aa51a0ce8b58e2a8215d84d50
-cp %{_builddir}/jdk8u272-ga/langtools/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/jdk8u272-ga/nashorn/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u312-ga/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u312-ga/corba/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u312-ga/hotspot/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u312-ga/jaxp/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u312-ga/jaxp/src/org/xml/sax/COPYING %{buildroot}/usr/share/package-licenses/openjdk/e674a11d8f800d2568232d051ac9274d0638a299
+cp %{_builddir}/jdk8u312-ga/jaxp/src/org/xml/sax/COPYING.txt %{buildroot}/usr/share/package-licenses/openjdk/c8e72cbeba70e2de46ca307addc1da52149c6c85
+cp %{_builddir}/jdk8u312-ga/jaxws/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u312-ga/jdk/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u312-ga/jdk/src/share/classes/sun/util/cldr/resources/21_0_1/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/d2093a18ed301fea277d599c3df73f685a990c0d
+cp %{_builddir}/jdk8u312-ga/jdk/src/share/native/sun/awt/giflib/COPYING %{buildroot}/usr/share/package-licenses/openjdk/f9c9a2d3495a0766b4cf20d4b90cfe714dab3dc1
+cp %{_builddir}/jdk8u312-ga/jdk/src/share/native/sun/awt/libpng/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/fc3951ba26fe1914759f605696a1d23e3b41766f
+cp %{_builddir}/jdk8u312-ga/jdk/src/solaris/native/sun/security/smartcardio/MUSCLE/COPYING %{buildroot}/usr/share/package-licenses/openjdk/12f0c48a0be5fb271ccd2f1de671e747c511166f
+cp %{_builddir}/jdk8u312-ga/jdk/test/javax/xml/ws/xsanymixed/CopyingResponse.java %{buildroot}/usr/share/package-licenses/openjdk/1bd65fcbcbf5097aa51a0ce8b58e2a8215d84d50
+cp %{_builddir}/jdk8u312-ga/langtools/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/jdk8u312-ga/nashorn/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
 %make_install
 ## install_append content
 # Remove all the binaries installed in /usr/lib/bin. All of them are
@@ -810,6 +810,61 @@ ln -s /var/cache/ca-certs/compat/ca-roots.keystore %{buildroot}/usr/lib/jvm/java
 /usr/lib/jvm/java-1.8.0-openjdk/sample/try-with-resources/src/Unzip.java
 /usr/lib/jvm/java-1.8.0-openjdk/sample/try-with-resources/src/ZipCat.java
 /usr/lib/jvm/java-1.8.0-openjdk/src.zip
+ /usr/lib/jvm/java-1.8.0-openjdk/bin/appletviewer.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/clhsdb.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/extcheck.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/hsdb.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/idlj.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/jar.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/jarsigner.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/java.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/javac.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/javadoc.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/javah.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/javap.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/jcmd.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/jconsole.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/jdb.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/jdeps.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/jfr.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/jhat.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/jinfo.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/jjs.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/jmap.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/jps.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/jrunscript.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/jsadebugd.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/jstack.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/jstat.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/jstatd.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/keytool.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/native2ascii.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/orbd.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/pack200.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/policytool.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/rmic.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/rmid.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/rmiregistry.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/schemagen.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/serialver.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/servertool.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/tnameserv.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/unpack200.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/wsgen.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/wsimport.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/bin/xjc.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/java.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/jjs.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/keytool.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/orbd.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/pack200.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/policytool.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/rmid.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/rmiregistry.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/servertool.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/tnameserv.diz
+   /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/unpack200.diz
+
 
 %files dev
 %defattr(-,root,root,-)
