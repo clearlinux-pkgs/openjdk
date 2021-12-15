@@ -7,7 +7,7 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 8u.312
-Release  : 68
+Release  : 69
 URL      : https://openjdk-sources.osci.io/openjdk8/openjdk8u312-ga.tar.xz
 Source0  : https://openjdk-sources.osci.io/openjdk8/openjdk8u312-ga.tar.xz
 Source1  : https://openjdk-sources.osci.io/openjdk8/openjdk8u312-ga.tar.xz.sig
