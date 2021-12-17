@@ -1,5 +1,4 @@
 disable-doclint-by-default.patch
 build.patch
-dizstore.patch
 add_adlc_pthread_lib.patch
 CVE-2020-14152.patch

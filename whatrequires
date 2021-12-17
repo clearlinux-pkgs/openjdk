@@ -3,10 +3,6 @@ R-rstudio
 R-rstudio-server
 apache-ant
 bazel
-compat-opencv-soname42
 libreoffice
 opencv
 openjdk
-swig
-tensorflow
-tensorflow-probability

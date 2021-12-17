@@ -6,8 +6,8 @@
 #
 %define keepstatic 1
 Name     : openjdk
-Version  : 8u.312
-Release  : 69
+Version  : 8u.272
+Release  : 70
 URL      : https://openjdk-sources.osci.io/openjdk8/openjdk8u312-ga.tar.xz
 Source0  : https://openjdk-sources.osci.io/openjdk8/openjdk8u312-ga.tar.xz
 Source1  : https://openjdk-sources.osci.io/openjdk8/openjdk8u312-ga.tar.xz.sig
@@ -18,7 +18,6 @@ Requires: openjdk-lib = %{version}-%{release}
 Requires: openjdk-license = %{version}-%{release}
 Requires: usrbinjava
 BuildRequires : alsa-lib-dev
-BuildRequires : apache-ant
 BuildRequires : ca-certs
 BuildRequires : ccache
 BuildRequires : cups-dev
@@ -34,13 +33,11 @@ BuildRequires : libjpeg-turbo-dev
 BuildRequires : openjdk
 BuildRequires : openjdk-dev
 BuildRequires : pkgconfig(fontconfig)
-BuildRequires : usrbinjava
 BuildRequires : zip
 Patch1: disable-doclint-by-default.patch
 Patch2: build.patch
-Patch3: dizstore.patch
-Patch4: add_adlc_pthread_lib.patch
-Patch5: CVE-2020-14152.patch
+Patch3: add_adlc_pthread_lib.patch
+Patch4: CVE-2020-14152.patch
 
 %description
 This file should be located at the top of the OpenJDK Mercurial root
@@ -81,9 +78,8 @@ license components for the openjdk package.
 cd %{_builddir}/jdk8u312-ga
 %patch1 -p1
 %patch2 -p1
-#%patch3 -p1
+%patch3 -p1
 %patch4 -p1
-%patch5 -p1
 
 %build
 ## build_prepend content
@@ -109,21 +105,21 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1603409143
+export SOURCE_DATE_EPOCH=1639771772
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -fzero-call-used-regs=used "
-export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -fzero-call-used-regs=used "
-export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -fzero-call-used-regs=used "
-export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -fzero-call-used-regs=used "
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=auto -fstack-protector-strong -fzero-call-used-regs=used "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto -fstack-protector-strong -fzero-call-used-regs=used "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto -fstack-protector-strong -fzero-call-used-regs=used "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto -fstack-protector-strong -fzero-call-used-regs=used "
 make  all WARNINGS_ARE_ERRORS=
 
 
 %install
-export SOURCE_DATE_EPOCH=1603409143
+export SOURCE_DATE_EPOCH=1639771772
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/openjdk
 cp %{_builddir}/jdk8u312-ga/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
@@ -163,49 +159,92 @@ ln -s /var/cache/ca-certs/compat/ca-roots.keystore %{buildroot}/usr/lib/jvm/java
 /usr/lib/jvm/java-1.8.0-openjdk/LICENSE
 /usr/lib/jvm/java-1.8.0-openjdk/THIRD_PARTY_README
 /usr/lib/jvm/java-1.8.0-openjdk/bin/appletviewer
+/usr/lib/jvm/java-1.8.0-openjdk/bin/appletviewer.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/clhsdb
+/usr/lib/jvm/java-1.8.0-openjdk/bin/clhsdb.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/extcheck
+/usr/lib/jvm/java-1.8.0-openjdk/bin/extcheck.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/hsdb
+/usr/lib/jvm/java-1.8.0-openjdk/bin/hsdb.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/idlj
+/usr/lib/jvm/java-1.8.0-openjdk/bin/idlj.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/jar
+/usr/lib/jvm/java-1.8.0-openjdk/bin/jar.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/jarsigner
+/usr/lib/jvm/java-1.8.0-openjdk/bin/jarsigner.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/java
 /usr/lib/jvm/java-1.8.0-openjdk/bin/java-rmi.cgi
+/usr/lib/jvm/java-1.8.0-openjdk/bin/java.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/javac
+/usr/lib/jvm/java-1.8.0-openjdk/bin/javac.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/javadoc
+/usr/lib/jvm/java-1.8.0-openjdk/bin/javadoc.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/javah
+/usr/lib/jvm/java-1.8.0-openjdk/bin/javah.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/javap
+/usr/lib/jvm/java-1.8.0-openjdk/bin/javap.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/jcmd
+/usr/lib/jvm/java-1.8.0-openjdk/bin/jcmd.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/jconsole
+/usr/lib/jvm/java-1.8.0-openjdk/bin/jconsole.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/jdb
+/usr/lib/jvm/java-1.8.0-openjdk/bin/jdb.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/jdeps
+/usr/lib/jvm/java-1.8.0-openjdk/bin/jdeps.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/jfr
+/usr/lib/jvm/java-1.8.0-openjdk/bin/jfr.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/jhat
+/usr/lib/jvm/java-1.8.0-openjdk/bin/jhat.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/jinfo
+/usr/lib/jvm/java-1.8.0-openjdk/bin/jinfo.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/jjs
+/usr/lib/jvm/java-1.8.0-openjdk/bin/jjs.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/jmap
+/usr/lib/jvm/java-1.8.0-openjdk/bin/jmap.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/jps
+/usr/lib/jvm/java-1.8.0-openjdk/bin/jps.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/jrunscript
+/usr/lib/jvm/java-1.8.0-openjdk/bin/jrunscript.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/jsadebugd
+/usr/lib/jvm/java-1.8.0-openjdk/bin/jsadebugd.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/jstack
+/usr/lib/jvm/java-1.8.0-openjdk/bin/jstack.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/jstat
+/usr/lib/jvm/java-1.8.0-openjdk/bin/jstat.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/jstatd
+/usr/lib/jvm/java-1.8.0-openjdk/bin/jstatd.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/keytool
+/usr/lib/jvm/java-1.8.0-openjdk/bin/keytool.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/native2ascii
+/usr/lib/jvm/java-1.8.0-openjdk/bin/native2ascii.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/orbd
+/usr/lib/jvm/java-1.8.0-openjdk/bin/orbd.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/pack200
+/usr/lib/jvm/java-1.8.0-openjdk/bin/pack200.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/policytool
+/usr/lib/jvm/java-1.8.0-openjdk/bin/policytool.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/rmic
+/usr/lib/jvm/java-1.8.0-openjdk/bin/rmic.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/rmid
+/usr/lib/jvm/java-1.8.0-openjdk/bin/rmid.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/rmiregistry
+/usr/lib/jvm/java-1.8.0-openjdk/bin/rmiregistry.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/schemagen
+/usr/lib/jvm/java-1.8.0-openjdk/bin/schemagen.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/serialver
+/usr/lib/jvm/java-1.8.0-openjdk/bin/serialver.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/servertool
+/usr/lib/jvm/java-1.8.0-openjdk/bin/servertool.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/tnameserv
+/usr/lib/jvm/java-1.8.0-openjdk/bin/tnameserv.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/unpack200
+/usr/lib/jvm/java-1.8.0-openjdk/bin/unpack200.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/wsgen
+/usr/lib/jvm/java-1.8.0-openjdk/bin/wsgen.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/wsimport
+/usr/lib/jvm/java-1.8.0-openjdk/bin/wsimport.diz
 /usr/lib/jvm/java-1.8.0-openjdk/bin/xjc
+/usr/lib/jvm/java-1.8.0-openjdk/bin/xjc.diz
 /usr/lib/jvm/java-1.8.0-openjdk/demo/README
 /usr/lib/jvm/java-1.8.0-openjdk/demo/applets/ArcTest/ArcCanvas.class
 /usr/lib/jvm/java-1.8.0-openjdk/demo/applets/ArcTest/ArcControls.class
@@ -465,16 +504,27 @@ ln -s /var/cache/ca-certs/compat/ca-roots.keystore %{buildroot}/usr/lib/jvm/java
 /usr/lib/jvm/java-1.8.0-openjdk/jre/LICENSE
 /usr/lib/jvm/java-1.8.0-openjdk/jre/THIRD_PARTY_README
 /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/java
+/usr/lib/jvm/java-1.8.0-openjdk/jre/bin/java.diz
 /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/jjs
+/usr/lib/jvm/java-1.8.0-openjdk/jre/bin/jjs.diz
 /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/keytool
+/usr/lib/jvm/java-1.8.0-openjdk/jre/bin/keytool.diz
 /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/orbd
+/usr/lib/jvm/java-1.8.0-openjdk/jre/bin/orbd.diz
 /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/pack200
+/usr/lib/jvm/java-1.8.0-openjdk/jre/bin/pack200.diz
 /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/policytool
+/usr/lib/jvm/java-1.8.0-openjdk/jre/bin/policytool.diz
 /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/rmid
+/usr/lib/jvm/java-1.8.0-openjdk/jre/bin/rmid.diz
 /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/rmiregistry
+/usr/lib/jvm/java-1.8.0-openjdk/jre/bin/rmiregistry.diz
 /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/servertool
+/usr/lib/jvm/java-1.8.0-openjdk/jre/bin/servertool.diz
 /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/tnameserv
+/usr/lib/jvm/java-1.8.0-openjdk/jre/bin/tnameserv.diz
 /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/unpack200
+/usr/lib/jvm/java-1.8.0-openjdk/jre/bin/unpack200.diz
 /usr/lib/jvm/java-1.8.0-openjdk/jre/lib/amd64/jli/libjli.diz
 /usr/lib/jvm/java-1.8.0-openjdk/jre/lib/amd64/jvm.cfg
 /usr/lib/jvm/java-1.8.0-openjdk/jre/lib/amd64/libattach.diz
@@ -810,61 +860,6 @@ ln -s /var/cache/ca-certs/compat/ca-roots.keystore %{buildroot}/usr/lib/jvm/java
 /usr/lib/jvm/java-1.8.0-openjdk/sample/try-with-resources/src/Unzip.java
 /usr/lib/jvm/java-1.8.0-openjdk/sample/try-with-resources/src/ZipCat.java
 /usr/lib/jvm/java-1.8.0-openjdk/src.zip
- /usr/lib/jvm/java-1.8.0-openjdk/bin/appletviewer.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/clhsdb.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/extcheck.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/hsdb.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/idlj.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/jar.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/jarsigner.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/java.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/javac.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/javadoc.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/javah.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/javap.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/jcmd.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/jconsole.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/jdb.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/jdeps.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/jfr.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/jhat.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/jinfo.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/jjs.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/jmap.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/jps.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/jrunscript.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/jsadebugd.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/jstack.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/jstat.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/jstatd.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/keytool.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/native2ascii.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/orbd.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/pack200.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/policytool.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/rmic.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/rmid.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/rmiregistry.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/schemagen.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/serialver.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/servertool.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/tnameserv.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/unpack200.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/wsgen.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/wsimport.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/bin/xjc.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/java.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/jjs.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/keytool.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/orbd.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/pack200.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/policytool.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/rmid.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/rmiregistry.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/servertool.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/tnameserv.diz
-   /usr/lib/jvm/java-1.8.0-openjdk/jre/bin/unpack200.diz
-
 
 %files dev
 %defattr(-,root,root,-)
