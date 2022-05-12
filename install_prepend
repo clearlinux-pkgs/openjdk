@@ -1,0 +1,2 @@
+mkdir -p %{buildroot}/usr/lib/jvm/java-1.8.0
+cp -a build/linux-x86_64-server-release/jdk/* %{buildroot}/usr/lib/jvm/java-1.8.0

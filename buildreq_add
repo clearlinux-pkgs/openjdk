@@ -2,7 +2,6 @@
 # picked up automatically. One name per line, no whitespace.
 alsa-lib-dev
 ca-certs
-ccache
 cups-dev
 freetype-dev
 libX11-dev
@@ -14,3 +13,5 @@ libXtst-dev
 openjdk
 openjdk-dev
 zip
+pandoc
+gcc11-dev

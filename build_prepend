@@ -1,9 +1,11 @@
 CLR_TRUST_STORE=%{_builddir}/trust-store clrtrust generate
 export CXXFLAGS="$CXXFLAGS -std=gnu++98 -Wno-error -fno-delete-null-pointer-checks -fno-guess-branch-probability -fno-lto"
 export CXXFLAGS_JDK="$CXXFLAGS"
+export CC=/usr/bin/gcc-11
+export CXX=/usr//bin/g++-11
 export SYSDEFS="$CXXFLAGS"
 bash configure \
---with-boot-jdk=/usr/lib/jvm/java-1.8.0-openjdk \
+--with-boot-jdk=/builddir/build/BUILD/amazon-corretto-18.0.1.10.1-linux-x64/ \
 --x-includes=/usr/include/ \
 --x-libraries=/usr/lib64 \
 --with-extra-cflags="-O3 -g1 -fno-lto" \
@@ -11,7 +13,12 @@ bash configure \
 --with-zlib=system \
 --enable-unlimited-crypto \
 --with-cacerts-file=%{_builddir}/trust-store/compat/ca-roots.keystore \
---prefix=%{buildroot}/usr/lib \
---with-milestone="u252" \
---with-user-release-suffix="ga"
-pushd build/linux-x86_64-normal-server-release/
+--prefix=%{buildroot}/usr/lib  \
+--with-extra-cxxflags="-O2 -march=haswell " \
+--with-extra-cflags="-O3 -march=haswell" \
+--with-jvm-features="zgc shenandoahgc" \
+--with-freetype=system --with-libjpeg=system --with-libpng=system --with-zlib=system --with-vendor-name="Clear Linux" --with-debug-level=release \
+--prefix=/usr --disable-warnings-as-errors
+
+make
+make images
