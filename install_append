@@ -15,3 +15,6 @@ mkdir -p %{buildroot}/usr/lib64
 
 
 cp %{buildroot}/usr/lib/jvm/java-1.18.0/lib/libjli.so %{buildroot}/usr/lib64
+rm -f %{buildroot}/usr/lib/jvm/java-1.18.0/lib/jvm.cfg
+echo "-server KNOWN" > %{buildroot}/usr/lib/jvm/java-1.18.0/lib/jvm.cfg
+echo "-client IGNORE" >> %{buildroot}/usr/lib/jvm/java-1.18.0/lib/jvm.cfg
