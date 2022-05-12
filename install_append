@@ -11,5 +11,7 @@
 #rm -f %{buildroot}/usr/lib/jvm/java-1.18.0/jre/lib/security/cacerts
 #ln -s /var/cache/ca-certs/compat/ca-roots.keystore %{buildroot}/usr/lib/jvm/java-1.18.0/jre/lib/security/cacerts
 
+mkdir -p %{buildroot}/usr/lib64
+
 
 cp %{buildroot}/usr/lib/jvm/java-1.18.0/lib/libjli.so %{buildroot}/usr/lib64
