@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 18.0.1.10.1
-Release  : 72
+Release  : 73
 URL      : https://github.com/corretto/corretto-18/archive/refs/tags/18.0.1.10.1.tar.gz
 Source0  : https://github.com/corretto/corretto-18/archive/refs/tags/18.0.1.10.1.tar.gz
 Source1  : https://corretto.aws/downloads/resources/18.0.1.10.1/amazon-corretto-18.0.1.10.1-linux-x64.tar.gz
@@ -104,7 +104,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1652380160
+export SOURCE_DATE_EPOCH=1652384130
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
@@ -118,7 +118,7 @@ make  all WARNINGS_ARE_ERRORS=
 
 
 %install
-export SOURCE_DATE_EPOCH=1652380160
+export SOURCE_DATE_EPOCH=1652384130
 rm -rf %{buildroot}
 ## install_prepend content
 mkdir -p %{buildroot}/usr/lib/jvm/java-1.18.0
@@ -213,8 +213,11 @@ cp %{_builddir}/corretto-18-18.0.1.10.1/src/java.smartcardio/unix/native/libj2pc
 #popd
 
 # Remove the copied keystore and link it to the runtime store
-#rm -f %{buildroot}/usr/lib/jvm/java-1.8.0-openjdk/jre/lib/security/cacerts
-#ln -s /var/cache/ca-certs/compat/ca-roots.keystore %{buildroot}/usr/lib/jvm/java-1.8.0-openjdk/jre/lib/security/cacerts
+#rm -f %{buildroot}/usr/lib/jvm/java-1.18.0/jre/lib/security/cacerts
+#ln -s /var/cache/ca-certs/compat/ca-roots.keystore %{buildroot}/usr/lib/jvm/java-1.18.0/jre/lib/security/cacerts
+
+
+cp %{buildroot}/usr/lib/jvm/java-1.18.0/lib/libjli.so %{buildroot}/usr/lib64
 ## install_append end
 
 %files
@@ -28087,6 +28090,7 @@ cp %{_builddir}/corretto-18-18.0.1.10.1/src/java.smartcardio/unix/native/libj2pc
 /usr/lib/jvm/java-1.18.0/modules/jdk.zipfs/jdk/nio/zipfs/ZipUtils.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.zipfs/module-info.class
 /usr/lib/jvm/java-1.18.0/release
+/usr/lib64
 
 %files dev
 %defattr(-,root,root,-)
