@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 18.0.1.10.1
-Release  : 79
+Release  : 80
 URL      : https://github.com/corretto/corretto-18/archive/refs/tags/18.0.1.10.1.tar.gz
 Source0  : https://github.com/corretto/corretto-18/archive/refs/tags/18.0.1.10.1.tar.gz
 Source1  : https://corretto.aws/downloads/resources/18.0.1.10.1/amazon-corretto-18.0.1.10.1-linux-x64.tar.gz
@@ -82,7 +82,7 @@ export CC=/usr/bin/gcc
 export CXX=/usr//bin/g++
 export SYSDEFS="$CXXFLAGS"
 bash configure \
---with-boot-jdk=/builddir/build/BUILD/amazon-corretto-18.0.1.10.1-linux-x64/ \
+--with-boot-jdk=/usr/lib/jvm/java-1.18.0/ \
 --x-includes=/usr/include/ \
 --x-libraries=/usr/lib64 \
 --with-extra-cflags="-O3 -g1 -fno-lto" \
@@ -104,7 +104,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1652454337
+export SOURCE_DATE_EPOCH=1652467807
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
@@ -118,7 +118,7 @@ make  all WARNINGS_ARE_ERRORS=
 
 
 %install
-export SOURCE_DATE_EPOCH=1652454337
+export SOURCE_DATE_EPOCH=1652467807
 rm -rf %{buildroot}
 ## install_prepend content
 mkdir -p %{buildroot}/usr/lib/jvm/java-1.18.0
