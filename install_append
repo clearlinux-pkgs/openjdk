@@ -18,3 +18,4 @@ cp %{buildroot}/usr/lib/jvm/java-1.18.0/lib/libjli.so %{buildroot}/usr/lib64
 rm -f %{buildroot}/usr/lib/jvm/java-1.18.0/lib/jvm.cfg
 echo "-server KNOWN" > %{buildroot}/usr/lib/jvm/java-1.18.0/lib/jvm.cfg
 echo "-client IGNORE" >> %{buildroot}/usr/lib/jvm/java-1.18.0/lib/jvm.cfg
+find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmod 0644 {} \;

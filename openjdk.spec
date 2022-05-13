@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 18.0.1.10.1
-Release  : 75
+Release  : 77
 URL      : https://github.com/corretto/corretto-18/archive/refs/tags/18.0.1.10.1.tar.gz
 Source0  : https://github.com/corretto/corretto-18/archive/refs/tags/18.0.1.10.1.tar.gz
 Source1  : https://corretto.aws/downloads/resources/18.0.1.10.1/amazon-corretto-18.0.1.10.1-linux-x64.tar.gz
@@ -104,7 +104,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1652389571
+export SOURCE_DATE_EPOCH=1652416485
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
@@ -118,7 +118,7 @@ make  all WARNINGS_ARE_ERRORS=
 
 
 %install
-export SOURCE_DATE_EPOCH=1652389571
+export SOURCE_DATE_EPOCH=1652416485
 rm -rf %{buildroot}
 ## install_prepend content
 mkdir -p %{buildroot}/usr/lib/jvm/java-1.18.0
@@ -223,6 +223,7 @@ cp %{buildroot}/usr/lib/jvm/java-1.18.0/lib/libjli.so %{buildroot}/usr/lib64
 rm -f %{buildroot}/usr/lib/jvm/java-1.18.0/lib/jvm.cfg
 echo "-server KNOWN" > %{buildroot}/usr/lib/jvm/java-1.18.0/lib/jvm.cfg
 echo "-client IGNORE" >> %{buildroot}/usr/lib/jvm/java-1.18.0/lib/jvm.cfg
+find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmod 0644 {} \;
 ## install_append end
 
 %files
