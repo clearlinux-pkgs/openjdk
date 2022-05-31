@@ -91,8 +91,8 @@ bash configure \
 --enable-unlimited-crypto \
 --with-cacerts-file=%{_builddir}/trust-store/compat/ca-roots.keystore \
 --prefix=%{buildroot}/usr/lib  \
---with-extra-cxxflags="-O3 -march=haswell -fno-semantic-interposition  " \
---with-extra-cflags="-O3 -march=haswell -fno-semantic-interposition " \
+--with-extra-cxxflags="-O3 -march=westmere -fno-semantic-interposition  " \
+--with-extra-cflags="-O3 -march=westmere -fno-semantic-interposition " \
 --with-jvm-features="zgc shenandoahgc" \
 --with-freetype=system --with-libjpeg=system --with-libpng=system --with-zlib=system --with-vendor-name="Clear Linux" --with-debug-level=release \
 --prefix=/usr --disable-warnings-as-errors
