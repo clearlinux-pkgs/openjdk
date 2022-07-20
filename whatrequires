@@ -1,7 +1,12 @@
 # This file contains recursive sources that require this package
 R-rstudio
 R-rstudio-server
+VTK
 apache-ant
+libjpeg-turbo
 libreoffice
+mariadb
 opencv
 openjdk
+openjpeg
+qt6base

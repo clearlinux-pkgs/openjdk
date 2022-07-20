@@ -4,10 +4,10 @@
 #
 %define keepstatic 1
 Name     : openjdk
-Version  : 18.0.1.10.1
-Release  : 81
-URL      : https://github.com/corretto/corretto-18/archive/refs/tags/18.0.1.10.1.tar.gz
-Source0  : https://github.com/corretto/corretto-18/archive/refs/tags/18.0.1.10.1.tar.gz
+Version  : 18.0.2.9.1
+Release  : 82
+URL      : https://github.com/corretto/corretto-18/archive/18.0.2.9.1/corretto-18-18.0.2.9.1.tar.gz
+Source0  : https://github.com/corretto/corretto-18/archive/18.0.2.9.1/corretto-18-18.0.2.9.1.tar.gz
 Source1  : https://corretto.aws/downloads/resources/18.0.1.10.1/amazon-corretto-18.0.1.10.1-linux-x64.tar.gz
 Summary  : APPLICATION_SUMMARY
 Group    : Development/Tools
@@ -18,7 +18,6 @@ Requires: usrbinjava
 BuildRequires : alsa-lib-dev
 BuildRequires : ca-certs
 BuildRequires : cups-dev
-BuildRequires : fontconfig-dev
 BuildRequires : freetype-dev
 BuildRequires : gcc11-dev
 BuildRequires : libX11-dev
@@ -66,12 +65,12 @@ license components for the openjdk package.
 
 
 %prep
-%setup -q -n corretto-18-18.0.1.10.1
+%setup -q -n corretto-18-18.0.2.9.1
 cd %{_builddir}
 tar xf %{_sourcedir}/amazon-corretto-18.0.1.10.1-linux-x64.tar.gz
-cd %{_builddir}/corretto-18-18.0.1.10.1
+cd %{_builddir}/corretto-18-18.0.2.9.1
 mkdir -p bootstrap
-cp -r %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/* %{_builddir}/corretto-18-18.0.1.10.1/bootstrap
+cp -r %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/* %{_builddir}/corretto-18-18.0.2.9.1/bootstrap
 
 %build
 ## build_prepend content
@@ -91,8 +90,8 @@ bash configure \
 --enable-unlimited-crypto \
 --with-cacerts-file=%{_builddir}/trust-store/compat/ca-roots.keystore \
 --prefix=%{buildroot}/usr/lib  \
---with-extra-cxxflags="-O3 -march=westmere -fno-semantic-interposition  " \
---with-extra-cflags="-O3 -march=westmere -fno-semantic-interposition " \
+--with-extra-cxxflags="-O3 -march=haswell -fno-semantic-interposition  " \
+--with-extra-cflags="-O3 -march=haswell -fno-semantic-interposition " \
 --with-jvm-features="zgc shenandoahgc" \
 --with-freetype=system --with-libjpeg=system --with-libpng=system --with-zlib=system --with-vendor-name="Clear Linux" --with-debug-level=release \
 --prefix=/usr --disable-warnings-as-errors
@@ -104,7 +103,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1652467807
+export SOURCE_DATE_EPOCH=1658343402
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
@@ -118,7 +117,7 @@ make  all WARNINGS_ARE_ERRORS=
 
 
 %install
-export SOURCE_DATE_EPOCH=1652467807
+export SOURCE_DATE_EPOCH=1658343402
 rm -rf %{buildroot}
 ## install_prepend content
 mkdir -p %{buildroot}/usr/lib/jvm/java-1.18.0
@@ -196,11 +195,11 @@ cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.unsupported.desk
 cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.unsupported/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
 cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.xml.dom/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
 cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.zipfs/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/corretto-18-18.0.1.10.1/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/corretto-18-18.0.1.10.1/make/data/cldr/unicode-license.txt %{buildroot}/usr/share/package-licenses/openjdk/2e415567f955b853485ecf8ffc66c3c335e76e7a
-cp %{_builddir}/corretto-18-18.0.1.10.1/src/java.desktop/share/native/libsplashscreen/giflib/COPYING %{buildroot}/usr/share/package-licenses/openjdk/f9c9a2d3495a0766b4cf20d4b90cfe714dab3dc1
-cp %{_builddir}/corretto-18-18.0.1.10.1/src/java.desktop/share/native/libsplashscreen/libpng/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/fc3951ba26fe1914759f605696a1d23e3b41766f
-cp %{_builddir}/corretto-18-18.0.1.10.1/src/java.smartcardio/unix/native/libj2pcsc/MUSCLE/COPYING %{buildroot}/usr/share/package-licenses/openjdk/12f0c48a0be5fb271ccd2f1de671e747c511166f
+cp %{_builddir}/corretto-18-18.0.2.9.1/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+cp %{_builddir}/corretto-18-18.0.2.9.1/make/data/cldr/unicode-license.txt %{buildroot}/usr/share/package-licenses/openjdk/2e415567f955b853485ecf8ffc66c3c335e76e7a
+cp %{_builddir}/corretto-18-18.0.2.9.1/src/java.desktop/share/native/libsplashscreen/giflib/COPYING %{buildroot}/usr/share/package-licenses/openjdk/f9c9a2d3495a0766b4cf20d4b90cfe714dab3dc1
+cp %{_builddir}/corretto-18-18.0.2.9.1/src/java.desktop/share/native/libsplashscreen/libpng/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/fc3951ba26fe1914759f605696a1d23e3b41766f
+cp %{_builddir}/corretto-18-18.0.2.9.1/src/java.smartcardio/unix/native/libj2pcsc/MUSCLE/COPYING %{buildroot}/usr/share/package-licenses/openjdk/12f0c48a0be5fb271ccd2f1de671e747c511166f
 %make_install help || :
 ## install_append content
 # Remove all the binaries installed in /usr/lib/bin. All of them are
@@ -649,6 +648,9 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/CharArrayReader.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/CharArrayWriter.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/CharConversionException.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ClassCache$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ClassCache$CacheRef.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ClassCache.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/Closeable.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/Console$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/Console$2.class
@@ -718,6 +720,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectInputFilter.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectInputStream$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectInputStream$BlockDataInputStream.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectInputStream$Caches$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectInputStream$Caches.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectInputStream$FieldValues.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectInputStream$FilterValues.class
@@ -734,6 +737,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectOutput.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectOutputStream$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectOutputStream$BlockDataOutputStream.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectOutputStream$Caches$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectOutputStream$Caches.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectOutputStream$DebugTraceInfoStack.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectOutputStream$HandleTable.class
@@ -746,20 +750,19 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectStreamClass$3.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectStreamClass$4.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectStreamClass$5.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectStreamClass$Caches$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectStreamClass$Caches$2.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectStreamClass$Caches.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectStreamClass$ClassDataSlot.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectStreamClass$DeserializationConstructorsCache$Key$Impl.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectStreamClass$DeserializationConstructorsCache$Key$Lookup.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectStreamClass$DeserializationConstructorsCache$Key.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectStreamClass$DeserializationConstructorsCache.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectStreamClass$EntryFuture$1.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectStreamClass$EntryFuture.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectStreamClass$ExceptionInfo.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectStreamClass$FieldReflector.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectStreamClass$FieldReflectorKey.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectStreamClass$MemberSignature.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectStreamClass$RecordSupport.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectStreamClass$WeakClassKey.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectStreamClass.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectStreamConstants.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/ObjectStreamException.class
@@ -3853,7 +3856,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/security/auth/Refreshable.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/security/auth/Subject$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/security/auth/Subject$2.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/javax/security/auth/Subject$3.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/security/auth/Subject$AuthPermissionHolder.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/security/auth/Subject$ClassSet$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/security/auth/Subject$ClassSet.class
@@ -21965,7 +21967,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ByteMaxVector$ByteMaxMask.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ByteMaxVector$ByteMaxShuffle.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ByteMaxVector.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ByteVector$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ByteVector$ByteSpecies.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ByteVector$FBinOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ByteVector$FBinTest.class
@@ -21990,7 +21991,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/DoubleMaxVector$DoubleMaxMask.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/DoubleMaxVector$DoubleMaxShuffle.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/DoubleMaxVector.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/DoubleVector$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/DoubleVector$DoubleSpecies.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/DoubleVector$FBinOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/DoubleVector$FBinTest.class
@@ -22015,7 +22015,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/FloatMaxVector$FloatMaxMask.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/FloatMaxVector$FloatMaxShuffle.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/FloatMaxVector.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/FloatVector$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/FloatVector$FBinOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/FloatVector$FBinTest.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/FloatVector$FLdOp.class
@@ -22040,7 +22039,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/IntMaxVector$IntMaxMask.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/IntMaxVector$IntMaxShuffle.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/IntMaxVector.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/IntVector$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/IntVector$FBinOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/IntVector$FBinTest.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/IntVector$FLdOp.class
@@ -22066,7 +22064,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/LongMaxVector$LongMaxMask.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/LongMaxVector$LongMaxShuffle.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/LongMaxVector.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/LongVector$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/LongVector$FBinOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/LongVector$FBinTest.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/LongVector$FLdOp.class
@@ -22091,7 +22088,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ShortMaxVector$ShortMaxMask.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ShortMaxVector$ShortMaxShuffle.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ShortMaxVector.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ShortVector$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ShortVector$FBinOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ShortVector$FBinTest.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ShortVector$FLdOp.class
