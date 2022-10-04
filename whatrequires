@@ -3,6 +3,7 @@ R-rstudio
 R-rstudio-server
 VTK
 apache-ant
+cmake
 libjpeg-turbo
 libreoffice
 mariadb

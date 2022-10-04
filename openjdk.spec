@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 18.0.2.9.1
-Release  : 82
+Release  : 83
 URL      : https://github.com/corretto/corretto-18/archive/18.0.2.9.1/corretto-18-18.0.2.9.1.tar.gz
 Source0  : https://github.com/corretto/corretto-18/archive/18.0.2.9.1/corretto-18-18.0.2.9.1.tar.gz
 Source1  : https://corretto.aws/downloads/resources/18.0.1.10.1/amazon-corretto-18.0.1.10.1-linux-x64.tar.gz
@@ -103,103 +103,103 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1658343402
+export SOURCE_DATE_EPOCH=1664921921
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=auto -fstack-protector-strong -fzero-call-used-regs=used "
-export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto -fstack-protector-strong -fzero-call-used-regs=used "
-export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto -fstack-protector-strong -fzero-call-used-regs=used "
-export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto -fstack-protector-strong -fzero-call-used-regs=used "
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
 make  all WARNINGS_ARE_ERRORS=
 
 
 %install
-export SOURCE_DATE_EPOCH=1658343402
+export SOURCE_DATE_EPOCH=1664921921
 rm -rf %{buildroot}
 ## install_prepend content
 mkdir -p %{buildroot}/usr/lib/jvm/java-1.18.0
 cp -a -L  build/linux-x86_64-server-release/jdk/* %{buildroot}/usr/lib/jvm/java-1.18.0
 ## install_prepend end
 mkdir -p %{buildroot}/usr/share/package-licenses/openjdk
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.base/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.compiler/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.datatransfer/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.desktop/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.instrument/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.logging/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.management.rmi/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.management/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.naming/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.net.http/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.prefs/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.rmi/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.scripting/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.se/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.security.jgss/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.security.sasl/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.smartcardio/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.sql.rowset/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.sql/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.transaction.xa/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.xml.crypto/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.xml/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.accessibility/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.attach/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.charsets/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.compiler/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.crypto.cryptoki/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.crypto.ec/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.dynalink/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.editpad/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.hotspot.agent/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.httpserver/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.incubator.foreign/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.incubator.vector/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.internal.ed/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.internal.jvmstat/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.internal.le/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.internal.opt/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.internal.vm.ci/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.internal.vm.compiler.management/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.internal.vm.compiler/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.jartool/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.javadoc/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.jcmd/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.jconsole/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.jdeps/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.jdi/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.jdwp.agent/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.jfr/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.jlink/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.jpackage/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.jshell/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.jsobject/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.jstatd/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.localedata/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.management.agent/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.management.jfr/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.management/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.naming.dns/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.naming.rmi/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.net/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.nio.mapmode/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.random/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.sctp/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.security.auth/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.security.jgss/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.unsupported.desktop/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.unsupported/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.xml.dom/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.zipfs/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/corretto-18-18.0.2.9.1/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
-cp %{_builddir}/corretto-18-18.0.2.9.1/make/data/cldr/unicode-license.txt %{buildroot}/usr/share/package-licenses/openjdk/2e415567f955b853485ecf8ffc66c3c335e76e7a
-cp %{_builddir}/corretto-18-18.0.2.9.1/src/java.desktop/share/native/libsplashscreen/giflib/COPYING %{buildroot}/usr/share/package-licenses/openjdk/f9c9a2d3495a0766b4cf20d4b90cfe714dab3dc1
-cp %{_builddir}/corretto-18-18.0.2.9.1/src/java.desktop/share/native/libsplashscreen/libpng/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/fc3951ba26fe1914759f605696a1d23e3b41766f
-cp %{_builddir}/corretto-18-18.0.2.9.1/src/java.smartcardio/unix/native/libj2pcsc/MUSCLE/COPYING %{buildroot}/usr/share/package-licenses/openjdk/12f0c48a0be5fb271ccd2f1de671e747c511166f
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.base/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.compiler/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.datatransfer/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.desktop/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.instrument/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.logging/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.management.rmi/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.management/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.naming/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.net.http/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.prefs/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.rmi/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.scripting/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.se/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.security.jgss/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.security.sasl/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.smartcardio/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.sql.rowset/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.sql/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.transaction.xa/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.xml.crypto/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/java.xml/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.accessibility/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.attach/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.charsets/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.compiler/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.crypto.cryptoki/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.crypto.ec/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.dynalink/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.editpad/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.hotspot.agent/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.httpserver/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.incubator.foreign/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.incubator.vector/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.internal.ed/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.internal.jvmstat/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.internal.le/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.internal.opt/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.internal.vm.ci/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.internal.vm.compiler.management/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.internal.vm.compiler/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.jartool/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.javadoc/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.jcmd/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.jconsole/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.jdeps/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.jdi/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.jdwp.agent/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.jfr/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.jlink/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.jpackage/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.jshell/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.jsobject/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.jstatd/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.localedata/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.management.agent/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.management.jfr/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.management/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.naming.dns/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.naming.rmi/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.net/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.nio.mapmode/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.random/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.sctp/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.security.auth/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.security.jgss/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.unsupported.desktop/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.unsupported/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.xml.dom/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.zipfs/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/corretto-18-%{version}/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/corretto-18-%{version}/make/data/cldr/unicode-license.txt %{buildroot}/usr/share/package-licenses/openjdk/2e415567f955b853485ecf8ffc66c3c335e76e7a || :
+cp %{_builddir}/corretto-18-%{version}/src/java.desktop/share/native/libsplashscreen/giflib/COPYING %{buildroot}/usr/share/package-licenses/openjdk/f9c9a2d3495a0766b4cf20d4b90cfe714dab3dc1 || :
+cp %{_builddir}/corretto-18-%{version}/src/java.desktop/share/native/libsplashscreen/libpng/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/fc3951ba26fe1914759f605696a1d23e3b41766f || :
+cp %{_builddir}/corretto-18-%{version}/src/java.smartcardio/unix/native/libj2pcsc/MUSCLE/COPYING %{buildroot}/usr/share/package-licenses/openjdk/12f0c48a0be5fb271ccd2f1de671e747c511166f || :
 %make_install help || :
 ## install_append content
 # Remove all the binaries installed in /usr/lib/bin. All of them are

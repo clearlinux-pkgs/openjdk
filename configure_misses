@@ -1,55 +1,24 @@
-Configure miss: /builddir/build/BUILD/jdk8u312-ga/jdk/src/share/bin/java.c:732:3: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
-
-Configure miss: /builddir/build/BUILD/jdk8u312-ga/jdk/src/share/native/sun/java2d/cmm/lcms/cmscgats.c:1020:44: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
-
-Configure miss: /builddir/build/BUILD/jdk8u312-ga/jdk/src/share/native/sun/java2d/cmm/lcms/cmscgats.c:1401:31: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
-
-Configure miss: /builddir/build/BUILD/jdk8u312-ga/jdk/src/share/native/sun/java2d/cmm/lcms/cmscgats.c:2611:28: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
-
-Configure miss: /builddir/build/BUILD/jdk8u312-ga/jdk/src/share/native/sun/java2d/cmm/lcms/cmscgats.c:2701:28: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
-
-Configure miss: /builddir/build/BUILD/jdk8u312-ga/jdk/src/share/native/sun/java2d/cmm/lcms/cmscgats.c:843:52: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
-
-Configure miss: /builddir/build/BUILD/jdk8u312-ga/jdk/src/share/native/sun/java2d/opengl/OGLBufImgOps.c:154:13: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
-
-Configure miss: /builddir/build/BUILD/jdk8u312-ga/jdk/src/share/native/sun/java2d/opengl/OGLBufImgOps.c:364:13: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
-
-Configure miss: /builddir/build/BUILD/jdk8u312-ga/jdk/src/share/native/sun/java2d/opengl/OGLBufImgOps.c:596:13: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
-
-Configure miss: /builddir/build/BUILD/jdk8u312-ga/jdk/src/share/native/sun/java2d/opengl/OGLPaints.c:581:9: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
-
-Configure miss: /builddir/build/BUILD/jdk8u312-ga/jdk/src/share/native/sun/java2d/opengl/OGLPaints.c:583:9: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
-
-Configure miss: /builddir/build/BUILD/jdk8u312-ga/jdk/src/share/native/sun/java2d/opengl/OGLPaints.c:585:9: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
-
-Configure miss: /builddir/build/BUILD/jdk8u312-ga/jdk/src/share/native/sun/java2d/opengl/OGLPaints.c:592:13: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
-
-Configure miss: /builddir/build/BUILD/jdk8u312-ga/jdk/src/solaris/native/java/net/net_util_md.c:441:9: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
-
-Configure miss: /usr/bin/x86_64-generic-linux-gcc option to accept ISO C89
-Configure miss: 7z
-Configure miss: SetFile
-Configure miss: apt-get
-Configure miss: broken SuSE 'ld' which only understands anonymous version tags in executables
-Configure miss: cygpath
-Configure miss: gdiff
-Configure miss: gobjcopy
-Configure miss: gobjdump
-Configure miss: greadlink
-Configure miss: hg
-Configure miss: if closed source is suppressed (openjdk-only)
-Configure miss: if we should bundle freetype
-Configure miss: is ccache enabled
-Configure miss: jtreg
-Configure miss: nawk
-Configure miss: otool
-Configure miss: pkgadd
-Configure miss: pkgutil
-Configure miss: port
-Configure miss: presence of closed sources
-Configure miss: time
-Configure miss: what type of native debug symbols to use (this will override previous settings)
+Configure miss: /usr//bin/g++ option to enable C++11 features
+Configure miss: /usr/bin/gcc option to enable C11 features
+Configure miss: JVM features disabled by the user
+Configure miss: docs-reference JDK
+Configure miss: dtrace tool
+Configure miss: graphviz dot
+Configure miss: if BUILD is x86
+Configure miss: if JVM feature 'dtrace' is available
+Configure miss: if JVM feature 'static-build' is available
+Configure miss: if TARGET is x86
+Configure miss: if absolute paths should be allowed in the build output
+Configure miss: if any translations should be excluded
+Configure miss: if static build is available
+Configure miss: if static link of stdc++ is possible
+Configure miss: if static-build is enabled in configure
+Configure miss: if the jtreg failure handler is available
+Configure miss: if we should add external native debug symbols to the shipped bundles
+Configure miss: jib
+Configure miss: jmh (Java Microbenchmark Harness)
+Configure miss: jtreg test harness
+Configure miss: local Boot JDK Class Data Sharing (CDS)
+Configure miss: output-sync value
+Configure miss: sys/sdt.h
 Configure miss: whether -R must be followed by a space
-Configure miss: whether to use sjavac
-Configure miss: which variant of the JDK to build
-Configure miss: yum
