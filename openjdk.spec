@@ -5,13 +5,14 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 18.0.2.9.1
-Release  : 83
+Release  : 84
 URL      : https://github.com/corretto/corretto-18/archive/18.0.2.9.1/corretto-18-18.0.2.9.1.tar.gz
 Source0  : https://github.com/corretto/corretto-18/archive/18.0.2.9.1/corretto-18-18.0.2.9.1.tar.gz
 Source1  : https://corretto.aws/downloads/resources/18.0.1.10.1/amazon-corretto-18.0.1.10.1-linux-x64.tar.gz
 Summary  : APPLICATION_SUMMARY
 Group    : Development/Tools
 License  : BSD-3-Clause GPL-2.0 ICU Libpng MIT
+Requires: openjdk-filemap = %{version}-%{release}
 Requires: openjdk-lib = %{version}-%{release}
 Requires: openjdk-license = %{version}-%{release}
 Requires: usrbinjava
@@ -47,10 +48,19 @@ Requires: openjdk = %{version}-%{release}
 dev components for the openjdk package.
 
 
+%package filemap
+Summary: filemap components for the openjdk package.
+Group: Default
+
+%description filemap
+filemap components for the openjdk package.
+
+
 %package lib
 Summary: lib components for the openjdk package.
 Group: Libraries
 Requires: openjdk-license = %{version}-%{release}
+Requires: openjdk-filemap = %{version}-%{release}
 
 %description lib
 lib components for the openjdk package.
@@ -74,6 +84,9 @@ cp -r %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/* %{_builddir}/corretto
 
 %build
 ## build_prepend content
+pushd ..
+cp -a corretto-* buildavx2
+cd buildavx2
 CLR_TRUST_STORE=%{_builddir}/trust-store clrtrust generate
 export CXXFLAGS="$CXXFLAGS -std=gnu++98 -Wno-error -fno-delete-null-pointer-checks -fno-guess-branch-probability -fno-lto"
 export CXXFLAGS_JDK="$CXXFLAGS"
@@ -98,12 +111,33 @@ bash configure \
 
 make
 make images
+
+popd
+
+bash configure \
+--with-boot-jdk=/usr/lib/jvm/java-1.18.0/ \
+--x-includes=/usr/include/ \
+--x-libraries=/usr/lib64 \
+--with-extra-cflags="-O3 -g1 -fno-lto" \
+--with-extra-cxxflags="$CXXFLAGS -g1 -fno-lto" \
+--with-zlib=system \
+--enable-unlimited-crypto \
+--with-cacerts-file=%{_builddir}/trust-store/compat/ca-roots.keystore \
+--prefix=%{buildroot}/usr/lib  \
+--with-extra-cxxflags="-O3 -march=westmere -fno-semantic-interposition  " \
+--with-extra-cflags="-O3 -march=westmere -fno-semantic-interposition " \
+--with-jvm-features="zgc shenandoahgc" \
+--with-freetype=system --with-libjpeg=system --with-libpng=system --with-zlib=system --with-vendor-name="Clear Linux" --with-debug-level=release \
+--prefix=/usr --disable-warnings-as-errors
+
+make
+make images
 ## build_prepend end
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1664921921
+export SOURCE_DATE_EPOCH=1666224268
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
@@ -117,11 +151,18 @@ make  all WARNINGS_ARE_ERRORS=
 
 
 %install
-export SOURCE_DATE_EPOCH=1664921921
+export SOURCE_DATE_EPOCH=1666224268
 rm -rf %{buildroot}
 ## install_prepend content
 mkdir -p %{buildroot}/usr/lib/jvm/java-1.18.0
+mkdir -p %{buildroot}-v3/usr/lib/jvm/java-1.18.0
+
 cp -a -L  build/linux-x86_64-server-release/jdk/* %{buildroot}/usr/lib/jvm/java-1.18.0
+
+pushd ../buildavx2/
+cp -a -L  build/linux-x86_64-server-release/jdk/* %{buildroot}-v3/usr/lib/jvm/java-1.18.0
+%make_install_v3 help || :
+popd
 ## install_prepend end
 mkdir -p %{buildroot}/usr/share/package-licenses/openjdk
 cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
@@ -219,12 +260,16 @@ mkdir -p %{buildroot}/usr/lib64
 
 
 cp %{buildroot}/usr/lib/jvm/java-1.18.0/lib/libjli.so %{buildroot}/usr/lib64
+cp %{buildroot}-v3/usr/lib/jvm/java-1.18.0/lib/libjli.so %{buildroot}-v3/usr/lib64
 rm -f %{buildroot}/usr/lib/jvm/java-1.18.0/lib/jvm.cfg
 echo "-server KNOWN" > %{buildroot}/usr/lib/jvm/java-1.18.0/lib/jvm.cfg
 echo "-client IGNORE" >> %{buildroot}/usr/lib/jvm/java-1.18.0/lib/jvm.cfg
 rm -f {buildroot}/usr/lib/jvm/java-1.18.0/lib/tzdb.dat
 cp  build/linux-x86_64-server-release/jdk/lib/tzdb.dat %{buildroot}/usr/lib/jvm/java-1.18.0/lib/
 find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmod 0644 {} \;
+
+
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 ## install_append end
 
 %files
@@ -28105,6 +28150,10 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/include/linux/jawt_md.h
 /usr/lib/jvm/java-1.18.0/include/linux/jni_md.h
 
+%files filemap
+%defattr(-,root,root,-)
+/usr/share/clear/filemap/filemap-openjdk
+
 %files lib
 %defattr(-,root,root,-)
 /usr/lib/jvm/java-1.18.0/lib/libattach.so
@@ -28147,6 +28196,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/lib/server/libjvm.so
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/resources/libjpackageapplauncheraux.so
 /usr/lib64/libjli.so
+/usr/share/clear/optimized-elf/other*
 
 %files license
 %defattr(0644,root,root,0755)
