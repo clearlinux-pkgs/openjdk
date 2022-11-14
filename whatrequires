@@ -1,9 +1,9 @@
 # This file contains recursive sources that require this package
-R-rstudio
-R-rstudio-server
 VTK
 apache-ant
+ceph
 cmake
+gmsh
 libjpeg-turbo
 libreoffice
 mariadb

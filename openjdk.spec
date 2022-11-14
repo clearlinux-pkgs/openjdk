@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 18.0.2.9.1
-Release  : 84
+Release  : 85
 URL      : https://github.com/corretto/corretto-18/archive/18.0.2.9.1/corretto-18-18.0.2.9.1.tar.gz
 Source0  : https://github.com/corretto/corretto-18/archive/18.0.2.9.1/corretto-18-18.0.2.9.1.tar.gz
 Source1  : https://corretto.aws/downloads/resources/18.0.1.10.1/amazon-corretto-18.0.1.10.1-linux-x64.tar.gz
@@ -33,6 +33,7 @@ BuildRequires : openjdk-dev
 BuildRequires : pandoc
 BuildRequires : pkgconfig(fontconfig)
 BuildRequires : zip
+Patch1: scaling.patch
 
 %description
 APPLICATION_DESCRIPTION
@@ -81,6 +82,7 @@ tar xf %{_sourcedir}/amazon-corretto-18.0.1.10.1-linux-x64.tar.gz
 cd %{_builddir}/corretto-18-18.0.2.9.1
 mkdir -p bootstrap
 cp -r %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/* %{_builddir}/corretto-18-18.0.2.9.1/bootstrap
+%patch1 -p1
 
 %build
 ## build_prepend content
@@ -137,7 +139,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1666224268
+export SOURCE_DATE_EPOCH=1668440478
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
@@ -151,7 +153,7 @@ make  all WARNINGS_ARE_ERRORS=
 
 
 %install
-export SOURCE_DATE_EPOCH=1666224268
+export SOURCE_DATE_EPOCH=1668440478
 rm -rf %{buildroot}
 ## install_prepend content
 mkdir -p %{buildroot}/usr/lib/jvm/java-1.18.0

@@ -1,0 +1,11 @@
+--- corretto-18-18.0.2.9.1/src/hotspot/share/oops/klass.hpp~	2022-07-19 17:49:32.000000000 +0000
++++ corretto-18-18.0.2.9.1/src/hotspot/share/oops/klass.hpp	2022-11-14 15:02:40.541333162 +0000
+@@ -134,6 +134,8 @@
+ 
+   // Cache of last observed secondary supertype
+   Klass*      _secondary_super_cache;
++
++  jbyte padding[64];
+   // Array of all secondary supertypes
+   Array<Klass*>* _secondary_supers;
+   // Ordered list of all primary supertypes
