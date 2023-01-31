@@ -4,14 +4,14 @@
 #
 %define keepstatic 1
 Name     : openjdk
-Version  : 18.0.2.9.1
-Release  : 85
-URL      : https://github.com/corretto/corretto-18/archive/18.0.2.9.1/corretto-18-18.0.2.9.1.tar.gz
-Source0  : https://github.com/corretto/corretto-18/archive/18.0.2.9.1/corretto-18-18.0.2.9.1.tar.gz
+Version  : 19.0.2.7.1
+Release  : 86
+URL      : https://github.com/corretto/corretto-19/archive/refs/tags/19.0.2.7.1.tar.gz
+Source0  : https://github.com/corretto/corretto-19/archive/refs/tags/19.0.2.7.1.tar.gz
 Source1  : https://corretto.aws/downloads/resources/18.0.1.10.1/amazon-corretto-18.0.1.10.1-linux-x64.tar.gz
 Summary  : APPLICATION_SUMMARY
 Group    : Development/Tools
-License  : BSD-3-Clause GPL-2.0 ICU Libpng MIT
+License  : BSD-3-Clause GPL-2.0 Libpng MIT
 Requires: openjdk-filemap = %{version}-%{release}
 Requires: openjdk-lib = %{version}-%{release}
 Requires: openjdk-license = %{version}-%{release}
@@ -33,6 +33,9 @@ BuildRequires : openjdk-dev
 BuildRequires : pandoc
 BuildRequires : pkgconfig(fontconfig)
 BuildRequires : zip
+# Suppress stripping binaries
+%define __strip /bin/true
+%define debug_package %{nil}
 Patch1: scaling.patch
 
 %description
@@ -76,12 +79,12 @@ license components for the openjdk package.
 
 
 %prep
-%setup -q -n corretto-18-18.0.2.9.1
+%setup -q -n corretto-19-19.0.2.7.1
 cd %{_builddir}
 tar xf %{_sourcedir}/amazon-corretto-18.0.1.10.1-linux-x64.tar.gz
-cd %{_builddir}/corretto-18-18.0.2.9.1
+cd %{_builddir}/corretto-19-19.0.2.7.1
 mkdir -p bootstrap
-cp -r %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/* %{_builddir}/corretto-18-18.0.2.9.1/bootstrap
+cp -r %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/* %{_builddir}/corretto-19-19.0.2.7.1/bootstrap
 %patch1 -p1
 
 %build
@@ -139,21 +142,21 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1668440478
+export SOURCE_DATE_EPOCH=1675127510
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=auto "
-export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
-export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
-export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
+export CFLAGS="$CFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
+export FCFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
+export FFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
+export CXXFLAGS="$CXXFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
 make  all WARNINGS_ARE_ERRORS=
 
 
 %install
-export SOURCE_DATE_EPOCH=1668440478
+export SOURCE_DATE_EPOCH=1675127510
 rm -rf %{buildroot}
 ## install_prepend content
 mkdir -p %{buildroot}/usr/lib/jvm/java-1.18.0
@@ -238,11 +241,10 @@ cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.unsupported.desk
 cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.unsupported/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
 cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.xml.dom/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
 cp %{_builddir}/amazon-corretto-18.0.1.10.1-linux-x64/legal/jdk.zipfs/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/corretto-18-%{version}/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/corretto-18-%{version}/make/data/cldr/unicode-license.txt %{buildroot}/usr/share/package-licenses/openjdk/2e415567f955b853485ecf8ffc66c3c335e76e7a || :
-cp %{_builddir}/corretto-18-%{version}/src/java.desktop/share/native/libsplashscreen/giflib/COPYING %{buildroot}/usr/share/package-licenses/openjdk/f9c9a2d3495a0766b4cf20d4b90cfe714dab3dc1 || :
-cp %{_builddir}/corretto-18-%{version}/src/java.desktop/share/native/libsplashscreen/libpng/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/fc3951ba26fe1914759f605696a1d23e3b41766f || :
-cp %{_builddir}/corretto-18-%{version}/src/java.smartcardio/unix/native/libj2pcsc/MUSCLE/COPYING %{buildroot}/usr/share/package-licenses/openjdk/12f0c48a0be5fb271ccd2f1de671e747c511166f || :
+cp %{_builddir}/corretto-19-%{version}/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
+cp %{_builddir}/corretto-19-%{version}/src/java.desktop/share/native/libsplashscreen/giflib/COPYING %{buildroot}/usr/share/package-licenses/openjdk/f9c9a2d3495a0766b4cf20d4b90cfe714dab3dc1 || :
+cp %{_builddir}/corretto-19-%{version}/src/java.desktop/share/native/libsplashscreen/libpng/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/fc3951ba26fe1914759f605696a1d23e3b41766f || :
+cp %{_builddir}/corretto-19-%{version}/src/java.smartcardio/unix/native/libj2pcsc/MUSCLE/COPYING %{buildroot}/usr/share/package-licenses/openjdk/12f0c48a0be5fb271ccd2f1de671e747c511166f || :
 %make_install help || :
 ## install_append content
 # Remove all the binaries installed in /usr/lib/bin. All of them are
@@ -637,7 +639,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/com/sun/crypto/provider/PBKDF2Core$HmacSHA384.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/com/sun/crypto/provider/PBKDF2Core$HmacSHA512.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/com/sun/crypto/provider/PBKDF2Core.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/com/sun/crypto/provider/PBKDF2HmacSHA1Factory.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/com/sun/crypto/provider/PBKDF2KeyImpl$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/com/sun/crypto/provider/PBKDF2KeyImpl.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/com/sun/crypto/provider/PBMAC1Core$HmacSHA1.class
@@ -647,9 +648,12 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/com/sun/crypto/provider/PBMAC1Core$HmacSHA512.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/com/sun/crypto/provider/PBMAC1Core.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/com/sun/crypto/provider/PCBC.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/com/sun/crypto/provider/PKCS12PBECipherCore$KeyAndIv.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/com/sun/crypto/provider/PKCS12PBECipherCore$PBEWithSHA1AndDESede.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/com/sun/crypto/provider/PKCS12PBECipherCore$PBEWithSHA1AndRC2.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/com/sun/crypto/provider/PKCS12PBECipherCore$PBEWithSHA1AndRC2_128.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/com/sun/crypto/provider/PKCS12PBECipherCore$PBEWithSHA1AndRC2_40.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/com/sun/crypto/provider/PKCS12PBECipherCore$PBEWithSHA1AndRC4.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/com/sun/crypto/provider/PKCS12PBECipherCore$PBEWithSHA1AndRC4_128.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/com/sun/crypto/provider/PKCS12PBECipherCore$PBEWithSHA1AndRC4_40.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/com/sun/crypto/provider/PKCS12PBECipherCore.class
@@ -822,7 +826,9 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/PipedOutputStream.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/PipedReader.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/PipedWriter.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/io/PrintStream$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/PrintStream.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/io/PrintWriter$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/PrintWriter.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/PushbackInputStream.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/io/PushbackReader.class
@@ -860,6 +866,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/AssertionError.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/AssertionStatusDirectives.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/AutoCloseable.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/BaseVirtualThread.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Boolean.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/BootstrapMethodError.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Byte$ByteCache.class
@@ -951,6 +958,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/LiveStackFrameInfo.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Long$LongCache.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Long.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/MatchException.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Math$RandomNumberGeneratorHolder.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Math.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Module$1.class
@@ -977,6 +985,9 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Package$1PackageInfoProxy.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Package$VersionInfo.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Package.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/PinnedThreadPrinter$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/PinnedThreadPrinter$Hashes.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/PinnedThreadPrinter.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Process$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Process$CharsetHolder.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Process$PipeInputStream.class
@@ -1013,7 +1024,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ProcessHandleImpl$Info.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ProcessHandleImpl.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ProcessImpl$1.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ProcessImpl$DeferredCloseInputStream.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ProcessImpl$DeferredCloseProcessPipeInputStream.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ProcessImpl$LaunchMechanism.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ProcessImpl$Platform.class
@@ -1087,11 +1097,29 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Terminator$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Terminator.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Thread$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Thread$Builder$OfPlatform.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Thread$Builder$OfVirtual.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Thread$Builder.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Thread$Caches$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Thread$Caches.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Thread$Constants$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Thread$Constants$2$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Thread$Constants$2.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Thread$Constants.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Thread$FieldHolder.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Thread$State.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Thread$ThreadIdentifiers.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Thread$ThreadNumbering.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Thread$UncaughtExceptionHandler.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Thread$WeakClassKey.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Thread.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ThreadBuilders$BaseThreadBuilder.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ThreadBuilders$BaseThreadFactory.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ThreadBuilders$BoundVirtualThread.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ThreadBuilders$PlatformThreadBuilder.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ThreadBuilders$PlatformThreadFactory.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ThreadBuilders$VirtualThreadBuilder.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ThreadBuilders$VirtualThreadFactory.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ThreadBuilders.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ThreadDeath.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ThreadGroup.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ThreadLocal$SuppliedThreadLocal.class
@@ -1111,6 +1139,8 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/VerifyError.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/VersionProps.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/VirtualMachineError.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/VirtualThread$VThreadContinuation.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/VirtualThread.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/Void.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/WeakPairMap$Pair$Lookup.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/WeakPairMap$Pair$Weak$1.class
@@ -1118,6 +1148,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/WeakPairMap$Pair.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/WeakPairMap$WeakRefPeer.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/WeakPairMap.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/WrongThreadException.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/annotation/Annotation.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/annotation/AnnotationFormatError.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/annotation/AnnotationTypeMismatchException.class
@@ -1152,6 +1183,36 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/constant/MethodTypeDescImpl.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/constant/PrimitiveClassDescImpl.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/constant/ReferenceClassDescImpl.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/AbstractLayout.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/Addressable.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/FunctionDescriptor$VariadicFunction.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/FunctionDescriptor.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/GroupLayout$Kind.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/GroupLayout.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/Linker.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/MemoryAddress.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/MemoryLayout$PathElement.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/MemoryLayout.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/MemorySegment.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/MemorySession.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/PaddingLayout.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/SegmentAllocator$1Holder.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/SegmentAllocator.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/SequenceLayout.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/SymbolLookup$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/SymbolLookup.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/VaList$Builder.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/VaList.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/ValueLayout$OfAddress.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/ValueLayout$OfBoolean.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/ValueLayout$OfByte.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/ValueLayout$OfChar.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/ValueLayout$OfDouble.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/ValueLayout$OfFloat.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/ValueLayout$OfInt.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/ValueLayout$OfLong.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/ValueLayout$OfShort.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/foreign/ValueLayout.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/AbstractConstantGroup$AsIterator.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/AbstractConstantGroup$AsList.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/AbstractConstantGroup$BSCIWithCache.class
@@ -1229,14 +1290,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/LambdaProxyClassArchive.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/MemberName$Factory.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/MemberName.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/MemoryAccessVarHandleBase.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/MemoryAccessVarHandleByteHelper.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/MemoryAccessVarHandleCharHelper.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/MemoryAccessVarHandleDoubleHelper.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/MemoryAccessVarHandleFloatHelper.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/MemoryAccessVarHandleIntHelper.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/MemoryAccessVarHandleLongHelper.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/MemoryAccessVarHandleShortHelper.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/MethodHandle$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/MethodHandle$PolymorphicSignature.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/MethodHandle.class
@@ -1291,9 +1344,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/SerializedLambda.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/SimpleMethodHandle.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/StringConcatException.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/StringConcatFactory$1.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/StringConcatFactory$2.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/StringConcatFactory$3.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/StringConcatFactory.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/SwitchPoint.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/TypeConvertingMethodAdapter.class
@@ -1305,7 +1355,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/VarHandle$AccessDescriptor.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/VarHandle$AccessMode.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/VarHandle$AccessType.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/VarHandle$TypesAndInvokers.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/VarHandle$VarHandleDesc$Kind.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/VarHandle$VarHandleDesc.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/VarHandle.class
@@ -1383,6 +1432,14 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/VarHandleReferences$FieldStaticReadOnly.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/VarHandleReferences$FieldStaticReadWrite.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/VarHandleReferences.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/VarHandleSegmentAsBytes.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/VarHandleSegmentAsChars.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/VarHandleSegmentAsDoubles.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/VarHandleSegmentAsFloats.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/VarHandleSegmentAsInts.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/VarHandleSegmentAsLongs.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/VarHandleSegmentAsShorts.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/VarHandleSegmentViewBase.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/VarHandleShorts$Array.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/VarHandleShorts$FieldInstanceReadOnly.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/invoke/VarHandleShorts$FieldInstanceReadWrite.class
@@ -1427,11 +1484,12 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ref/Finalizer.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ref/FinalizerHistogram$Entry.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ref/FinalizerHistogram.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ref/NativeReferenceQueue$Lock.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ref/NativeReferenceQueue.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ref/PhantomReference.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ref/Reference$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ref/Reference$ReferenceHandler.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ref/Reference.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ref/ReferenceQueue$Lock.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ref/ReferenceQueue$Null.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ref/ReferenceQueue.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/lang/ref/SoftReference.class
@@ -1487,6 +1545,9 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/math/BigDecimal$StringBuilderHelper.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/math/BigDecimal$UnsafeHolder.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/math/BigDecimal.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/math/BigInteger$RecursiveOp$RecursiveMultiply.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/math/BigInteger$RecursiveOp$RecursiveSquare.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/math/BigInteger$RecursiveOp.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/math/BigInteger$UnsafeHolder.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/math/BigInteger.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/math/BitSieve.class
@@ -1558,7 +1619,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/net/InetAddress.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/net/InetAddressContainer.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/net/InetAddressImpl.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/java/net/InetAddressImplFactory.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/net/InetSocketAddress$InetSocketAddressHolder.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/net/InetSocketAddress.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/net/InterfaceAddress.class
@@ -1612,6 +1672,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/net/URL$2.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/net/URL$3.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/net/URL$DefaultFactory.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/net/URL$ThreadTrackHolder.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/net/URL.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/net/URLClassLoader$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/net/URLClassLoader$2.class
@@ -1636,6 +1697,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/net/UnknownHostException.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/net/UnknownServiceException.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/net/UrlDeserializedState.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/net/package-info.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/net/spi/InetAddressResolver$LookupPolicy.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/net/spi/InetAddressResolver.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/net/spi/InetAddressResolverProvider$Configuration.class
@@ -1805,6 +1867,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/nio/charset/Charset$3.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/nio/charset/Charset$ExtendedProviderHolder$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/nio/charset/Charset$ExtendedProviderHolder.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/nio/charset/Charset$ThreadTrackHolder.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/nio/charset/Charset.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/nio/charset/CharsetDecoder.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/nio/charset/CharsetEncoder.class
@@ -2708,6 +2771,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/PropertyPermissionCollection.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/PropertyResourceBundle.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/Queue.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/util/Random$RandomWrapper.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/Random.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/RandomAccess.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/RegularEnumSet$EnumSetIterator.class
@@ -3026,9 +3090,9 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/Flow$Subscription.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/Flow.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/ForkJoinPool$1.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/ForkJoinPool$DefaultCommonPoolForkJoinWorkerThreadFactory$1.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/ForkJoinPool$DefaultCommonPoolForkJoinWorkerThreadFactory.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/ForkJoinPool$2.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/ForkJoinPool$DefaultForkJoinWorkerThreadFactory$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/ForkJoinPool$DefaultForkJoinWorkerThreadFactory$2.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/ForkJoinPool$DefaultForkJoinWorkerThreadFactory.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/ForkJoinPool$ForkJoinWorkerThreadFactory.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/ForkJoinPool$InvokeAnyRoot.class
@@ -3044,9 +3108,12 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/ForkJoinTask$RunnableExecuteAction.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/ForkJoinTask.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/ForkJoinWorkerThread$InnocuousForkJoinWorkerThread$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/ForkJoinWorkerThread$InnocuousForkJoinWorkerThread$2.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/ForkJoinWorkerThread$InnocuousForkJoinWorkerThread.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/ForkJoinWorkerThread.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/Future$State.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/Future.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/FutureTask$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/FutureTask$WaitNode.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/FutureTask.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/Helpers.class
@@ -3100,8 +3167,14 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/SynchronousQueue$WaitQueue.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/SynchronousQueue.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/ThreadFactory.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/ThreadLocalRandom$Access$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/ThreadLocalRandom$Access.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/ThreadLocalRandom$ThreadLocalRandomProxy.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/ThreadLocalRandom.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/ThreadPerTaskExecutor$AnyResultHolder.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/ThreadPerTaskExecutor$TaskRunner.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/ThreadPerTaskExecutor$ThreadBoundFuture.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/ThreadPerTaskExecutor.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/ThreadPoolExecutor$AbortPolicy.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/ThreadPoolExecutor$CallerRunsPolicy.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/concurrent/ThreadPoolExecutor$DiscardOldestPolicy.class
@@ -3232,6 +3305,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/jar/JarFile$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/jar/JarFile$2.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/jar/JarFile$JarFileEntry.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/java/util/jar/JarFile$ThreadTrackHolder.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/jar/JarFile.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/jar/JarInputStream.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/java/util/jar/JarOutputStream.class
@@ -3808,7 +3882,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/crypto/NullCipher.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/crypto/NullCipherSpi.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/crypto/PermissionsEnumerator.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/javax/crypto/ProviderVerifier$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/crypto/ProviderVerifier.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/crypto/SealedObject.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/crypto/SecretKey.class
@@ -3836,7 +3909,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/crypto/spec/PSource.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/crypto/spec/RC2ParameterSpec.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/crypto/spec/RC5ParameterSpec.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/javax/crypto/spec/SecretKeySpec$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/crypto/spec/SecretKeySpec.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/net/DefaultServerSocketFactory.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/net/DefaultSocketFactory.class
@@ -3852,7 +3924,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/net/ssl/HttpsURLConnection$DefaultHostnameVerifier.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/net/ssl/HttpsURLConnection.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/net/ssl/KeyManager.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/javax/net/ssl/KeyManagerFactory$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/net/ssl/KeyManagerFactory.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/net/ssl/KeyManagerFactorySpi.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/net/ssl/KeyStoreBuilderParameters.class
@@ -3882,12 +3953,10 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/net/ssl/SSLSessionBindingListener.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/net/ssl/SSLSessionContext.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/net/ssl/SSLSocket.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/javax/net/ssl/SSLSocketFactory$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/net/ssl/SSLSocketFactory$DefaultFactoryHolder.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/net/ssl/SSLSocketFactory.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/net/ssl/StandardConstants.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/net/ssl/TrustManager.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/javax/net/ssl/TrustManagerFactory$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/net/ssl/TrustManagerFactory.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/net/ssl/TrustManagerFactorySpi.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/javax/net/ssl/X509ExtendedKeyManager.class
@@ -3972,6 +4041,8 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/access/JavaIOAccess.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/access/JavaIOFileDescriptorAccess.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/access/JavaIOFilePermissionAccess.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/access/JavaIOPrintStreamAccess.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/access/JavaIOPrintWriterAccess.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/access/JavaIORandomAccessFileAccess.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/access/JavaLangAccess.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/access/JavaLangInvokeAccess.class
@@ -3991,15 +4062,14 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/access/JavaSecuritySignatureAccess.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/access/JavaSecuritySpecAccess.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/access/JavaUtilCollectionAccess.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/access/JavaUtilConcurrentFJPAccess.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/access/JavaUtilConcurrentTLRAccess.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/access/JavaUtilJarAccess.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/access/JavaUtilResourceBundleAccess.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/access/JavaUtilZipFileAccess.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/access/JavaxCryptoSealedObjectAccess.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/access/JavaxCryptoSpecAccess.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/access/SharedSecrets.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/access/foreign/MemoryAddressProxy.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/access/foreign/MemorySegmentProxy.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/access/foreign/NativeLibraryProxy.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/access/foreign/UnmapperProxy.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/event/DeserializationEvent.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/event/Event.class
@@ -4007,8 +4077,154 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/event/ProcessStartEvent.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/event/SecurityPropertyModificationEvent.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/event/TLSHandshakeEvent.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/event/ThreadSleepEvent.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/event/VirtualThreadEndEvent.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/event/VirtualThreadPinnedEvent.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/event/VirtualThreadStartEvent.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/event/VirtualThreadSubmitFailedEvent.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/event/X509CertificateEvent.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/event/X509ValidationEvent.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/AbstractMemorySegmentImpl$SegmentSplitter.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/AbstractMemorySegmentImpl.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/ArenaAllocator.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/CABI.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/ConfinedSession$ConfinedResourceList.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/ConfinedSession.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/HeapMemorySegmentImpl$OfByte.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/HeapMemorySegmentImpl$OfChar.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/HeapMemorySegmentImpl$OfDouble.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/HeapMemorySegmentImpl$OfFloat.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/HeapMemorySegmentImpl$OfInt.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/HeapMemorySegmentImpl$OfLong.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/HeapMemorySegmentImpl$OfShort.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/HeapMemorySegmentImpl.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/LayoutPath$PathElementImpl$PathKind.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/LayoutPath$PathElementImpl.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/LayoutPath.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/MappedMemorySegmentImpl$EmptyMappedMemorySegmentImpl.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/MappedMemorySegmentImpl.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/MemoryAddressImpl.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/MemorySessionImpl$GlobalSessionImpl.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/MemorySessionImpl$ImplicitSession.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/MemorySessionImpl$NonCloseableView.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/MemorySessionImpl$ResourceList$ResourceCleanup$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/MemorySessionImpl$ResourceList$ResourceCleanup$2.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/MemorySessionImpl$ResourceList$ResourceCleanup.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/MemorySessionImpl$ResourceList.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/MemorySessionImpl.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/NativeMemorySegmentImpl$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/NativeMemorySegmentImpl$2.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/NativeMemorySegmentImpl.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/PlatformLayouts$AArch64.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/PlatformLayouts$SysV.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/PlatformLayouts$Win64.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/PlatformLayouts.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/Scoped.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/SharedSession$SharedResourceList.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/SharedSession.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/SystemLookup$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/SystemLookup$WindowsFallbackSymbols.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/SystemLookup.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/Utils$1VarHandleCache.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/Utils.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/ABIDescriptor.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/AbstractLinker.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/Architecture.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/Binding$Allocate.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/Binding$BoxAddress.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/Binding$BufferLoad.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/Binding$BufferStore.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/Binding$Builder.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/Binding$Context$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/Binding$Context$2.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/Binding$Context$3.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/Binding$Context.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/Binding$Copy.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/Binding$Dereference.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/Binding$Dup.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/Binding$Move.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/Binding$Tag.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/Binding$ToSegment.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/Binding$UnboxAddress$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/Binding$UnboxAddress.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/Binding$VMLoad.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/Binding$VMStore.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/Binding.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/BindingInterpreter$LoadFunc.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/BindingInterpreter$StoreFunc.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/BindingInterpreter.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/BindingSpecializer$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/BindingSpecializer$Runtime.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/BindingSpecializer.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/CallingSequence.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/CallingSequenceBuilder.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/DowncallLinker$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/DowncallLinker$InvocationData.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/DowncallLinker.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/NativeEntryPoint$CacheKey.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/NativeEntryPoint.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/SharedUtils$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/SharedUtils$EmptyVaList.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/SharedUtils$SimpleVaArg.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/SharedUtils.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/SoftReferenceCache$Node.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/SoftReferenceCache.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/UpcallLinker$CallRegs.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/UpcallLinker$InvocationData.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/UpcallLinker.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/UpcallStubs$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/UpcallStubs.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/VMStorage.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/aarch64/AArch64Architecture$StorageClasses.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/aarch64/AArch64Architecture.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/aarch64/CallArranger$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/aarch64/CallArranger$BindingCalculator.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/aarch64/CallArranger$Bindings.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/aarch64/CallArranger$BoxBindingCalculator.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/aarch64/CallArranger$StorageCalculator.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/aarch64/CallArranger$UnboxBindingCalculator.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/aarch64/CallArranger.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/aarch64/TypeClass.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/aarch64/linux/LinuxAArch64CallArranger.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/aarch64/linux/LinuxAArch64Linker.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/aarch64/linux/LinuxAArch64VaList$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/aarch64/linux/LinuxAArch64VaList$Builder.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/aarch64/linux/LinuxAArch64VaList.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/aarch64/macos/MacOsAArch64CallArranger.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/aarch64/macos/MacOsAArch64Linker.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/aarch64/macos/MacOsAArch64VaList$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/aarch64/macos/MacOsAArch64VaList$Builder.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/aarch64/macos/MacOsAArch64VaList.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/X86_64Architecture$StorageClasses.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/X86_64Architecture.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/sysv/ArgumentClassImpl.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/sysv/CallArranger$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/sysv/CallArranger$BindingCalculator.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/sysv/CallArranger$Bindings.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/sysv/CallArranger$BoxBindingCalculator.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/sysv/CallArranger$StorageCalculator.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/sysv/CallArranger$UnboxBindingCalculator.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/sysv/CallArranger.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/sysv/SysVVaList$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/sysv/SysVVaList$Builder.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/sysv/SysVVaList.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/sysv/SysVx64Linker.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/sysv/TypeClass$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/sysv/TypeClass$Kind.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/sysv/TypeClass.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/windows/CallArranger$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/windows/CallArranger$1CallingSequenceBuilderHelper.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/windows/CallArranger$BindingCalculator.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/windows/CallArranger$Bindings.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/windows/CallArranger$BoxBindingCalculator.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/windows/CallArranger$StorageCalculator.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/windows/CallArranger$UnboxBindingCalculator.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/windows/CallArranger.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/windows/TypeClass.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/windows/WinVaList$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/windows/WinVaList$Builder.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/windows/WinVaList.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/foreign/abi/x64/windows/Windowsx64Linker.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/icu/impl/BMPSet.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/icu/impl/CharTrie.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/icu/impl/CharacterIteratorWrapper.class
@@ -4056,10 +4272,10 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/icu/impl/UnicodeSetStringSpan$OffsetList.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/icu/impl/UnicodeSetStringSpan.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/icu/impl/Utility.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/icu/impl/data/icudt67b/nfc.nrm
-/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/icu/impl/data/icudt67b/nfkc.nrm
-/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/icu/impl/data/icudt67b/ubidi.icu
-/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/icu/impl/data/icudt67b/uprops.icu
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/icu/impl/data/icudt70b/nfc.nrm
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/icu/impl/data/icudt70b/nfkc.nrm
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/icu/impl/data/icudt70b/ubidi.icu
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/icu/impl/data/icudt70b/uprops.icu
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/icu/lang/UCharacter$HangulSyllableType.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/icu/lang/UCharacter$JoiningGroup.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/icu/lang/UCharacter$NumericType.class
@@ -4141,9 +4357,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/icu/util/CodePointTrie.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/icu/util/OutputInt.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/icu/util/VersionInfo.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/invoke/ABIDescriptorProxy.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/invoke/NativeEntryPoint.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/invoke/VMStorageProxy.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/javac/NoPreview.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/javac/PreviewFeature$Feature.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/javac/PreviewFeature.class
@@ -4249,6 +4462,9 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/loader/NativeLibraries$Unloader.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/loader/NativeLibraries.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/loader/NativeLibrary.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/loader/RawNativeLibraries$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/loader/RawNativeLibraries$RawNativeLibraryImpl.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/loader/RawNativeLibraries.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/loader/Resource.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/loader/URLClassPath$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/loader/URLClassPath$2.class
@@ -4292,8 +4508,10 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/logger/SimpleConsoleLogger.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/logger/SurrogateLogger.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/math/DoubleConsts.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/math/DoubleToDecimal.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/math/FDBigInteger.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/math/FloatConsts.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/math/FloatToDecimal.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/math/FloatingDecimal$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/math/FloatingDecimal$ASCIIToBinaryBuffer.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/math/FloatingDecimal$ASCIIToBinaryConverter.class
@@ -4307,30 +4525,43 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/math/FormattedFloatingDecimal$2.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/math/FormattedFloatingDecimal$Form.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/math/FormattedFloatingDecimal.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/math/MathUtils.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/Blocker$ForkJoinPools.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/Blocker.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/CDS.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/CarrierThread$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/CarrierThread.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/CarrierThreadLocal.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/ExtendedMapMode.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/FileSystemOption.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/InnocuousThread$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/InnocuousThread$2.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/InnocuousThread$3.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/InnocuousThread$4.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/InnocuousThread.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/InternalLock.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/OSEnvironment.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/ScopedMemoryAccess$BufferAccess.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/ScopedMemoryAccess$Scope$ScopedAccessError.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/ScopedMemoryAccess$Scope.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/PreviewFeatures.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/ScopedMemoryAccess$Scoped.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/ScopedMemoryAccess$ScopedAccessError.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/ScopedMemoryAccess.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/Signal$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/Signal$Handler.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/Signal$NativeHandler.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/Signal.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/StructureViolationExceptions.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/TerminatingThreadLocal$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/TerminatingThreadLocal.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/ThreadFlock$ThreadContainerImpl.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/ThreadFlock.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/ThreadTracker$ThreadRef.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/ThreadTracker.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/Unsafe.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/UnsafeConstants.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/VM$BufferPool.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/VM$BufferPoolsHolder.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/VM.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/misc/VirtualThreads.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/module/ArchivedBootLayer.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/module/ArchivedModuleGraph.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/module/Builder.class
@@ -4452,10 +4683,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/commons/RecordComponentRemapper.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/commons/Remapper.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/commons/RemappingAnnotationAdapter.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/commons/RemappingClassAdapter.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/commons/RemappingFieldAdapter.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/commons/RemappingMethodAdapter.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/commons/RemappingSignatureAdapter.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/commons/SerialVersionUIDAdder$Item.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/commons/SerialVersionUIDAdder.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/commons/SignatureRemapper.class
@@ -4519,7 +4747,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/tree/analysis/SourceValue.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/tree/analysis/Subroutine.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/tree/analysis/Value.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/util/ASMifiable.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/util/ASMifier.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/util/ASMifierSupport.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/util/CheckAnnotationAdapter.class
@@ -4528,6 +4755,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/util/CheckFieldAdapter.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/util/CheckMethodAdapter$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/util/CheckMethodAdapter$Method.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/util/CheckMethodAdapter$MethodWriterWrapper.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/util/CheckMethodAdapter.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/util/CheckModuleAdapter$NameSet.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/util/CheckModuleAdapter.class
@@ -4535,7 +4763,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/util/CheckSignatureAdapter$State.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/util/CheckSignatureAdapter.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/util/Printer.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/util/Textifiable.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/util/Textifier.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/util/TextifierSupport.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/org/objectweb/asm/util/TraceAnnotationVisitor.class
@@ -4639,10 +4866,10 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/reflect/NativeConstructorAccessorImpl.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/reflect/NativeMethodAccessorImpl.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/reflect/Reflection.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/reflect/ReflectionFactory$Config.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/reflect/ReflectionFactory$GetReflectionFactoryAction.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/reflect/ReflectionFactory.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/reflect/SerializationConstructorAccessorImpl.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/reflect/SignatureIterator.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/reflect/UTF8.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/reflect/UnsafeBooleanFieldAccessorImpl.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/reflect/UnsafeByteFieldAccessorImpl.class
@@ -4733,16 +4960,37 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/util/xml/impl/XMLStreamWriterImpl$Element.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/util/xml/impl/XMLStreamWriterImpl.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/util/xml/impl/XMLWriter.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/Continuation$Pinned.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/Continuation$PreemptStatus.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/Continuation.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/ContinuationScope.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/ContinuationSupport.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/ExtentLocalContainer$BindingsSnapshot.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/ExtentLocalContainer.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/FillerObject.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/SharedThreadContainer.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/StackChunk.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/StackableScope.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/ThreadContainer.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/ThreadContainers$RootContainer$CountingRootContainer.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/ThreadContainers$RootContainer$TrackingRootContainer.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/ThreadContainers$RootContainer.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/ThreadContainers.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/ThreadDumper$BoundedByteArrayOutputStream.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/ThreadDumper.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/VMSupport.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/annotation/ChangesCurrentThread.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/annotation/Contended.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/annotation/DontInline.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/annotation/ForceInline.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/annotation/Hidden.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/annotation/IntrinsicCandidate.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/annotation/JvmtiMountTransition.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/annotation/ReservedStackAccess.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/annotation/Stable.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/vector/VectorSupport$BinaryOperation.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/vector/VectorSupport$BroadcastOperation.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/vector/VectorSupport$CompressExpandOperation.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/vector/VectorSupport$FromBitsCoercedOperation.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/vector/VectorSupport$IndexOperation.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/vector/VectorSupport$LoadOperation.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/jdk/internal/vm/vector/VectorSupport$LoadVectorMaskedOperation.class
@@ -4932,7 +5180,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/net/www/protocol/http/AuthenticatorKeys$AuthenticatorKeyAccess.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/net/www/protocol/http/AuthenticatorKeys.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/net/www/protocol/http/BasicAuthentication.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/sun/net/www/protocol/http/DigestAuthentication$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/net/www/protocol/http/DigestAuthentication$Parameters.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/net/www/protocol/http/DigestAuthentication.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/net/www/protocol/http/EmptyInputStream.class
@@ -5010,10 +5257,12 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/DatagramSocketAdaptor$NetworkInterfaces.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/DatagramSocketAdaptor.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/DefaultAsynchronousChannelProvider.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/DefaultPollerProvider.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/DefaultSelectorProvider.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/DirectBuffer.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/DummySocketImpl.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/EPoll.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/EPollPoller.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/EPollPort$Event.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/EPollPort$EventHandlerTask.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/EPollPort.class
@@ -5024,6 +5273,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/ExtendedSocketOption.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/FileChannelImpl$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/FileChannelImpl$2.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/FileChannelImpl$3.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/FileChannelImpl$Closer.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/FileChannelImpl$DefaultUnmapper.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/FileChannelImpl$SyncUnmapper.class
@@ -5074,6 +5324,9 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/PipeImpl.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/PollSelectorImpl.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/PollSelectorProvider.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/Poller$Request.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/Poller.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/PollerProvider.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/Port$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/Port$PollableChannel.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/Port.class
@@ -5093,16 +5346,17 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/SimpleAsynchronousFileChannelImpl$DefaultExecutorHolder.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/SimpleAsynchronousFileChannelImpl.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/SinkChannelImpl.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/SocketAdaptor$1.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/SocketAdaptor$2.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/SocketAdaptor.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/SocketChannelImpl$DefaultOptionsHolder.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/SocketChannelImpl.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/SocketDispatcher.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/SocketInputStream.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/SocketOptionRegistry$LazyInitialization.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/SocketOptionRegistry$RegistryKey.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/SocketOptionRegistry.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/SocketOutputStream.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/SourceChannelImpl.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/Streams.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/ThreadPool$DefaultThreadPoolHolder.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/ThreadPool.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/ch/UnixAsynchronousServerSocketChannelImpl$1.class
@@ -5362,8 +5616,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/fs/NativeBuffer.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/fs/NativeBuffers$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/fs/NativeBuffers.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/fs/Reflect$1.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/fs/Reflect.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/fs/UnixChannelFactory$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/fs/UnixChannelFactory$Flags.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/nio/fs/UnixChannelFactory.class
@@ -5488,7 +5740,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/reflect/misc/ConstructorUtil.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/reflect/misc/FieldUtil.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/reflect/misc/MethodUtil$1.class
-/usr/lib/jvm/java-1.18.0/modules/java.base/sun/reflect/misc/MethodUtil$Signature.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/reflect/misc/MethodUtil.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/reflect/misc/ReflectUtil.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/reflect/misc/Trampoline.class
@@ -6416,6 +6667,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/security/tools/keytool/CertAndKeyGen.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/security/tools/keytool/Main$Command.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/security/tools/keytool/Main$Option.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/sun/security/tools/keytool/Main$SecretKeyConstraintsParameters.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/security/tools/keytool/Main.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/security/tools/keytool/Pair.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/security/tools/keytool/Resources.class
@@ -6456,6 +6708,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/security/util/Cache$CacheVisitor.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/security/util/Cache$EqualByteArray.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/security/util/Cache.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/sun/security/util/ChannelBindingException.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/security/util/ConsoleCallbackHandler$1OptionInfo.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/security/util/ConsoleCallbackHandler.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/security/util/ConstraintsParameters.class
@@ -6558,6 +6811,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/security/util/Resources_zh_CN.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/security/util/Resources_zh_HK.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/security/util/Resources_zh_TW.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/sun/security/util/SafeDHParameterSpec.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/security/util/SecurityConstants.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/security/util/SecurityProperties.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/security/util/SecurityProviderConstants.class
@@ -6565,6 +6819,8 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/security/util/SignatureUtil$EdDSADigestAlgHolder.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/security/util/SignatureUtil$PSSParamsHolder.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/security/util/SignatureUtil.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/sun/security/util/TlsChannelBinding$TlsChannelBindingType.class
+/usr/lib/jvm/java-1.18.0/modules/java.base/sun/security/util/TlsChannelBinding.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/security/util/UntrustedCertificates$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/security/util/UntrustedCertificates.class
 /usr/lib/jvm/java-1.18.0/modules/java.base/sun/security/util/math/ImmutableIntegerModuloP.class
@@ -6907,6 +7163,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.compiler/javax/lang/model/element/AnnotationValue.class
 /usr/lib/jvm/java-1.18.0/modules/java.compiler/javax/lang/model/element/AnnotationValueVisitor.class
 /usr/lib/jvm/java-1.18.0/modules/java.compiler/javax/lang/model/element/Element.class
+/usr/lib/jvm/java-1.18.0/modules/java.compiler/javax/lang/model/element/ElementKind$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.compiler/javax/lang/model/element/ElementKind.class
 /usr/lib/jvm/java-1.18.0/modules/java.compiler/javax/lang/model/element/ElementVisitor.class
 /usr/lib/jvm/java-1.18.0/modules/java.compiler/javax/lang/model/element/ExecutableElement.class
@@ -7172,7 +7429,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/com/sun/imageio/plugins/bmp/BMPImageReader$2.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/com/sun/imageio/plugins/bmp/BMPImageReader$3.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/com/sun/imageio/plugins/bmp/BMPImageReader$4.class
-/usr/lib/jvm/java-1.18.0/modules/java.desktop/com/sun/imageio/plugins/bmp/BMPImageReader$5.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/com/sun/imageio/plugins/bmp/BMPImageReader$EmbeddedProgressAdapter.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/com/sun/imageio/plugins/bmp/BMPImageReader.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/com/sun/imageio/plugins/bmp/BMPImageReaderSpi.class
@@ -7241,6 +7497,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/com/sun/imageio/plugins/jpeg/JPEGImageMetadataFormatResources.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/com/sun/imageio/plugins/jpeg/JPEGImageReader$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/com/sun/imageio/plugins/jpeg/JPEGImageReader$2.class
+/usr/lib/jvm/java-1.18.0/modules/java.desktop/com/sun/imageio/plugins/jpeg/JPEGImageReader$3.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/com/sun/imageio/plugins/jpeg/JPEGImageReader$CallBackLock$State.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/com/sun/imageio/plugins/jpeg/JPEGImageReader$CallBackLock.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/com/sun/imageio/plugins/jpeg/JPEGImageReader$JPEGReaderDisposerRecord.class
@@ -8152,7 +8409,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/java/awt/SplashScreen.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/java/awt/Stroke.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/java/awt/SystemColor.class
-/usr/lib/jvm/java-1.18.0/modules/java.desktop/java/awt/SystemTray$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/java/awt/SystemTray.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/java/awt/Taskbar$Feature.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/java/awt/Taskbar$State.class
@@ -8329,7 +8585,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/java/awt/font/LineBreakMeasurer.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/java/awt/font/LineMetrics.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/java/awt/font/MultipleMaster.class
-/usr/lib/jvm/java-1.18.0/modules/java.desktop/java/awt/font/NumericShaper$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/java/awt/font/NumericShaper$Range$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/java/awt/font/NumericShaper$Range.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/java/awt/font/NumericShaper.class
@@ -9480,6 +9735,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/javax/swing/JTable$AccessibleJTable$AccessibleTableHeader.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/javax/swing/JTable$AccessibleJTable.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/javax/swing/JTable$BooleanEditor.class
+/usr/lib/jvm/java-1.18.0/modules/java.desktop/javax/swing/JTable$BooleanRenderer$AccessibleBooleanRenderer.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/javax/swing/JTable$BooleanRenderer.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/javax/swing/JTable$CellEditorRemover.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/javax/swing/JTable$DateRenderer.class
@@ -11252,7 +11508,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/javax/swing/text/html/parser/DocumentParser.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/javax/swing/text/html/parser/Element.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/javax/swing/text/html/parser/Entity.class
-/usr/lib/jvm/java-1.18.0/modules/java.desktop/javax/swing/text/html/parser/NPrintWriter.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/javax/swing/text/html/parser/Parser.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/javax/swing/text/html/parser/ParserDelegator$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.desktop/javax/swing/text/html/parser/ParserDelegator.class
@@ -13573,8 +13828,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.naming/com/sun/jndi/ldap/sasl/LdapSasl.class
 /usr/lib/jvm/java-1.18.0/modules/java.naming/com/sun/jndi/ldap/sasl/SaslInputStream.class
 /usr/lib/jvm/java-1.18.0/modules/java.naming/com/sun/jndi/ldap/sasl/SaslOutputStream.class
-/usr/lib/jvm/java-1.18.0/modules/java.naming/com/sun/jndi/ldap/sasl/TlsChannelBinding$TlsChannelBindingType.class
-/usr/lib/jvm/java-1.18.0/modules/java.naming/com/sun/jndi/ldap/sasl/TlsChannelBinding.class
 /usr/lib/jvm/java-1.18.0/modules/java.naming/com/sun/jndi/toolkit/ctx/AtomicContext$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.naming/com/sun/jndi/toolkit/ctx/AtomicContext$2.class
 /usr/lib/jvm/java-1.18.0/modules/java.naming/com/sun/jndi/toolkit/ctx/AtomicContext.class
@@ -13806,11 +14059,12 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http1AsyncReceiver.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http1Exchange$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http1Exchange$DataPair.class
-/usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http1Exchange$Http1BodySubscriber$1.class
-/usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http1Exchange$Http1BodySubscriber.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http1Exchange$Http1Publisher$Http1WriteSubscription.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http1Exchange$Http1Publisher$WriteTask.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http1Exchange$Http1Publisher.class
+/usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http1Exchange$Http1RequestBodySubscriber$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http1Exchange$Http1RequestBodySubscriber.class
+/usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http1Exchange$Http1ResponseBodySubscriber.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http1Exchange$State.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http1Exchange.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http1HeaderParser$1.class
@@ -13820,11 +14074,9 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http1Request$StreamSubscriber.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http1Request.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http1Response$1.class
-/usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http1Response$2.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http1Response$BodyReader.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http1Response$ClientRefCountTracker.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http1Response$HeadersReader.class
-/usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http1Response$Http1BodySubscriber.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http1Response$Receiver.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http1Response$State.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http1Response.class
@@ -13834,6 +14086,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http2Connection$FramesController.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http2Connection$HeaderDecoder.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http2Connection$Http2TubeSubscriber.class
+/usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http2Connection$PushContinuationState.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http2Connection$ValidatingHeadersConsumer.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Http2Connection.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/HttpClientBuilderImpl.class
@@ -13841,6 +14094,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/HttpClientImpl$DefaultThreadFactory.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/HttpClientImpl$DelegatingExecutor.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/HttpClientImpl$HttpClientTracker.class
+/usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/HttpClientImpl$PendingRequest.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/HttpClientImpl$SSLDirectBufferSupplier.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/HttpClientImpl$SelectorAttachment.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/HttpClientImpl$SelectorManager.class
@@ -13936,6 +14190,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/SocketTube$SocketFlowTask.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/SocketTube.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Stream$HeadersConsumer.class
+/usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Stream$Http2StreamResponseSubscriber.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Stream$PushedStream.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Stream$RequestSubscriber.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/Stream$StreamWindowUpdateSender.class
@@ -13955,6 +14210,8 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/common/FlowTube$TubePublisher.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/common/FlowTube$TubeSubscriber.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/common/FlowTube.class
+/usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/common/HttpBodySubscriberWrapper$1.class
+/usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/common/HttpBodySubscriberWrapper.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/common/HttpHeadersBuilder.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/common/ImmutableExtendedSSLSession.class
 /usr/lib/jvm/java-1.18.0/modules/java.net.http/jdk/internal/net/http/common/ImmutableSSLSession.class
@@ -14414,15 +14671,12 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/jgss/GSSManagerImpl.class
 /usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/jgss/GSSNameImpl.class
 /usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/jgss/GSSToken.class
-/usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/jgss/GSSUtil$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/jgss/GSSUtil.class
 /usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/jgss/HttpCaller.class
 /usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/jgss/JgssExtender.class
-/usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/jgss/LoginConfigImpl$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/jgss/LoginConfigImpl.class
 /usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/jgss/ProviderList$PreferencesEntry.class
 /usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/jgss/ProviderList.class
-/usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/jgss/SunProvider$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/jgss/SunProvider$ProviderService.class
 /usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/jgss/SunProvider.class
 /usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/jgss/TokenTracker$Entry.class
@@ -14436,8 +14690,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/jgss/krb5/Krb5AcceptCredential$1.class
 /usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/jgss/krb5/Krb5AcceptCredential.class
 /usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/jgss/krb5/Krb5Context$1.class
-/usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/jgss/krb5/Krb5Context$2.class
-/usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/jgss/krb5/Krb5Context$3.class
 /usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/jgss/krb5/Krb5Context$KerberosSessionKey.class
 /usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/jgss/krb5/Krb5Context.class
 /usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/jgss/krb5/Krb5CredElement.class
@@ -14579,8 +14831,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/krb5/internal/ccache/CredentialsCache$ConfigEntry.class
 /usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/krb5/internal/ccache/CredentialsCache.class
 /usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/krb5/internal/ccache/FileCCacheConstants.class
-/usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/krb5/internal/ccache/FileCredentialsCache$1.class
-/usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/krb5/internal/ccache/FileCredentialsCache$2.class
 /usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/krb5/internal/ccache/FileCredentialsCache.class
 /usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/krb5/internal/ccache/MemoryCredentialsCache.class
 /usr/lib/jvm/java-1.18.0/modules/java.security.jgss/sun/security/krb5/internal/ccache/Tag.class
@@ -18048,7 +18298,9 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/tree/CompilationUnitTree.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/tree/CompoundAssignmentTree.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/tree/ConditionalExpressionTree.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/tree/ConstantCaseLabelTree.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/tree/ContinueTree.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/tree/DeconstructionPatternTree.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/tree/DefaultCaseLabelTree.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/tree/DirectiveTree.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/tree/DoWhileLoopTree.class
@@ -18059,7 +18311,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/tree/ExpressionStatementTree.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/tree/ExpressionTree.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/tree/ForLoopTree.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/tree/GuardedPatternTree.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/tree/IdentifierTree.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/tree/IfTree.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/tree/ImportTree.class
@@ -18085,6 +18336,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/tree/ParameterizedTypeTree.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/tree/ParenthesizedPatternTree.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/tree/ParenthesizedTree.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/tree/PatternCaseLabelTree.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/tree/PatternTree.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/tree/PrimitiveTypeTree.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/tree/ProvidesTree.class
@@ -18113,7 +18365,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/util/DocTreeFactory.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/util/DocTreePath$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/util/DocTreePath$1PathFinder.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/util/DocTreePath$1Result.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/util/DocTreePath.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/util/DocTreePathScanner.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/util/DocTreeScanner.class
@@ -18129,7 +18380,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/util/TaskListener.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/util/TreePath$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/util/TreePath$1PathFinder.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/util/TreePath$1Result.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/util/TreePath.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/util/TreePathScanner.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/source/util/TreeScanner.class
@@ -18815,7 +19065,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/comp/TypeEnter$HierarchyPhase.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/comp/TypeEnter$ImportsPhase.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/comp/TypeEnter$MembersPhase.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/comp/TypeEnter$PermitsPhase.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/comp/TypeEnter$Phase.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/comp/TypeEnter$RecordConstructorHelper.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/comp/TypeEnter$RecordPhase.class
@@ -18981,6 +19230,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/jvm/ModuleNameReader$BadClassFile.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/jvm/ModuleNameReader.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/jvm/PoolConstant$Dynamic$BsmKey.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/jvm/PoolConstant$Dynamic$PoolKey.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/jvm/PoolConstant$Dynamic.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/jvm/PoolConstant$LoadableConstant$BasicConstant.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/jvm/PoolConstant$LoadableConstant.class
@@ -19231,13 +19481,16 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/resources/LauncherProperties$Errors.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/resources/LauncherProperties.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/resources/compiler.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/resources/compiler_de.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/resources/compiler_ja.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/resources/compiler_zh_CN.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/resources/ct.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/resources/javac.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/resources/javac_de.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/resources/javac_ja.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/resources/javac_zh_CN.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/resources/launcher.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/resources/launcher_de.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/resources/launcher_ja.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/resources/launcher_zh_CN.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/resources/legacy.class
@@ -19287,7 +19540,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/DCTree.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/DocCommentTable.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/DocPretty$1.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/DocPretty$UncheckedIOException.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/DocPretty.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/DocTreeMaker$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/DocTreeMaker$2.class
@@ -19312,6 +19564,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/JCTree$JCClassDecl.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/JCTree$JCCompilationUnit.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/JCTree$JCConditional.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/JCTree$JCConstantCaseLabel.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/JCTree$JCContinue.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/JCTree$JCDefaultCaseLabel.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/JCTree$JCDirective.class
@@ -19324,7 +19577,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/JCTree$JCFieldAccess.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/JCTree$JCForLoop.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/JCTree$JCFunctionalExpression.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/JCTree$JCGuardPattern.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/JCTree$JCIdent.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/JCTree$JCIf.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/JCTree$JCImport.class
@@ -19349,10 +19601,12 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/JCTree$JCParens.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/JCTree$JCParenthesizedPattern.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/JCTree$JCPattern.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/JCTree$JCPatternCaseLabel.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/JCTree$JCPolyExpression$PolyKind.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/JCTree$JCPolyExpression.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/JCTree$JCPrimitiveTypeTree.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/JCTree$JCProvides.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/JCTree$JCRecordPattern.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/JCTree$JCRequires.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/JCTree$JCReturn.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/JCTree$JCSkip.class
@@ -19380,17 +19634,13 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/JCTree.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/Pretty$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/Pretty$1UsedVisitor.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/Pretty$UncheckedIOException.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/Pretty.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/TreeCopier$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/TreeCopier.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/TreeInfo$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/TreeInfo$1DiagScanner.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/TreeInfo$1PathFinder.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/TreeInfo$1Result.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/TreeInfo$2.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/TreeInfo$DeclScanner.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/TreeInfo$PatternPrimaryType.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/TreeInfo$PosKind.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/TreeInfo$TypeAnnotationFinder.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/com/sun/tools/javac/tree/TreeInfo.class
@@ -19645,6 +19895,8 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/sun/tools/serialver/SerialVer.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/sun/tools/serialver/resources/serialver.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/sun/tools/serialver/resources/serialver.properties
+/usr/lib/jvm/java-1.18.0/modules/jdk.compiler/sun/tools/serialver/resources/serialver_de.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.compiler/sun/tools/serialver/resources/serialver_de.properties
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/sun/tools/serialver/resources/serialver_ja.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/sun/tools/serialver/resources/serialver_ja.properties
 /usr/lib/jvm/java-1.18.0/modules/jdk.compiler/sun/tools/serialver/resources/serialver_zh_CN.class
@@ -20069,20 +20321,20 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CLHSDB.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$10.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$11$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$11.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$12.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$13$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$13.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$14.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$15.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$16$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$16.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$17$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$17.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$18$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$18.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$19$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$19.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$2.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$20$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$20.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$21.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$22.class
@@ -20106,13 +20358,13 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$39.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$4.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$40.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$41$1.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$41$2.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$41$3.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$41.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$42$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$42.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$43$1.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$43$2.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$43$3.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$43.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$44$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$44.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$45.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$46.class
@@ -20125,12 +20377,16 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$52.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$53.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$54.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$55$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$55.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$56.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$57.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$58$1.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$58.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$6.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$7.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$8.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$9.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$AddressRange.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$BootFilter.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$Command.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/CommandProcessor$DebuggerInterface.class
@@ -20155,22 +20411,22 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$21.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$22.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$23.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$24$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$24.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$25$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$25.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$26.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$27.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$28$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$28.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$29$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$29.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$3.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$30$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$30.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$31$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$31.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$32$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$32.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$33$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$33.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$34$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$34.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$35.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$36.class
@@ -20181,12 +20437,13 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$40.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$41.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$42.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$43$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$43.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$44$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$44.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$45$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$45.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$46$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$46.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$47.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$5.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$6.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/HSDB$7.class
@@ -20358,6 +20615,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/MachineDescriptionAMD64.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/MachineDescriptionIntelX86.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/MachineDescriptionPPC64.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/MachineDescriptionRISCV64.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/MachineDescriptionTwosComplement.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/MappedByteBufferDataSource.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/NoSuchSymbolException.class
@@ -20502,6 +20760,8 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/linux/amd64/LinuxAMD64ThreadContext.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/linux/ppc64/LinuxPPC64CFrame.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/linux/ppc64/LinuxPPC64ThreadContext.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/linux/riscv64/LinuxRISCV64CFrame.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/linux/riscv64/LinuxRISCV64ThreadContext.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/linux/x86/LinuxX86CFrame.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/linux/x86/LinuxX86ThreadContext.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/posix/AddressDataSource.class
@@ -20542,6 +20802,9 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/proc/ppc64/ProcPPC64Thread.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/proc/ppc64/ProcPPC64ThreadContext.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/proc/ppc64/ProcPPC64ThreadFactory.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/proc/riscv64/ProcRISCV64Thread.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/proc/riscv64/ProcRISCV64ThreadContext.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/proc/riscv64/ProcRISCV64ThreadFactory.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/proc/x86/ProcX86Thread.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/proc/x86/ProcX86ThreadContext.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/proc/x86/ProcX86ThreadFactory.class
@@ -20561,9 +20824,13 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/remote/ppc64/RemotePPC64Thread.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/remote/ppc64/RemotePPC64ThreadContext.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/remote/ppc64/RemotePPC64ThreadFactory.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/remote/riscv64/RemoteRISCV64Thread.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/remote/riscv64/RemoteRISCV64ThreadContext.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/remote/riscv64/RemoteRISCV64ThreadFactory.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/remote/x86/RemoteX86Thread.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/remote/x86/RemoteX86ThreadContext.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/remote/x86/RemoteX86ThreadFactory.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/riscv64/RISCV64ThreadContext.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/win32/coff/AuxBfEfRecord.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/win32/coff/AuxFileRecord.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/debugger/win32/coff/AuxFunctionDefinitionRecord.class
@@ -20790,7 +21057,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/gc/serial/SerialHeap.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/gc/serial/TenuredGeneration$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/gc/serial/TenuredGeneration.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/gc/shared/CardGeneration.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/gc/shared/CollectedHeap$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/gc/shared/CollectedHeap.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/gc/shared/CollectedHeapName.class
@@ -21010,6 +21276,8 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/oops/InstanceMirrorKlass.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/oops/InstanceRefKlass$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/oops/InstanceRefKlass.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/oops/InstanceStackChunkKlass$1.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/oops/InstanceStackChunkKlass.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/oops/IntField.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/oops/JVMDIClassStatus.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/oops/JumpData.class
@@ -21273,6 +21541,8 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/runtime/linux_amd64/LinuxAMD64JavaThreadPDAccess.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/runtime/linux_ppc64/LinuxPPC64JavaThreadPDAccess$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/runtime/linux_ppc64/LinuxPPC64JavaThreadPDAccess.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/runtime/linux_riscv64/LinuxRISCV64JavaThreadPDAccess$1.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/runtime/linux_riscv64/LinuxRISCV64JavaThreadPDAccess.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/runtime/linux_x86/LinuxSignals.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/runtime/linux_x86/LinuxX86JavaThreadPDAccess$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/runtime/linux_x86/LinuxX86JavaThreadPDAccess.class
@@ -21282,6 +21552,12 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/runtime/ppc64/PPC64Frame.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/runtime/ppc64/PPC64JavaCallWrapper.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/runtime/ppc64/PPC64RegisterMap.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/runtime/riscv64/RISCV64CurrentFrameGuess.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/runtime/riscv64/RISCV64Frame$1.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/runtime/riscv64/RISCV64Frame.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/runtime/riscv64/RISCV64JavaCallWrapper$1.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/runtime/riscv64/RISCV64JavaCallWrapper.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/runtime/riscv64/RISCV64RegisterMap.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/runtime/vmSymbols$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/runtime/vmSymbols.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.hotspot.agent/sun/jvm/hotspot/runtime/win32_aarch64/Win32AARCH64JavaThreadPDAccess$1.class
@@ -21793,11 +22069,10 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.httpserver/sun/net/httpserver/ServerImpl$Dispatcher.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.httpserver/sun/net/httpserver/ServerImpl$Exchange$LinkHandler.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.httpserver/sun/net/httpserver/ServerImpl$Exchange.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.httpserver/sun/net/httpserver/ServerImpl$ServerTimerTask.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.httpserver/sun/net/httpserver/ServerImpl$ServerTimerTask1.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.httpserver/sun/net/httpserver/ServerImpl$IdleTimeoutTask.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.httpserver/sun/net/httpserver/ServerImpl$ReqRspTimeoutTask.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.httpserver/sun/net/httpserver/ServerImpl.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.httpserver/sun/net/httpserver/StreamClosedException.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.httpserver/sun/net/httpserver/TimeSource.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.httpserver/sun/net/httpserver/UndefLengthOutputStream.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.httpserver/sun/net/httpserver/UnmodifiableHeaders.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.httpserver/sun/net/httpserver/Utils.class
@@ -21810,179 +22085,27 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.httpserver/sun/net/httpserver/simpleserver/SimpleFileServerImpl$Out.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.httpserver/sun/net/httpserver/simpleserver/SimpleFileServerImpl$Startup.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.httpserver/sun/net/httpserver/simpleserver/SimpleFileServerImpl.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.httpserver/sun/net/httpserver/simpleserver/URIPathSegment.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.httpserver/sun/net/httpserver/simpleserver/resources/simpleserver.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/_the.jdk.incubator.foreign-server.conf
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/_the.jdk.incubator.foreign.config_vardeps
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/_the.jdk.incubator.foreign.vardeps
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/_the.jdk.incubator.foreign_batch
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/_the.jdk.incubator.foreign_batch.cmdline
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/_the.jdk.incubator.foreign_batch.filelist
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/_the.jdk.incubator.foreign_batch.log
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/_the.jdk.incubator.foreign_pubapi
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/AbstractLayout.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/Addressable.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/CLinker.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/FunctionDescriptor$VariadicFunction.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/FunctionDescriptor.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/GroupLayout$Kind.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/GroupLayout.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/MemoryAddress.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/MemoryHandles.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/MemoryLayout$PathElement.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/MemoryLayout.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/MemorySegment.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/NativeSymbol.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/PaddingLayout.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/ResourceScope.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/SegmentAllocator$1Holder.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/SegmentAllocator.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/SequenceLayout.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/SymbolLookup.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/VaList$Builder.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/VaList.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/ValueLayout$OfAddress.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/ValueLayout$OfBoolean.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/ValueLayout$OfByte.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/ValueLayout$OfChar.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/ValueLayout$OfDouble.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/ValueLayout$OfFloat.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/ValueLayout$OfInt.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/ValueLayout$OfLong.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/ValueLayout$OfShort.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/incubator/foreign/ValueLayout.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/AbstractMemorySegmentImpl$SegmentSplitter.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/AbstractMemorySegmentImpl.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/ArenaAllocator.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/CABI.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/ConfinedScope$ConfinedResourceList.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/ConfinedScope.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/HeapMemorySegmentImpl$OfByte.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/HeapMemorySegmentImpl$OfChar.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/HeapMemorySegmentImpl$OfDouble.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/HeapMemorySegmentImpl$OfFloat.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/HeapMemorySegmentImpl$OfInt.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/HeapMemorySegmentImpl$OfLong.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/HeapMemorySegmentImpl$OfShort.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/HeapMemorySegmentImpl.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/LayoutPath$PathElementImpl$PathKind.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/LayoutPath$PathElementImpl.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/LayoutPath.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/MappedMemorySegmentImpl$1.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/MappedMemorySegmentImpl$EmptyMappedMemorySegmentImpl.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/MappedMemorySegmentImpl.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/MemoryAddressImpl.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/NativeMemorySegmentImpl$1.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/NativeMemorySegmentImpl.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/NativeSymbolImpl.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/PlatformLayouts$1.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/PlatformLayouts$AArch64.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/PlatformLayouts$SysV.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/PlatformLayouts$Win64.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/PlatformLayouts.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/ResourceScopeImpl$GlobalScopeImpl.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/ResourceScopeImpl$ResourceList$ResourceCleanup$1.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/ResourceScopeImpl$ResourceList$ResourceCleanup$2.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/ResourceScopeImpl$ResourceList$ResourceCleanup.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/ResourceScopeImpl$ResourceList.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/ResourceScopeImpl.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/Scoped.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/SharedScope$SharedResourceList.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/SharedScope.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/SystemLookup$1.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/SystemLookup$WindowsFallbackSymbols.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/SystemLookup.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/Utils$1VarHandleCache.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/Utils.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/ABIDescriptor.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/Architecture.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/Binding$Allocate.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/Binding$BoxAddress.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/Binding$BufferLoad.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/Binding$BufferStore.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/Binding$Builder.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/Binding$Context$1.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/Binding$Context$2.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/Binding$Context$3.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/Binding$Context.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/Binding$Copy.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/Binding$Dereference.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/Binding$Dup.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/Binding$Move.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/Binding$Tag.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/Binding$ToSegment.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/Binding$UnboxAddress$1.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/Binding$UnboxAddress.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/Binding$VMLoad.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/Binding$VMStore.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/Binding.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/BindingInterpreter$LoadFunc.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/BindingInterpreter$StoreFunc.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/BindingInterpreter.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/BufferLayout.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/CallingSequence.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/CallingSequenceBuilder.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/ProgrammableInvoker.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/ProgrammableUpcallHandler$CallRegs.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/ProgrammableUpcallHandler.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/SharedUtils$1.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/SharedUtils$AllocHolder.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/SharedUtils$EmptyVaList.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/SharedUtils$SimpleVaArg.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/SharedUtils.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/UpcallStubs$1.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/UpcallStubs.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/VMStorage.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/aarch64/AArch64Architecture$StorageClasses.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/aarch64/AArch64Architecture.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/aarch64/CallArranger$1.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/aarch64/CallArranger$BindingCalculator.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/aarch64/CallArranger$Bindings.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/aarch64/CallArranger$BoxBindingCalculator.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/aarch64/CallArranger$StorageCalculator.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/aarch64/CallArranger$UnboxBindingCalculator.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/aarch64/CallArranger.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/aarch64/TypeClass.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/aarch64/linux/LinuxAArch64CallArranger.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/aarch64/linux/LinuxAArch64Linker.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/aarch64/linux/LinuxAArch64VaList$1.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/aarch64/linux/LinuxAArch64VaList$Builder.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/aarch64/linux/LinuxAArch64VaList.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/aarch64/macos/MacOsAArch64CallArranger.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/aarch64/macos/MacOsAArch64Linker.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/aarch64/macos/MacOsAArch64VaList$1.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/aarch64/macos/MacOsAArch64VaList$Builder.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/aarch64/macos/MacOsAArch64VaList.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/X86_64Architecture$StorageClasses.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/X86_64Architecture.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/sysv/ArgumentClassImpl.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/sysv/CallArranger$1.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/sysv/CallArranger$BindingCalculator.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/sysv/CallArranger$Bindings.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/sysv/CallArranger$BoxBindingCalculator.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/sysv/CallArranger$StorageCalculator.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/sysv/CallArranger$UnboxBindingCalculator.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/sysv/CallArranger.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/sysv/SysVVaList$1.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/sysv/SysVVaList$Builder.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/sysv/SysVVaList.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/sysv/SysVx64Linker.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/sysv/TypeClass$1.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/sysv/TypeClass$Kind.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/sysv/TypeClass.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/windows/CallArranger$1.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/windows/CallArranger$1CallingSequenceBuilderHelper.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/windows/CallArranger$BindingCalculator.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/windows/CallArranger$Bindings.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/windows/CallArranger$BoxBindingCalculator.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/windows/CallArranger$StorageCalculator.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/windows/CallArranger$UnboxBindingCalculator.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/windows/CallArranger.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/windows/TypeClass.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/windows/WinVaList$1.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/windows/WinVaList$Builder.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/windows/WinVaList.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/jdk/internal/foreign/abi/x64/windows/Windowsx64Linker.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.foreign/module-info.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.httpserver/sun/net/httpserver/simpleserver/resources/simpleserver_de.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.httpserver/sun/net/httpserver/simpleserver/resources/simpleserver_ja.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.httpserver/sun/net/httpserver/simpleserver/resources/simpleserver_zh_CN.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.concurrent/_the.jdk.incubator.concurrent-server.conf
+/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.concurrent/_the.jdk.incubator.concurrent.config_vardeps
+/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.concurrent/_the.jdk.incubator.concurrent.vardeps
+/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.concurrent/_the.jdk.incubator.concurrent_batch
+/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.concurrent/_the.jdk.incubator.concurrent_batch.cmdline
+/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.concurrent/_the.jdk.incubator.concurrent_batch.filelist
+/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.concurrent/_the.jdk.incubator.concurrent_batch.log
+/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.concurrent/_the.jdk.incubator.concurrent_pubapi
+/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.concurrent/jdk/incubator/concurrent/StructureViolationException.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.concurrent/jdk/incubator/concurrent/StructuredTaskScope$1.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.concurrent/jdk/incubator/concurrent/StructuredTaskScope$FactoryHolder.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.concurrent/jdk/incubator/concurrent/StructuredTaskScope$FutureImpl.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.concurrent/jdk/incubator/concurrent/StructuredTaskScope$ShutdownOnFailure.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.concurrent/jdk/incubator/concurrent/StructuredTaskScope$ShutdownOnSuccess.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.concurrent/jdk/incubator/concurrent/StructuredTaskScope.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.concurrent/module-info.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/_the.jdk.incubator.vector-server.conf
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/_the.jdk.incubator.vector.config_vardeps
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/_the.jdk.incubator.vector.vardeps
@@ -22017,7 +22140,9 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ByteVector$ByteSpecies.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ByteVector$FBinOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ByteVector$FBinTest.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ByteVector$FLdLongOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ByteVector$FLdOp.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ByteVector$FStLongOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ByteVector$FStOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ByteVector$FTriOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ByteVector$FUnOp.class
@@ -22041,7 +22166,9 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/DoubleVector$DoubleSpecies.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/DoubleVector$FBinOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/DoubleVector$FBinTest.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/DoubleVector$FLdLongOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/DoubleVector$FLdOp.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/DoubleVector$FStLongOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/DoubleVector$FStOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/DoubleVector$FTriOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/DoubleVector$FUnOp.class
@@ -22064,7 +22191,9 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/FloatMaxVector.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/FloatVector$FBinOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/FloatVector$FBinTest.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/FloatVector$FLdLongOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/FloatVector$FLdOp.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/FloatVector$FStLongOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/FloatVector$FStOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/FloatVector$FTriOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/FloatVector$FUnOp.class
@@ -22088,7 +22217,9 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/IntMaxVector.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/IntVector$FBinOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/IntVector$FBinTest.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/IntVector$FLdLongOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/IntVector$FLdOp.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/IntVector$FStLongOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/IntVector$FStOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/IntVector$FTriOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/IntVector$FUnOp.class
@@ -22113,7 +22244,9 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/LongMaxVector.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/LongVector$FBinOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/LongVector$FBinTest.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/LongVector$FLdLongOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/LongVector$FLdOp.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/LongVector$FStLongOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/LongVector$FStOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/LongVector$FTriOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/LongVector$FUnOp.class
@@ -22137,7 +22270,9 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ShortMaxVector.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ShortVector$FBinOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ShortVector$FBinTest.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ShortVector$FLdLongOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ShortVector$FLdOp.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ShortVector$FStLongOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ShortVector$FStOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ShortVector$FTriOp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.incubator.vector/jdk/incubator/vector/ShortVector$FUnOp.class
@@ -22607,6 +22742,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.internal.vm.ci/jdk/vm/ci/hotspot/HotSpotCompiledNmethod.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.internal.vm.ci/jdk/vm/ci/hotspot/HotSpotCompressedNullConstant.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.internal.vm.ci/jdk/vm/ci/hotspot/HotSpotConstant.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.internal.vm.ci/jdk/vm/ci/hotspot/HotSpotConstantPool$BootstrapMethodInvocationImpl.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.internal.vm.ci/jdk/vm/ci/hotspot/HotSpotConstantPool$Bytecodes.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.internal.vm.ci/jdk/vm/ci/hotspot/HotSpotConstantPool$JvmConstant.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.internal.vm.ci/jdk/vm/ci/hotspot/HotSpotConstantPool$JvmConstants.class
@@ -22639,7 +22775,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.internal.vm.ci/jdk/vm/ci/hotspot/HotSpotMemoryAccessProviderImpl.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.internal.vm.ci/jdk/vm/ci/hotspot/HotSpotMetaAccessProvider$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.internal.vm.ci/jdk/vm/ci/hotspot/HotSpotMetaAccessProvider.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.internal.vm.ci/jdk/vm/ci/hotspot/HotSpotMetaData.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.internal.vm.ci/jdk/vm/ci/hotspot/HotSpotMetaspaceConstant.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.internal.vm.ci/jdk/vm/ci/hotspot/HotSpotMetaspaceConstantImpl.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.internal.vm.ci/jdk/vm/ci/hotspot/HotSpotMethod.class
@@ -22731,6 +22866,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.internal.vm.ci/jdk/vm/ci/meta/Assumptions$NoFinalizableSubclass.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.internal.vm.ci/jdk/vm/ci/meta/Assumptions.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.internal.vm.ci/jdk/vm/ci/meta/Constant.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.internal.vm.ci/jdk/vm/ci/meta/ConstantPool$BootstrapMethodInvocation.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.internal.vm.ci/jdk/vm/ci/meta/ConstantPool.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.internal.vm.ci/jdk/vm/ci/meta/ConstantReflectionProvider.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.internal.vm.ci/jdk/vm/ci/meta/DefaultProfilingInfo.class
@@ -22839,6 +22975,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jartool/module-info.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jartool/sun/security/tools/jarsigner/Main.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jartool/sun/security/tools/jarsigner/Resources.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jartool/sun/security/tools/jarsigner/Resources_de.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jartool/sun/security/tools/jarsigner/Resources_ja.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jartool/sun/security/tools/jarsigner/Resources_zh_CN.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jartool/sun/tools/jar/CommandLine.class
@@ -22861,6 +22998,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jartool/sun/tools/jar/GNUStyleOptions$20.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jartool/sun/tools/jar/GNUStyleOptions$21.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jartool/sun/tools/jar/GNUStyleOptions$22.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jartool/sun/tools/jar/GNUStyleOptions$23.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jartool/sun/tools/jar/GNUStyleOptions$3.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jartool/sun/tools/jar/GNUStyleOptions$4.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jartool/sun/tools/jar/GNUStyleOptions$5.class
@@ -23031,6 +23169,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/PackageWriterImpl.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/PreviewListWriter.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/PropertyWriterImpl.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/SearchWriter.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/SerializedFormWriterImpl.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/Signatures$MemberSignature.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/Signatures$TypeSignature$1.class
@@ -23041,6 +23180,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/SummaryListWriter$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/SummaryListWriter.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/SystemPropertiesWriter.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/Table$Tab.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/Table.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/TableHeader.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/TagletWriterImpl$1.class
@@ -23087,16 +23227,16 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/resources/script-dir/images/ui-icons_454545_256x240.png
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/resources/script-dir/images/ui-icons_888888_256x240.png
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/resources/script-dir/images/ui-icons_cd0a0a_256x240.png
-/usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/resources/script-dir/jquery-3.5.1.js
-/usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/resources/script-dir/jquery-3.5.1.min.js
+/usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/resources/script-dir/jquery-3.6.0.js
+/usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/resources/script-dir/jquery-3.6.0.min.js
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/resources/script-dir/jquery-ui.css
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/resources/script-dir/jquery-ui.js
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/resources/script-dir/jquery-ui.min.css
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/resources/script-dir/jquery-ui.min.js
-/usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/resources/script-dir/jquery-ui.structure.css
-/usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/resources/script-dir/jquery-ui.structure.min.css
+/usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/resources/search-page.js
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/resources/search.js.template
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/resources/standard.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/resources/standard_de.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/resources/standard_ja.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/resources/standard_zh_CN.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/formats/html/resources/x.png
@@ -23135,6 +23275,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/BaseOptions$33.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/BaseOptions$34.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/BaseOptions$35.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/BaseOptions$36.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/BaseOptions$4.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/BaseOptions$5.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/BaseOptions$6.class
@@ -23201,6 +23342,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/builders/SerializedFormBuilder.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/resources/copy.svg
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/resources/doclets.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/resources/doclets_de.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/resources/doclets_ja.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/resources/doclets_zh_CN.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/resources/external-link.svg
@@ -23213,6 +23355,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/resources/releases/element-list-16.txt
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/resources/releases/element-list-17.txt
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/resources/releases/element-list-18.txt
+/usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/resources/releases/element-list-19.txt
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/resources/releases/element-list-9.txt
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/resources/releases/package-list-7.txt
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/resources/releases/package-list-8.txt
@@ -23275,6 +23418,10 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/taglets/snippet/StyledText$Styles.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/taglets/snippet/StyledText$SubText.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/taglets/snippet/StyledText.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/util/ClassTree$1.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/util/ClassTree$Hierarchy.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/util/ClassTree$HierarchyKind.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/util/ClassTree$SubtypeMap.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/util/ClassTree.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/util/ClassUseMapper$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/util/ClassUseMapper$2.class
@@ -23354,7 +23501,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/util/Utils$10.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/util/Utils$11.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/util/Utils$12.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/util/Utils$13.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/util/Utils$2.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/util/Utils$3.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/util/Utils$4.class
@@ -23370,6 +23516,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/util/Utils$DocCollator.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/util/Utils$ElementFlag.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/util/Utils$Pair.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/util/Utils$PreviewFlagProvider.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/util/Utils$PreviewSummary.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/util/Utils.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclets/toolkit/util/VisibleMemberCache.class
@@ -23426,6 +23573,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclint/Messages$Stats.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclint/Messages.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclint/resources/doclint.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclint/resources/doclint_de.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclint/resources/doclint_ja.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/doclint/resources/doclint_zh_CN.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/tool/AccessKind.class
@@ -23513,6 +23661,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/tool/ToolOptions$ToolOption.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/tool/ToolOptions.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/tool/resources/javadoc.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/tool/resources/javadoc_de.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/tool/resources/javadoc_ja.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/tool/resources/javadoc_zh_CN.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.javadoc/jdk/javadoc/internal/tool/resources/version.class
@@ -23819,6 +23968,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jconsole/sun/tools/jconsole/resources/mbean.gif
 /usr/lib/jvm/java-1.18.0/modules/jdk.jconsole/sun/tools/jconsole/resources/mbeanserverdelegate.gif
 /usr/lib/jvm/java-1.18.0/modules/jdk.jconsole/sun/tools/jconsole/resources/messages.properties
+/usr/lib/jvm/java-1.18.0/modules/jdk.jconsole/sun/tools/jconsole/resources/messages_de.properties
 /usr/lib/jvm/java-1.18.0/modules/jdk.jconsole/sun/tools/jconsole/resources/messages_ja.properties
 /usr/lib/jvm/java-1.18.0/modules/jdk.jconsole/sun/tools/jconsole/resources/messages_zh_CN.properties
 /usr/lib/jvm/java-1.18.0/modules/jdk.jconsole/sun/tools/jconsole/resources/xobject.gif
@@ -24088,6 +24238,8 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdeps/com/sun/tools/javap/TypeAnnotationWriter.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdeps/com/sun/tools/javap/resources/javap.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdeps/com/sun/tools/javap/resources/javap.properties
+/usr/lib/jvm/java-1.18.0/modules/jdk.jdeps/com/sun/tools/javap/resources/javap_de.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jdeps/com/sun/tools/javap/resources/javap_de.properties
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdeps/com/sun/tools/javap/resources/javap_ja.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdeps/com/sun/tools/javap/resources/javap_ja.properties
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdeps/com/sun/tools/javap/resources/javap_zh_CN.class
@@ -24112,6 +24264,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdeps/com/sun/tools/jdeprscan/Pretty.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdeps/com/sun/tools/jdeprscan/TraverseProc.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdeps/com/sun/tools/jdeprscan/resources/jdeprscan.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jdeps/com/sun/tools/jdeprscan/resources/jdeprscan_de.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdeps/com/sun/tools/jdeprscan/resources/jdeprscan_ja.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdeps/com/sun/tools/jdeprscan/resources/jdeprscan_zh_CN.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdeps/com/sun/tools/jdeprscan/scan/CPEntries.class
@@ -24243,6 +24396,8 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdeps/com/sun/tools/jdeps/VersionHelper.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdeps/com/sun/tools/jdeps/resources/jdeps.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdeps/com/sun/tools/jdeps/resources/jdeps.properties
+/usr/lib/jvm/java-1.18.0/modules/jdk.jdeps/com/sun/tools/jdeps/resources/jdeps_de.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jdeps/com/sun/tools/jdeps/resources/jdeps_de.properties
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdeps/com/sun/tools/jdeps/resources/jdeps_ja.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdeps/com/sun/tools/jdeps/resources/jdeps_ja.properties
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdeps/com/sun/tools/jdeps/resources/jdeps_zh_CN.class
@@ -24306,6 +24461,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/jdi/NativeMethodException.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/jdi/ObjectCollectedException.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/jdi/ObjectReference.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/jdi/OpaqueFrameException.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/jdi/PathSearchingVirtualMachine.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/jdi/PrimitiveType.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/jdi/PrimitiveValue.class
@@ -24437,6 +24593,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/example/debug/tty/SourceMapper.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/example/debug/tty/TTY.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/example/debug/tty/TTYResources.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/example/debug/tty/TTYResources_de.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/example/debug/tty/TTYResources_ja.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/example/debug/tty/TTYResources_zh_CN.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/example/debug/tty/ThreadGroupIterator.class
@@ -24496,6 +24653,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/jdi/EventRequestManagerImpl$MonitorWaitedRequestImpl.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/jdi/EventRequestManagerImpl$StepRequestImpl.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/jdi/EventRequestManagerImpl$ThreadDeathRequestImpl.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/jdi/EventRequestManagerImpl$ThreadLifecycleEventRequestImpl.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/jdi/EventRequestManagerImpl$ThreadStartRequestImpl.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/jdi/EventRequestManagerImpl$ThreadVisibleEventRequestImpl.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/jdi/EventRequestManagerImpl$VMDeathRequestImpl.class
@@ -24594,6 +24752,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/jdi/JDWP$EventRequest$Set$Modifier$InstanceOnly.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/jdi/JDWP$EventRequest$Set$Modifier$LocationOnly.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/jdi/JDWP$EventRequest$Set$Modifier$ModifierCommon.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/jdi/JDWP$EventRequest$Set$Modifier$PlatformThreadsOnly.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/jdi/JDWP$EventRequest$Set$Modifier$SourceNameMatch.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/jdi/JDWP$EventRequest$Set$Modifier$Step.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/jdi/JDWP$EventRequest$Set$Modifier$ThreadOnly.class
@@ -24678,6 +24837,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/jdi/JDWP$ThreadReference$Frames$Frame.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/jdi/JDWP$ThreadReference$Frames.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/jdi/JDWP$ThreadReference$Interrupt.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/jdi/JDWP$ThreadReference$IsVirtual.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/jdi/JDWP$ThreadReference$Name.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/jdi/JDWP$ThreadReference$OwnedMonitors.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/jdi/JDWP$ThreadReference$OwnedMonitorsStackDepthInfo$monitor.class
@@ -24800,6 +24960,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/jdi/VoidTypeImpl.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/jdi/VoidValueImpl.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/jdi/resources/jdi.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/jdi/resources/jdi_de.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/jdi/resources/jdi_ja.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/com/sun/tools/jdi/resources/jdi_zh_CN.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jdi/module-info.class
@@ -24881,7 +25042,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/events/AbstractBufferStatisticsEvent.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/events/AbstractJDKEvent.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/events/ActiveRecordingEvent.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/events/ActiveSettingEvent$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/events/ActiveSettingEvent.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/events/CertificateId.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/events/ContainerCPUThrottlingEvent.class
@@ -24892,21 +25052,26 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/events/DeserializationEvent.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/events/DirectBufferStatisticsEvent.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/events/ErrorThrownEvent.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/events/EventConfigurations.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/events/ExceptionStatisticsEvent.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/events/ExceptionThrownEvent.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/events/FileForceEvent.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/events/FileReadEvent.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/events/FileWriteEvent.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/events/Handlers.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/events/ProcessStartEvent.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/events/SecurityPropertyModificationEvent.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/events/SocketReadEvent.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/events/SocketWriteEvent.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/events/TLSHandshakeEvent.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/events/ThreadSleepEvent.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/events/VirtualThreadEndEvent.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/events/VirtualThreadPinnedEvent.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/events/VirtualThreadStartEvent.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/events/VirtualThreadSubmitFailedEvent.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/events/X509CertificateEvent.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/events/X509ValidationEvent.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/ASMToolkit.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/AnnotationConstruct$AnnotationInvokationHandler.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/AnnotationConstruct$AnnotationInvocationHandler.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/AnnotationConstruct.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/Bits.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/ChunkInputStream.class
@@ -24919,11 +25084,11 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/EventClassBuilder.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/EventControl$NamedControl.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/EventControl.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/EventHandlerCreator.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/EventInstrumentation$FieldInfo.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/EventInstrumentation$SettingInfo.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/EventInstrumentation.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/EventWriter.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/EventWriterFactoryRecipe.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/EventWriterKey.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/EventWriterMethod.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/FilePurger.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/JVM.class
@@ -24975,7 +25140,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/ShutdownHook$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/ShutdownHook$ExceptionHandler.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/ShutdownHook.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/StringPool$SimpleStringIdPool.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/StringPool.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/Throttle.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/Type.class
@@ -24988,11 +25152,11 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/AbstractEventStream$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/AbstractEventStream.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/ChunkHeader.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/ChunkParser$CheckPointType.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/ChunkParser$CheckpointType.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/ChunkParser$ParserConfiguration.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/ChunkParser.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/CompositeParser.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/ConstantLookup.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/ConstantMap$Reference.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/ConstantMap.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/Dispatcher$EventDispatcher.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/Dispatcher.class
@@ -25020,7 +25184,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/ParserFactory$BooleanParser.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/ParserFactory$ByteParser.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/ParserFactory$CharacterParser.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/ParserFactory$CompositeParser.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/ParserFactory$ConstantValueParser.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/ParserFactory$DoubleParser.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/ParserFactory$EventValueConstantParser.class
@@ -25033,6 +25196,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/ParserState.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/RecordingInput$Block.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/RecordingInput.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/Reference.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/RepositoryFiles.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/StreamConfiguration.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/StringParser$CharArrayParser.class
@@ -25040,6 +25204,12 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/StringParser$Encoding.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/StringParser.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/TimeConverter.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/filter/CheckpointEvent.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/filter/CheckpointPool.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/filter/ChunkWriter.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/filter/Constants.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/filter/PoolEntry.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/consumer/filter/RecordingOutput.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/dcmd/AbstractDCmd.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/dcmd/Argument.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/dcmd/ArgumentParser.class
@@ -25049,7 +25219,8 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/dcmd/DCmdException.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/dcmd/DCmdStart.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/dcmd/DCmdStop.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/handlers/EventHandler.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/event/EventConfiguration.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/event/EventWriter.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/instrument/ConstructorTracerWriter.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/instrument/ConstructorWriter.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/instrument/FileChannelImplInstrumentor.class
@@ -25079,6 +25250,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/jfc/model/Constraint.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/jfc/model/ControlElement.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/jfc/model/JFCModel.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/jfc/model/JFCModelException.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/jfc/model/Parser$ConfigurationHandler.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/jfc/model/Parser.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/jfc/model/PrettyPrinter.class
@@ -25124,6 +25296,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/tool/EventPrintWriter$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/tool/EventPrintWriter$ValueType.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/tool/EventPrintWriter.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/tool/Filters.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/tool/Help.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/tool/JSONWriter.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/tool/Main.class
@@ -25131,6 +25304,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/tool/Metadata.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/tool/PrettyWriter.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/tool/Print.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/tool/Scrub.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/tool/StructuredWriter.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/tool/Summary$Statistics.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/tool/Summary.class
@@ -25139,6 +25313,29 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/tool/Version.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/tool/XMLWriter.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/internal/types/metadata.bin
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/snippets/Snippets$CPU.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/snippets/Snippets$CPUEvent.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/snippets/Snippets$Example$HelloWorld.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/snippets/Snippets$Example.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/snippets/Snippets$ExampleServlet.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/snippets/Snippets$HTTPGetRequest.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/snippets/Snippets$HTTPPostRequest.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/snippets/Snippets$HTTPRequest.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/snippets/Snippets$HelloWorld.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/snippets/Snippets$HttpServlet.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/snippets/Snippets$HttpServletRequest.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/snippets/Snippets$HttpServletResponse.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/snippets/Snippets$OrderEvent.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/snippets/Snippets$OrderId.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/snippets/Snippets$OrderLineEvent.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/snippets/Snippets$RegExpControl.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/snippets/Snippets$Severity.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/snippets/Snippets$Temperature.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/snippets/Snippets$TransactionBlocked.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/snippets/Snippets$TransactionId.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/snippets/Snippets.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/snippets/consumer/Snippets$PackageOveriview.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jfr/jdk/jfr/snippets/consumer/Snippets.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jfr/module-info.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jlink/_the.jdk.jlink-server.conf
 /usr/lib/jvm/java-1.18.0/modules/jdk.jlink/_the.jdk.jlink.config_vardeps
@@ -25309,15 +25506,20 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jlink/jdk/tools/jlink/plugin/ResourcePoolModule.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jlink/jdk/tools/jlink/plugin/ResourcePoolModuleView.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jlink/jdk/tools/jlink/resources/jlink.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jlink/jdk/tools/jlink/resources/jlink_de.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jlink/jdk/tools/jlink/resources/jlink_ja.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jlink/jdk/tools/jlink/resources/jlink_zh_CN.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jlink/jdk/tools/jlink/resources/plugins.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jlink/jdk/tools/jlink/resources/plugins_de.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jlink/jdk/tools/jlink/resources/plugins_ja.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jlink/jdk/tools/jlink/resources/plugins_zh_CN.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jlink/jdk/tools/jlink/resources/strip_native_debug_symbols_plugin.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jlink/jdk/tools/jmod/JmodOutputStream.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jlink/jdk/tools/jmod/JmodTask$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jlink/jdk/tools/jmod/JmodTask$AbstractPathConverter.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jlink/jdk/tools/jmod/JmodTask$ClassPathConverter.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jlink/jdk/tools/jmod/JmodTask$CommandException.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jlink/jdk/tools/jmod/JmodTask$DateConverter.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jlink/jdk/tools/jmod/JmodTask$DirPathConverter.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jlink/jdk/tools/jmod/JmodTask$ExtractDirPathConverter.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jlink/jdk/tools/jmod/JmodTask$Hasher.class
@@ -25339,6 +25541,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jlink/jdk/tools/jmod/Main$JmodToolProvider.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jlink/jdk/tools/jmod/Main.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jlink/jdk/tools/jmod/resources/jmod.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jlink/jdk/tools/jmod/resources/jmod_de.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jlink/jdk/tools/jmod/resources/jmod_ja.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jlink/jdk/tools/jmod/resources/jmod_zh_CN.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jlink/module-info.class
@@ -25379,17 +25582,22 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/DesktopIntegration$ShellCommands.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/DesktopIntegration.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/DottedVersion.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/Enquoter$1.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/Enquoter.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/Executor.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/FileAssociation.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/I18N.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/IOUtils$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/IOUtils$2.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/IOUtils$PrettyPrintHandler.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/IOUtils$SkipDocumentHandler.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/IOUtils$XmlConsumer.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/IOUtils.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/InstallableFile.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/JLinkBundlerHelper$LazyLoad.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/JLinkBundlerHelper.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/JPackageToolProvider.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/LauncherAsService.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/LauncherData$ModuleInfo.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/LauncherData.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/LibProvidersLookup$PackageLookup.class
@@ -25399,7 +25607,10 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/LinuxDebBundler$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/LinuxDebBundler$DebianFile.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/LinuxDebBundler.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/LinuxLaunchersAsServices$Launcher.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/LinuxLaunchersAsServices.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/LinuxPackageBundler$1.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/LinuxPackageBundler$CustomActionInstance.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/LinuxPackageBundler.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/LinuxRpmBundler$RpmArchReader.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/LinuxRpmBundler.class
@@ -25413,7 +25624,10 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/OverridableResource$Source.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/OverridableResource$SourceHandler.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/OverridableResource.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/PackageFile.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/PackageProperty.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/PackageScripts$ResourceConfig.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/PackageScripts.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/PackagerException.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/PathGroup$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/PathGroup$Facade.class
@@ -25423,22 +25637,33 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/PlatformPackage.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/RetryExecutor.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/ScriptRunner.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/ShellCustomAction$1.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/ShellCustomAction.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/ShellCustomActionFactory.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/ShellScriptResource.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/StandardBundlerParam.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/ToolValidator.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/UnixLaunchersAsServices$UnixLauncherAsService.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/UnixLaunchersAsServices.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/ValidOptions$USE.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/ValidOptions.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/resources/HelpResources.properties
+/usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/resources/HelpResources_de.properties
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/resources/HelpResources_ja.properties
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/resources/HelpResources_zh_CN.properties
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/resources/JavaApp.png
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/resources/LinuxResources.properties
+/usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/resources/LinuxResources_de.properties
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/resources/LinuxResources_ja.properties
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/resources/LinuxResources_zh_CN.properties
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/resources/MainResources.properties
+/usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/resources/MainResources_de.properties
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/resources/MainResources_ja.properties
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/resources/MainResources_zh_CN.properties
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/resources/ResourceLocator.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/resources/desktop_utils.sh
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/resources/jpackageapplauncher
+/usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/resources/services_utils.sh
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/resources/template.control
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/resources/template.copyright
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/resources/template.desktop
@@ -25447,7 +25672,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/resources/template.preinst
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/resources/template.prerm
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/resources/template.spec
-/usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/resources/utils.sh
+/usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/internal/resources/unit-template.service
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/main/CommandLine$Tokenizer.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/main/CommandLine.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jpackage/jdk/jpackage/main/Main.class
@@ -25463,20 +25688,18 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/debug/InternalDebugControl.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ArgTokenizer.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$1.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$2$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$2.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$3.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$4.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$5$1.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$5$2.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$5.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$6$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$6$2.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$6.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$7$1.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$7$2.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$7.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$8$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$8.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$9.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$AllSuggestionsCompletionTask.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$CommandFullDocumentationTask.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$CommandSynopsisTask.class
@@ -25489,6 +25712,10 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$Fix.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$FixComputer.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$FixResult.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$HighlighterImpl$UIHighlight.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$HighlighterImpl.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$JShellLineReader$1.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$JShellLineReader.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$NoSuchCommandCompletionTask.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$NoopCompletionTask.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/ConsoleIOContext$OrdinaryCompletionTask.class
@@ -25559,6 +25786,8 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/StopDetectingInputStream.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/resources/l10n.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/resources/l10n.properties
+/usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/resources/l10n_de.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/resources/l10n_de.properties
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/resources/l10n_ja.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/resources/l10n_ja.properties
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/internal/jshell/tool/resources/l10n_zh_CN.class
@@ -25647,9 +25876,11 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/jshell/Snippet.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/jshell/SnippetEvent.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/jshell/SnippetMaps.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/jshell/SourceCodeAnalysis$Attribute.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/jshell/SourceCodeAnalysis$Completeness.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/jshell/SourceCodeAnalysis$CompletionInfo.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/jshell/SourceCodeAnalysis$Documentation.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/jshell/SourceCodeAnalysis$Highlight.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/jshell/SourceCodeAnalysis$QualifiedNames.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/jshell/SourceCodeAnalysis$SnippetWrapper.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/jshell/SourceCodeAnalysis$Suggestion.class
@@ -25660,6 +25891,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/jshell/SourceCodeAnalysisImpl$4.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/jshell/SourceCodeAnalysisImpl$5.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/jshell/SourceCodeAnalysisImpl$6.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/jshell/SourceCodeAnalysisImpl$7.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/jshell/SourceCodeAnalysisImpl$ClassIndex.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/jshell/SourceCodeAnalysisImpl$CompletionInfoImpl.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/jshell/SourceCodeAnalysisImpl$DocumentationImpl.class
@@ -25727,6 +25959,8 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/jshell/execution/Util.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/jshell/resources/l10n.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/jshell/resources/l10n.properties
+/usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/jshell/resources/l10n_de.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/jshell/resources/l10n_de.properties
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/jshell/resources/l10n_ja.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/jshell/resources/l10n_ja.properties
 /usr/lib/jvm/java-1.18.0/modules/jdk.jshell/jdk/jshell/resources/l10n_zh_CN.class
@@ -25798,6 +26032,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_ak.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_am.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_ar.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_ar_AE.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_ar_DZ.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_ar_EH.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_ar_IL.class
@@ -25820,12 +26055,14 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_az_Cyrl.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_bas.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_be.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_be_TARASK.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_bem.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_bez.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_bg.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_bm.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_bn.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_bo.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_bo_IN.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_br.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_brx.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_bs.class
@@ -25894,6 +26131,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_en_MS.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_en_MT.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_en_MU.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_en_MV.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_en_NF.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_en_NG.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_en_NL.class
@@ -25990,6 +26228,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_haw.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_he.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_hi.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_hi_Latn.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_hr.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_hr_BA.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_hsb.class
@@ -26011,6 +26250,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_kam.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_kde.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_kea.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_kgp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_khq.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_ki.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_kk.class
@@ -26022,6 +26262,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_ko.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_kok.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_ks.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_ks_Deva.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_ksb.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_ksf.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_ksh.class
@@ -26096,6 +26337,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_ro_MD.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_rof.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_ru.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_ru_UA.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_rw.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_rwk.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_sa.class
@@ -26103,6 +26345,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_saq.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_sat.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_sbp.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_sc.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_sd.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_sd_Deva.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_se.class
@@ -26172,6 +26415,9 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_yi.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_yo.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_yo_BJ.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_yrl.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_yrl_CO.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_yrl_VE.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_yue.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_yue_Hans.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/text/resources/cldr/ext/FormatData_zgh.class
@@ -26541,6 +26787,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_en_MS.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_en_MT.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_en_MU.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_en_MV.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_en_MW.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_en_MY.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_en_NA.class
@@ -26679,6 +26926,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_kam.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_kde.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_kea.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_kgp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_khq.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_ki.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_kk.class
@@ -26690,6 +26938,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_ko.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_kok.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_ks.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_ks_Deva.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_ksb.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_ksf.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_ksh.class
@@ -26784,6 +27033,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_saq.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_sat.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_sbp.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_sc.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_sd.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_sd_Deva.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_se.class
@@ -26850,6 +27100,9 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_yi.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_yo.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_yo_BJ.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_yrl.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_yrl_CO.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_yrl_VE.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_yue.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_yue_Hans.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/CurrencyNames_zgh.class
@@ -26916,7 +27169,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_en_CA.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_en_GB.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_en_IN.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_en_NZ.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_eo.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_es.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_es_419.class
@@ -26965,6 +27217,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_haw.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_he.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_hi.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_hi_Latn.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_hr.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_hsb.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_hu.class
@@ -26984,6 +27237,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_kam.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_kde.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_kea.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_kgp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_khq.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_ki.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_kk.class
@@ -26996,6 +27250,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_ko_KP.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_kok.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_ks.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_ks_Deva.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_ksb.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_ksf.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_ksh.class
@@ -27068,6 +27323,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_saq.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_sat.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_sbp.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_sc.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_sd.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_sd_Deva.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_se.class
@@ -27129,6 +27385,9 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_yi.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_yo.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_yo_BJ.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_yrl.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_yrl_CO.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_yrl_VE.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_yue.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_yue_Hans.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/LocaleNames_zgh.class
@@ -27238,6 +27497,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_haw.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_he.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_hi.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_hi_Latn.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_hr.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_hsb.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_hu.class
@@ -27252,6 +27512,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_jv.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_ka.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_kea.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_kgp.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_kk.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_km.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_kn.class
@@ -27259,6 +27520,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_ko_KP.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_kok.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_ks.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_ks_Deva.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_ksh.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_ky.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_lb.class
@@ -27307,6 +27569,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_sa.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_sah.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_sat.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_sc.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_sd.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_sd_Deva.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_se.class
@@ -27348,6 +27611,9 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_yi.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_yo.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_yo_BJ.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_yrl.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_yrl_CO.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_yrl_VE.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_yue.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_yue_Hans.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.localedata/sun/util/resources/cldr/ext/TimeZoneNames_zh.class
@@ -27630,7 +27896,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.management.agent/jdk/internal/agent/resources/agent_zh_CN.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.management.agent/jdk/internal/agent/resources/agent_zh_HK.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.management.agent/jdk/internal/agent/resources/agent_zh_TW.class
-/usr/lib/jvm/java-1.18.0/modules/jdk.management.agent/jdk/internal/agent/spi/AgentProvider.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.management.agent/module-info.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.management.agent/sun/management/jdp/JdpBroadcaster.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.management.agent/sun/management/jdp/JdpController$JDPControllerRunner.class
@@ -27700,6 +27965,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.management/com/sun/management/GarbageCollectionNotificationInfo.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.management/com/sun/management/GarbageCollectorMXBean.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.management/com/sun/management/GcInfo.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.management/com/sun/management/HotSpotDiagnosticMXBean$ThreadDumpFormat.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.management/com/sun/management/HotSpotDiagnosticMXBean.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.management/com/sun/management/OperatingSystemMXBean.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.management/com/sun/management/ThreadMXBean.class
@@ -27720,6 +27986,7 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 /usr/lib/jvm/java-1.18.0/modules/jdk.management/com/sun/management/internal/GcInfoCompositeData$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.management/com/sun/management/internal/GcInfoCompositeData$2.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.management/com/sun/management/internal/GcInfoCompositeData.class
+/usr/lib/jvm/java-1.18.0/modules/jdk.management/com/sun/management/internal/HotSpotDiagnostic$1.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.management/com/sun/management/internal/HotSpotDiagnostic.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.management/com/sun/management/internal/HotSpotThreadImpl.class
 /usr/lib/jvm/java-1.18.0/modules/jdk.management/com/sun/management/internal/OperatingSystemImpl$ContainerCpuTicks.class
@@ -28203,7 +28470,6 @@ find %{buildroot}/usr/lib/jvm/java-1.18.0/modules -type f -perm /0022 -exec chmo
 %files license
 %defattr(0644,root,root,0755)
 /usr/share/package-licenses/openjdk/12f0c48a0be5fb271ccd2f1de671e747c511166f
-/usr/share/package-licenses/openjdk/2e415567f955b853485ecf8ffc66c3c335e76e7a
 /usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
 /usr/share/package-licenses/openjdk/f9c9a2d3495a0766b4cf20d4b90cfe714dab3dc1
 /usr/share/package-licenses/openjdk/fc3951ba26fe1914759f605696a1d23e3b41766f
