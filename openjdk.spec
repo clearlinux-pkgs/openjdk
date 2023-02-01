@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 19.0.2.7.1
-Release  : 88
+Release  : 89
 URL      : https://github.com/corretto/corretto-19/archive/refs/tags/19.0.2.7.1.tar.gz
 Source0  : https://github.com/corretto/corretto-19/archive/refs/tags/19.0.2.7.1.tar.gz
 Source1  : https://corretto.aws/downloads/resources/19.0.2.7.1/amazon-corretto-19.0.2.7.1-linux-x64.tar.gz
@@ -91,6 +91,7 @@ cp -r %{_builddir}/amazon-corretto-19.0.2.7.1-linux-x64/* %{_builddir}/corretto-
 ## build_prepend content
 pushd ..
 #  --with-boot-jdk=/usr/lib/jvm/java-1.19.0/ \
+#--with-boot-jdk=/builddir/build/BUILD/amazon-corretto-19.0.2.7.1-linux-x64/ \
 cp -a corretto-* buildavx2
 cd buildavx2
 CLR_TRUST_STORE=%{_builddir}/trust-store clrtrust generate
@@ -100,7 +101,7 @@ export CC=/usr/bin/gcc
 export CXX=/usr//bin/g++
 export SYSDEFS="$CXXFLAGS"
 bash configure \
---with-boot-jdk=/builddir/build/BUILD/amazon-corretto-19.0.2.7.1-linux-x64/ \
+--with-boot-jdk=/usr/lib/jvm/java-1.19.0/ \
 --x-includes=/usr/include/ \
 --x-libraries=/usr/lib64 \
 --with-extra-cflags="-O3 -g1 -fno-lto" \
@@ -121,7 +122,7 @@ make images
 popd
 
 bash configure \
---with-boot-jdk=/builddir/build/BUILD/amazon-corretto-19.0.2.7.1-linux-x64/ \
+--with-boot-jdk=/usr/lib/jvm/java-1.19.0/ \
 --x-includes=/usr/include/ \
 --x-libraries=/usr/lib64 \
 --with-extra-cflags="-O3 -g1 -fno-lto" \
@@ -143,7 +144,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1675272745
+export SOURCE_DATE_EPOCH=1675274425
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
@@ -157,7 +158,7 @@ make  all WARNINGS_ARE_ERRORS=
 
 
 %install
-export SOURCE_DATE_EPOCH=1675272745
+export SOURCE_DATE_EPOCH=1675274425
 rm -rf %{buildroot}
 ## install_prepend content
 mkdir -p %{buildroot}/usr/lib/jvm/java-1.19.0
