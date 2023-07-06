@@ -1,8 +1,9 @@
 # This file contains recursive sources that require this package
 VTK
+Z3
 apache-ant
-ceph
 cmake
+gdal
 gmsh
 libjpeg-turbo
 libreoffice
@@ -11,3 +12,4 @@ opencv
 openjdk
 openjpeg
 qt6base
+supertuxkart
