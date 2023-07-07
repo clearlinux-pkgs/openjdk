@@ -6,7 +6,7 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 19.0.2.7.1
-Release  : 90
+Release  : 91
 URL      : https://github.com/corretto/corretto-19/archive/refs/tags/19.0.2.7.1.tar.gz
 Source0  : https://github.com/corretto/corretto-19/archive/refs/tags/19.0.2.7.1.tar.gz
 Source1  : https://corretto.aws/downloads/resources/19.0.2.7.1/amazon-corretto-19.0.2.7.1-linux-x64.tar.gz
@@ -135,7 +135,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1688684136
+export SOURCE_DATE_EPOCH=1688743947
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
@@ -149,7 +149,7 @@ make  all WARNINGS_ARE_ERRORS=
 
 
 %install
-export SOURCE_DATE_EPOCH=1688684136
+export SOURCE_DATE_EPOCH=1688743947
 rm -rf %{buildroot}
 ## install_prepend content
 mkdir -p %{buildroot}/usr/lib/jvm/java-1.19.0
@@ -371,7 +371,7 @@ find %{buildroot}/usr/lib/jvm/java-1.19.0/modules -type f -perm /0022 -exec chmo
 /V3/usr/lib/jvm/java-1.19.0/lib/libzip.debuginfo
 /V3/usr/lib/jvm/java-1.19.0/lib/server/libjvm.debuginfo
 /V3/usr/lib/jvm/java-1.19.0/modules/jdk.jpackage/jdk/jpackage/internal/resources/jpackageapplauncher
-/V3/usr/lib64
+/V3/usr/lib64/*
 /usr/lib/jvm/java-1.19.0/_optimize_image_exec.cmdline
 /usr/lib/jvm/java-1.19.0/_optimize_image_exec.log
 /usr/lib/jvm/java-1.19.0/_optimize_image_exec.marker
