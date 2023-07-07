@@ -6,7 +6,7 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 19.0.2.7.1
-Release  : 91
+Release  : 92
 URL      : https://github.com/corretto/corretto-19/archive/refs/tags/19.0.2.7.1.tar.gz
 Source0  : https://github.com/corretto/corretto-19/archive/refs/tags/19.0.2.7.1.tar.gz
 Source1  : https://corretto.aws/downloads/resources/19.0.2.7.1/amazon-corretto-19.0.2.7.1-linux-x64.tar.gz
