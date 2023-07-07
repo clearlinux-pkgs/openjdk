@@ -6,7 +6,7 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 19.0.2.7.1
-Release  : 93
+Release  : 95
 URL      : https://github.com/corretto/corretto-19/archive/refs/tags/19.0.2.7.1.tar.gz
 Source0  : https://github.com/corretto/corretto-19/archive/refs/tags/19.0.2.7.1.tar.gz
 Summary  : APPLICATION_SUMMARY
@@ -130,7 +130,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1688745314
+export SOURCE_DATE_EPOCH=1688762891
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
@@ -144,7 +144,7 @@ make  all WARNINGS_ARE_ERRORS=
 
 
 %install
-export SOURCE_DATE_EPOCH=1688745314
+export SOURCE_DATE_EPOCH=1688762891
 rm -rf %{buildroot}
 ## install_prepend content
 mkdir -p %{buildroot}/usr/lib/jvm/java-1.19.0
@@ -178,7 +178,7 @@ cp %{_builddir}/corretto-19-%{version}/src/java.smartcardio/unix/native/libj2pcs
 #ln -s /var/cache/ca-certs/compat/ca-roots.keystore %{buildroot}/usr/lib/jvm/java-1.19.0/jre/lib/security/cacerts
 
 mkdir -p %{buildroot}/usr/lib64
-
+mkdir -p %{buildroot}-v3/usr/lib64
 
 cp %{buildroot}/usr/lib/jvm/java-1.19.0/lib/libjli.so %{buildroot}/usr/lib64
 cp %{buildroot}-v3/usr/lib/jvm/java-1.19.0/lib/libjli.so %{buildroot}-v3/usr/lib64
@@ -295,7 +295,6 @@ find %{buildroot}/usr/lib/jvm/java-1.19.0/modules -type f -perm /0022 -exec chmo
 /V3/usr/lib/jvm/java-1.19.0/lib/libzip.debuginfo
 /V3/usr/lib/jvm/java-1.19.0/lib/server/libjvm.debuginfo
 /V3/usr/lib/jvm/java-1.19.0/modules/jdk.jpackage/jdk/jpackage/internal/resources/jpackageapplauncher
-/V3/usr/lib64/*
 /usr/lib/jvm/java-1.19.0/_optimize_image_exec.cmdline
 /usr/lib/jvm/java-1.19.0/_optimize_image_exec.log
 /usr/lib/jvm/java-1.19.0/_optimize_image_exec.marker
@@ -28478,6 +28477,7 @@ find %{buildroot}/usr/lib/jvm/java-1.19.0/modules -type f -perm /0022 -exec chmo
 /V3/usr/lib/jvm/java-1.19.0/lib/server/libjsig.so
 /V3/usr/lib/jvm/java-1.19.0/lib/server/libjvm.so
 /V3/usr/lib/jvm/java-1.19.0/modules/jdk.jpackage/jdk/jpackage/internal/resources/libjpackageapplauncheraux.so
+/V3/usr/lib64/libjli.so
 /usr/lib/jvm/java-1.19.0/lib/libattach.so
 /usr/lib/jvm/java-1.19.0/lib/libawt.so
 /usr/lib/jvm/java-1.19.0/lib/libawt_headless.so

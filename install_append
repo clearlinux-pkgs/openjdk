@@ -12,7 +12,7 @@
 #ln -s /var/cache/ca-certs/compat/ca-roots.keystore %{buildroot}/usr/lib/jvm/java-1.19.0/jre/lib/security/cacerts
 
 mkdir -p %{buildroot}/usr/lib64
-
+mkdir -p %{buildroot}-v3/usr/lib64
 
 cp %{buildroot}/usr/lib/jvm/java-1.19.0/lib/libjli.so %{buildroot}/usr/lib64
 cp %{buildroot}-v3/usr/lib/jvm/java-1.19.0/lib/libjli.so %{buildroot}-v3/usr/lib64
