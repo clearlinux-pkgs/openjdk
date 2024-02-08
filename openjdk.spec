@@ -6,7 +6,7 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 19.0.2.7.1
-Release  : 95
+Release  : 96
 URL      : https://github.com/corretto/corretto-19/archive/refs/tags/19.0.2.7.1.tar.gz
 Source0  : https://github.com/corretto/corretto-19/archive/refs/tags/19.0.2.7.1.tar.gz
 Summary  : APPLICATION_SUMMARY
