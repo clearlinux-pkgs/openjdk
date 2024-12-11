@@ -1,1 +1,1 @@
-help || :
+INSTALL_PREFIX=%{buildroot} help || :

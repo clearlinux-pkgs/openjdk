@@ -1,7 +1,9 @@
 # This file contains recursive sources that require this package
+OpenColorIO
 VTK
 Z3
 apache-ant
+apache-arrow
 cmake
 gdal
 gmsh

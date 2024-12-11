@@ -1,9 +1,9 @@
-mkdir -p %{buildroot}/usr/lib/jvm/java-1.19.0
-mkdir -p %{buildroot}-v3/usr/lib/jvm/java-1.19.0
+mkdir -p %{buildroot}/usr/lib/jvm/java-1.21.0
+mkdir -p %{buildroot}-v3/usr/lib/jvm/java-1.21.0
 
-cp -a -L  build/linux-x86_64-server-release/jdk/* %{buildroot}/usr/lib/jvm/java-1.19.0
+cp -a -L  build/linux-x86_64-server-release/jdk/* %{buildroot}/usr/lib/jvm/java-1.21.0
 
 pushd ../buildavx2/
-cp -a -L  build/linux-x86_64-server-release/jdk/* %{buildroot}-v3/usr/lib/jvm/java-1.19.0
-%make_install_v3 help || :
+cp -a -L  build/linux-x86_64-server-release/jdk/* %{buildroot}-v3/usr/lib/jvm/java-1.21.0
+%make_install_v3 INSTALL_PREFIX=%{buildroot}-v3 help || :
 popd

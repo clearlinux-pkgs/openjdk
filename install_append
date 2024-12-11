@@ -1,27 +1,21 @@
-# Remove all the binaries installed in /usr/lib/bin. All of them are 
-# symlinks and will be created later
-#rm -rf %{buildroot}/usr/lib/bin
-
-# Change the directory name
-#pushd %{buildroot}/usr/lib/jvm
-#mv openjdk-1.8.0-u252 java-1.19.0-openjdk
-#popd
-
-# Remove the copied keystore and link it to the runtime store
-#rm -f %{buildroot}/usr/lib/jvm/java-1.19.0/jre/lib/security/cacerts
-#ln -s /var/cache/ca-certs/compat/ca-roots.keystore %{buildroot}/usr/lib/jvm/java-1.19.0/jre/lib/security/cacerts
-
 mkdir -p %{buildroot}/usr/lib64
 mkdir -p %{buildroot}-v3/usr/lib64
 
-cp %{buildroot}/usr/lib/jvm/java-1.19.0/lib/libjli.so %{buildroot}/usr/lib64
-cp %{buildroot}-v3/usr/lib/jvm/java-1.19.0/lib/libjli.so %{buildroot}-v3/usr/lib64
-rm -f %{buildroot}/usr/lib/jvm/java-1.19.0/lib/jvm.cfg
-echo "-server KNOWN" > %{buildroot}/usr/lib/jvm/java-1.19.0/lib/jvm.cfg
-echo "-client IGNORE" >> %{buildroot}/usr/lib/jvm/java-1.19.0/lib/jvm.cfg
-rm -f {buildroot}/usr/lib/jvm/java-1.19.0/lib/tzdb.dat
-cp  build/linux-x86_64-server-release/jdk/lib/tzdb.dat %{buildroot}/usr/lib/jvm/java-1.19.0/lib/ 
-find %{buildroot}/usr/lib/jvm/java-1.19.0/modules -type f -perm /0022 -exec chmod 0644 {} \;
-
+cp %{buildroot}/usr/lib/jvm/java-1.*.0/lib/libjli.so %{buildroot}/usr/lib64
+cp %{buildroot}-v3/usr/lib/jvm/java-1.*.0/lib/libjli.so %{buildroot}-v3/usr/lib64
+rm -f %{buildroot}/usr/lib/jvm/java-1.*.0/lib/jvm.cfg
+echo "-server KNOWN" > %{buildroot}/usr/lib/jvm/java-1.21.0/lib/jvm.cfg
+echo "-client IGNORE" >> %{buildroot}/usr/lib/jvm/java-1.21.0/lib/jvm.cfg
+rm -f {buildroot}/usr/lib/jvm/java-1.*.0/lib/tzdb.dat
+cp  build/linux-x86_64-server-release/jdk/lib/tzdb.dat %{buildroot}/usr/lib/jvm/java-1.21.0/lib/
+find %{buildroot}/usr/lib/jvm/java-1.*.0/modules -type f -perm /0022 -exec chmod 0644 {} \;
+mv %{buildroot}/jvm/* %{buildroot}/usr/lib/jvm
+mv %{buildroot}-v3/jvm/* %{buildroot}-v3/usr/lib/jvm
+find %{buildroot}/usr/bin -type l -exec sh -c '
+target=$(readlink "{}");
+prefix="%{buildroot}";
+stripped_target="${target#$prefix}";
+ln -sf "/usr/lib${stripped_target}" "{}";
+' \;
 
 /usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}

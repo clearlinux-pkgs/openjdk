@@ -1,24 +1,50 @@
 Configure miss: /usr//bin/g++ option to enable C++11 features
+Configure miss: /usr//bin/g++ option to enable C++11 features
+Configure miss: /usr/bin/gcc option to enable C11 features
 Configure miss: /usr/bin/gcc option to enable C11 features
 Configure miss: JVM features disabled by the user
+Configure miss: JVM features disabled by the user
 Configure miss: docs-reference JDK
-Configure miss: dtrace tool
+Configure miss: docs-reference JDK
+Configure miss: dtrace tool and platform support
+Configure miss: dtrace tool and platform support
+Configure miss: graphviz dot
 Configure miss: graphviz dot
 Configure miss: if BUILD is x86
+Configure miss: if BUILD is x86
+Configure miss: if JVM feature 'dtrace' is available
 Configure miss: if JVM feature 'dtrace' is available
 Configure miss: if JVM feature 'static-build' is available
+Configure miss: if JVM feature 'static-build' is available
+Configure miss: if TARGET is x86
 Configure miss: if TARGET is x86
 Configure miss: if absolute paths should be allowed in the build output
+Configure miss: if absolute paths should be allowed in the build output
 Configure miss: if any translations should be excluded
+Configure miss: if any translations should be excluded
+Configure miss: if hsdis should be bundled
+Configure miss: if hsdis should be bundled
+Configure miss: if static build is available
 Configure miss: if static build is available
 Configure miss: if static link of stdc++ is possible
+Configure miss: if static link of stdc++ is possible
+Configure miss: if static-build is enabled in configure
 Configure miss: if static-build is enabled in configure
 Configure miss: if the jtreg failure handler is available
+Configure miss: if the jtreg failure handler is available
+Configure miss: if the jtreg test thread factory is available
+Configure miss: if the jtreg test thread factory is available
+Configure miss: if we should add external native debug symbols to the shipped bundles
 Configure miss: if we should add external native debug symbols to the shipped bundles
 Configure miss: jib
+Configure miss: jib
 Configure miss: jmh (Java Microbenchmark Harness)
+Configure miss: jmh (Java Microbenchmark Harness)
+Configure miss: jtreg jdk
+Configure miss: jtreg jdk
 Configure miss: jtreg test harness
-Configure miss: local Boot JDK Class Data Sharing (CDS)
-Configure miss: output-sync value
+Configure miss: jtreg test harness
+Configure miss: make --output-sync value
+Configure miss: make --output-sync value
 Configure miss: sys/sdt.h
-Configure miss: whether -R must be followed by a space
+Configure miss: sys/sdt.h

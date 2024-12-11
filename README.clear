@@ -1,1 +1,2 @@
-hg clone http://hg.openjdk.java.net/jdk8u/jdk8u-dev && cd jdk8u-dev && bash get_source.sh .
+* Update filesystem's profile.x86_64 file on version update
+
