@@ -8,7 +8,7 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 21.0.5.11.1
-Release  : 98
+Release  : 99
 URL      : https://github.com/corretto/corretto-21/archive/refs/tags/21.0.5.11.1.tar.gz
 Source0  : https://github.com/corretto/corretto-21/archive/refs/tags/21.0.5.11.1.tar.gz
 Source1  : https://corretto.aws/downloads/resources/21.0.5.11.1/amazon-corretto-21.0.5.11.1-linux-x64.tar.gz
@@ -106,7 +106,7 @@ export SYSDEFS="$CXXFLAGS"
 # then switch to
 # --with-boot-jdk=/usr/lib/jvm/java-1.21.0/ \
 bash configure \
---with-boot-jdk=/builddir/build/BUILD/corretto-21-21.0.5.11.1/prebuilt/ \
+--with-boot-jdk=/usr/lib/jvm/java-1.21.0/ \
 --x-includes=/usr/include/ \
 --x-libraries=/usr/lib64 \
 --with-extra-cflags="-O3 -g1 -fno-lto" \
@@ -122,12 +122,13 @@ bash configure \
 --prefix=/usr --disable-warnings-as-errors
 
 make
+make images || :
 make images
 
 popd
 
 bash configure \
---with-boot-jdk=/builddir/build/BUILD/corretto-21-21.0.5.11.1/prebuilt/ \
+--with-boot-jdk=/usr/lib/jvm/java-1.21.0/ \
 --x-includes=/usr/include/ \
 --x-libraries=/usr/lib64 \
 --with-extra-cflags="-O3 -g1 -fno-lto" \
@@ -149,7 +150,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1733918498
+export SOURCE_DATE_EPOCH=1733930755
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
@@ -184,7 +185,7 @@ FFLAGS="$CLEAR_INTERMEDIATE_FFLAGS"
 FCFLAGS="$CLEAR_INTERMEDIATE_FCFLAGS"
 ASFLAGS="$CLEAR_INTERMEDIATE_ASFLAGS"
 LDFLAGS="$CLEAR_INTERMEDIATE_LDFLAGS"
-export SOURCE_DATE_EPOCH=1733918498
+export SOURCE_DATE_EPOCH=1733930755
 rm -rf %{buildroot}
 ## install_prepend content
 mkdir -p %{buildroot}/usr/lib/jvm/java-1.21.0

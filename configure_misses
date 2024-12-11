@@ -44,6 +44,8 @@ Configure miss: jtreg jdk
 Configure miss: jtreg jdk
 Configure miss: jtreg test harness
 Configure miss: jtreg test harness
+Configure miss: local Boot JDK Class Data Sharing (CDS)
+Configure miss: local Boot JDK Class Data Sharing (CDS)
 Configure miss: make --output-sync value
 Configure miss: make --output-sync value
 Configure miss: sys/sdt.h
