@@ -1,16 +1,25 @@
+pushd ../buildavx2/
+%make_install_v3 INSTALL_PREFIX=%{buildroot}-v3 help || :
+popd
+
+mkdir -p %{buildroot}/usr/lib
 mkdir -p %{buildroot}/usr/lib64
+mkdir -p %{buildroot}-v3/usr/lib
 mkdir -p %{buildroot}-v3/usr/lib64
 
-cp %{buildroot}/usr/lib/jvm/java-1.*.0/lib/libjli.so %{buildroot}/usr/lib64
-cp %{buildroot}-v3/usr/lib/jvm/java-1.*.0/lib/libjli.so %{buildroot}-v3/usr/lib64
-rm -f %{buildroot}/usr/lib/jvm/java-1.*.0/lib/jvm.cfg
-echo "-server KNOWN" > %{buildroot}/usr/lib/jvm/java-1.21.0/lib/jvm.cfg
-echo "-client IGNORE" >> %{buildroot}/usr/lib/jvm/java-1.21.0/lib/jvm.cfg
-rm -f {buildroot}/usr/lib/jvm/java-1.*.0/lib/tzdb.dat
-cp  build/linux-x86_64-server-release/jdk/lib/tzdb.dat %{buildroot}/usr/lib/jvm/java-1.21.0/lib/
-find %{buildroot}/usr/lib/jvm/java-1.*.0/modules -type f -perm /0022 -exec chmod 0644 {} \;
-mv %{buildroot}/jvm/* %{buildroot}/usr/lib/jvm
-mv %{buildroot}-v3/jvm/* %{buildroot}-v3/usr/lib/jvm
+cp %{buildroot}/jvm/*/lib/libjli.so %{buildroot}/usr/lib64
+cp %{buildroot}-v3/jvm/*/lib/libjli.so %{buildroot}-v3/usr/lib64
+
+mv %{buildroot}/jvm/ %{buildroot}/usr/lib/
+mv %{buildroot}-v3/jvm/ %{buildroot}-v3/usr/lib/
+
+echo "-server KNOWN" > jvm.cfg
+echo "-client IGNORE" >> jvm.cfg
+mv jvm.cfg %{buildroot}/usr/lib/jvm/*/lib/
+
+rm -f {buildroot}/usr/lib/jvm/openjdk-*-internal/lib/tzdb.dat
+
+cp build/linux-x86_64-server-release/jdk/lib/tzdb.dat %{buildroot}/usr/lib/jvm/*/lib/
 find %{buildroot}/usr/bin -type l -exec sh -c '
 target=$(readlink "{}");
 prefix="%{buildroot}";
