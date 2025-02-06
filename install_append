@@ -23,6 +23,8 @@ echo "-server KNOWN" > jvm.cfg
 echo "-client IGNORE" >> jvm.cfg
 mv jvm.cfg %{buildroot}/usr/lib/jvm/*/lib/
 
+find %{buildroot}/usr/lib/jvm/openjdk-*-internal/modules -type f -perm /0022 -exec chmod 0644 {} \;
+
 rm -f {buildroot}/usr/lib/jvm/openjdk-*-internal/lib/tzdb.dat
 
 cp build/linux-x86_64-server-release/jdk/lib/tzdb.dat %{buildroot}/usr/lib/jvm/*/lib/

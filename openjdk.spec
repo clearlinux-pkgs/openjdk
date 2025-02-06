@@ -8,7 +8,7 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 21.0.5.11.1
-Release  : 101
+Release  : 102
 URL      : https://github.com/corretto/corretto-21/archive/refs/tags/21.0.5.11.1.tar.gz
 Source0  : https://github.com/corretto/corretto-21/archive/refs/tags/21.0.5.11.1.tar.gz
 Source1  : https://corretto.aws/downloads/resources/21.0.5.11.1/amazon-corretto-21.0.5.11.1-linux-x64.tar.gz
@@ -151,7 +151,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1738799219
+export SOURCE_DATE_EPOCH=1738808104
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
@@ -186,7 +186,7 @@ FFLAGS="$CLEAR_INTERMEDIATE_FFLAGS"
 FCFLAGS="$CLEAR_INTERMEDIATE_FCFLAGS"
 ASFLAGS="$CLEAR_INTERMEDIATE_ASFLAGS"
 LDFLAGS="$CLEAR_INTERMEDIATE_LDFLAGS"
-export SOURCE_DATE_EPOCH=1738799219
+export SOURCE_DATE_EPOCH=1738808104
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/openjdk
 cp %{_builddir}/amazon-corretto-%{version}-linux-x64/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
@@ -290,6 +290,8 @@ popd
 echo "-server KNOWN" > jvm.cfg
 echo "-client IGNORE" >> jvm.cfg
 mv jvm.cfg %{buildroot}/usr/lib/jvm/*/lib/
+
+find %{buildroot}/usr/lib/jvm/openjdk-*-internal/modules -type f -perm /0022 -exec chmod 0644 {} \;
 
 rm -f {buildroot}/usr/lib/jvm/openjdk-*-internal/lib/tzdb.dat
 
