@@ -1,5 +1,6 @@
 # This file contains recursive sources that require this package
 OpenColorIO
+SDL3
 VTK
 Z3
 apache-ant

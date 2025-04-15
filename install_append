@@ -13,10 +13,10 @@ cp %{buildroot}-v3/jvm/*/lib/libjli.so %{buildroot}-v3/usr/lib64
 mv %{buildroot}/jvm/ %{buildroot}/usr/lib/
 mv %{buildroot}-v3/jvm/ %{buildroot}-v3/usr/lib/
 
-cp -a -L  build/linux-x86_64-server-release/jdk/* %{buildroot}/usr/lib/jvm/openjdk-21.0.5-internal/
+cp -a -L  build/linux-x86_64-server-release/jdk/* %{buildroot}/usr/lib/jvm/openjdk-21.0.7-internal/
 
 pushd ../buildavx2/
-cp -a -L  build/linux-x86_64-server-release/jdk/* %{buildroot}-v3/usr/lib/jvm/openjdk-21.0.5-internal/
+cp -a -L  build/linux-x86_64-server-release/jdk/* %{buildroot}-v3/usr/lib/jvm/openjdk-21.0.7-internal/
 popd
 
 echo "-server KNOWN" > jvm.cfg
