@@ -8,11 +8,11 @@ export CC=/usr/bin/gcc
 export CXX=/usr//bin/g++
 export SYSDEFS="$CXXFLAGS"
 # when updating use
-# --with-boot-jdk=/builddir/build/BUILD/corretto-21-21.0.5.11.1/prebuilt/ \
+# --with-boot-jdk=/builddir/build/BUILD/corretto-21-21.0.7.6.1/prebuilt/ \
 # then switch to
-# --with-boot-jdk=/usr/lib/jvm/openjdk-21.0.5-internal/ \
+# --with-boot-jdk=/usr/lib/jvm/openjdk-21.0.7-internal/ \
 bash configure \
---with-boot-jdk=/usr/lib/jvm/openjdk-21.0.5-internal/ \
+--with-boot-jdk=/usr/lib/jvm/openjdk-21.0.7-internal/ \
 --x-includes=/usr/include/ \
 --x-libraries=/usr/lib64 \
 --with-extra-cflags="-O3 -g1 -fno-lto" \
@@ -35,7 +35,7 @@ make images
 popd
 
 bash configure \
---with-boot-jdk=/usr/lib/jvm/openjdk-21.0.5-internal/ \
+--with-boot-jdk=/usr/lib/jvm/openjdk-21.0.7-internal/ \
 --x-includes=/usr/include/ \
 --x-libraries=/usr/lib64 \
 --with-extra-cflags="-O3 -g1 -fno-lto" \

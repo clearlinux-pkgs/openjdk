@@ -8,15 +8,15 @@
 %define keepstatic 1
 Name     : openjdk
 Version  : 21.0.7.6.1
-Release  : 103
+Release  : 104
 URL      : https://github.com/corretto/corretto-21/archive/21.0.7.6.1/corretto-21-21.0.7.6.1.tar.gz
 Source0  : https://github.com/corretto/corretto-21/archive/21.0.7.6.1/corretto-21-21.0.7.6.1.tar.gz
-Source1  : https://corretto.aws/downloads/resources/21.0.5.11.1/amazon-corretto-21.0.5.11.1-linux-x64.tar.gz
 Summary  : APPLICATION_SUMMARY
 Group    : Development/Tools
 License  : GPL-2.0 MIT libpng-2.0
 Requires: openjdk-bin = %{version}-%{release}
 Requires: openjdk-lib = %{version}-%{release}
+Requires: openjdk-license = %{version}-%{release}
 BuildRequires : alsa-lib-dev
 BuildRequires : ca-certs
 BuildRequires : cups-dev
@@ -45,6 +45,7 @@ APPLICATION_DESCRIPTION
 %package bin
 Summary: bin components for the openjdk package.
 Group: Binaries
+Requires: openjdk-license = %{version}-%{release}
 
 %description bin
 bin components for the openjdk package.
@@ -65,18 +66,23 @@ dev components for the openjdk package.
 %package lib
 Summary: lib components for the openjdk package.
 Group: Libraries
+Requires: openjdk-license = %{version}-%{release}
 
 %description lib
 lib components for the openjdk package.
 
 
+%package license
+Summary: license components for the openjdk package.
+Group: Default
+
+%description license
+license components for the openjdk package.
+
+
 %prep
 %setup -q -n corretto-21-21.0.7.6.1
-cd %{_builddir}
-tar xf %{_sourcedir}/amazon-corretto-21.0.5.11.1-linux-x64.tar.gz
 cd %{_builddir}/corretto-21-21.0.7.6.1
-mkdir -p ./prebuilt
-cp -r %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/. %{_builddir}/corretto-21-21.0.7.6.1/./prebuilt
 %patch -P 1 -p1
 
 %build
@@ -91,11 +97,11 @@ export CC=/usr/bin/gcc
 export CXX=/usr//bin/g++
 export SYSDEFS="$CXXFLAGS"
 # when updating use
-# --with-boot-jdk=/builddir/build/BUILD/corretto-21-21.0.5.11.1/prebuilt/ \
+# --with-boot-jdk=/builddir/build/BUILD/corretto-21-21.0.7.6.1/prebuilt/ \
 # then switch to
-# --with-boot-jdk=/usr/lib/jvm/openjdk-21.0.5-internal/ \
+# --with-boot-jdk=/usr/lib/jvm/openjdk-21.0.7-internal/ \
 bash configure \
---with-boot-jdk=/usr/lib/jvm/openjdk-21.0.5-internal/ \
+--with-boot-jdk=/usr/lib/jvm/openjdk-21.0.7-internal/ \
 --x-includes=/usr/include/ \
 --x-libraries=/usr/lib64 \
 --with-extra-cflags="-O3 -g1 -fno-lto" \
@@ -118,7 +124,7 @@ make images
 popd
 
 bash configure \
---with-boot-jdk=/usr/lib/jvm/openjdk-21.0.5-internal/ \
+--with-boot-jdk=/usr/lib/jvm/openjdk-21.0.7-internal/ \
 --x-includes=/usr/include/ \
 --x-libraries=/usr/lib64 \
 --with-extra-cflags="-O3 -g1 -fno-lto" \
@@ -140,7 +146,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1744752965
+export SOURCE_DATE_EPOCH=1745257167
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
@@ -175,79 +181,9 @@ FFLAGS="$CLEAR_INTERMEDIATE_FFLAGS"
 FCFLAGS="$CLEAR_INTERMEDIATE_FCFLAGS"
 ASFLAGS="$CLEAR_INTERMEDIATE_ASFLAGS"
 LDFLAGS="$CLEAR_INTERMEDIATE_LDFLAGS"
-export SOURCE_DATE_EPOCH=1744752965
+export SOURCE_DATE_EPOCH=1745257167
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/openjdk
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/java.base/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/java.compiler/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/java.datatransfer/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/java.desktop/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/java.instrument/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/java.logging/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/java.management.rmi/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/java.management/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/java.naming/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/java.net.http/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/java.prefs/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/java.rmi/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/java.scripting/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/java.se/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/java.security.jgss/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/java.security.sasl/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/java.smartcardio/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/java.sql.rowset/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/java.sql/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/java.transaction.xa/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/java.xml.crypto/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/java.xml/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.accessibility/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.attach/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.charsets/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.compiler/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.crypto.cryptoki/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.crypto.ec/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.dynalink/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.editpad/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.hotspot.agent/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.httpserver/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.incubator.vector/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.internal.ed/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.internal.jvmstat/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.internal.le/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.internal.opt/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.internal.vm.ci/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.internal.vm.compiler.management/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.internal.vm.compiler/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.jartool/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.javadoc/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.jcmd/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.jconsole/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.jdeps/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.jdi/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.jdwp.agent/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.jfr/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.jlink/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.jpackage/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.jshell/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.jsobject/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.jstatd/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.localedata/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.management.agent/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.management.jfr/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.management/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.naming.dns/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.naming.rmi/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.net/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.nio.mapmode/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.random/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.sctp/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.security.auth/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.security.jgss/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.unsupported.desktop/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.unsupported/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.xml.dom/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
-cp %{_builddir}/amazon-corretto-21.0.5.11.1-linux-x64/legal/jdk.zipfs/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
 cp %{_builddir}/corretto-21-%{version}/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f || :
 cp %{_builddir}/corretto-21-%{version}/src/java.desktop/share/native/libsplashscreen/giflib/COPYING %{buildroot}/usr/share/package-licenses/openjdk/f9c9a2d3495a0766b4cf20d4b90cfe714dab3dc1 || :
 cp %{_builddir}/corretto-21-%{version}/src/java.desktop/share/native/libsplashscreen/libpng/LICENSE %{buildroot}/usr/share/package-licenses/openjdk/570f5344ea5facacb5e0bbb3fe4e0674189a5f0e || :
@@ -398,7 +334,6 @@ ln -sf "/usr/lib${stripped_target}" "{}";
 /V3/usr/lib/jvm/openjdk-21.0.7-internal/lib/libzip.debuginfo
 /V3/usr/lib/jvm/openjdk-21.0.7-internal/lib/server/libjvm.debuginfo
 /V3/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.jpackage/jdk/jpackage/internal/resources/jpackageapplauncher
-/usr
 /usr/lib/jvm/openjdk-21.0.7-internal/_optimize_image_exec.cmdline
 /usr/lib/jvm/openjdk-21.0.7-internal/_optimize_image_exec.log
 /usr/lib/jvm/openjdk-21.0.7-internal/_optimize_image_exec.marker
@@ -29908,6 +29843,220 @@ ln -sf "/usr/lib${stripped_target}" "{}";
 /usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.security.jgss/_the.jdk.security.jgss_batch.log
 /usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.security.jgss/_the.jdk.security.jgss_batch.modfiles
 /usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.security.jgss/_the.jdk.security.jgss_batch.modfiles.fixed
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.security.jgss/_the.jdk.security.jgss_internalapi
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.security.jgss/_the.jdk.security.jgss_pubapi
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.security.jgss/com/sun/security/jgss/AuthorizationDataEntry.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.security.jgss/com/sun/security/jgss/ExtendedGSSContext.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.security.jgss/com/sun/security/jgss/ExtendedGSSContextImpl.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.security.jgss/com/sun/security/jgss/ExtendedGSSCredential.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.security.jgss/com/sun/security/jgss/ExtendedGSSCredentialImpl.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.security.jgss/com/sun/security/jgss/Extender.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.security.jgss/com/sun/security/jgss/GSSUtil.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.security.jgss/com/sun/security/jgss/InquireSecContextPermission.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.security.jgss/com/sun/security/jgss/InquireType.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.security.jgss/com/sun/security/sasl/gsskerb/FactoryImpl.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.security.jgss/com/sun/security/sasl/gsskerb/GssKrb5Base.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.security.jgss/com/sun/security/sasl/gsskerb/GssKrb5Client.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.security.jgss/com/sun/security/sasl/gsskerb/GssKrb5Server.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.security.jgss/com/sun/security/sasl/gsskerb/JdkSASL$1.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.security.jgss/com/sun/security/sasl/gsskerb/JdkSASL$ProviderService.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.security.jgss/com/sun/security/sasl/gsskerb/JdkSASL.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.security.jgss/module-info.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported.desktop/_the.jdk.unsupported.desktop-javacserver.conf
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported.desktop/_the.jdk.unsupported.desktop.config_vardeps
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported.desktop/_the.jdk.unsupported.desktop.vardeps
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported.desktop/_the.jdk.unsupported.desktop_batch
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported.desktop/_the.jdk.unsupported.desktop_batch.cmdline
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported.desktop/_the.jdk.unsupported.desktop_batch.filelist
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported.desktop/_the.jdk.unsupported.desktop_batch.log
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported.desktop/_the.jdk.unsupported.desktop_batch.modfiles
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported.desktop/_the.jdk.unsupported.desktop_batch.modfiles.fixed
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported.desktop/_the.jdk.unsupported.desktop_internalapi
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported.desktop/_the.jdk.unsupported.desktop_pubapi
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported.desktop/jdk/swing/interop/DispatcherWrapper$DispatcherProxy.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported.desktop/jdk/swing/interop/DispatcherWrapper.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported.desktop/jdk/swing/interop/DragSourceContextWrapper$DragSourceContextPeerProxy.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported.desktop/jdk/swing/interop/DragSourceContextWrapper.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported.desktop/jdk/swing/interop/DropTargetContextWrapper$DropTargetContextPeerProxy.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported.desktop/jdk/swing/interop/DropTargetContextWrapper.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported.desktop/jdk/swing/interop/LightweightContentWrapper$LightweightContentProxy.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported.desktop/jdk/swing/interop/LightweightContentWrapper.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported.desktop/jdk/swing/interop/LightweightFrameWrapper.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported.desktop/jdk/swing/interop/SwingInterOpUtils.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported.desktop/jdk/swing/interop/internal/InteropProviderImpl.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported.desktop/module-info.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported/_the.jdk.unsupported-javacserver.conf
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported/_the.jdk.unsupported.config_vardeps
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported/_the.jdk.unsupported.vardeps
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported/_the.jdk.unsupported_batch
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported/_the.jdk.unsupported_batch.cmdline
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported/_the.jdk.unsupported_batch.filelist
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported/_the.jdk.unsupported_batch.log
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported/_the.jdk.unsupported_batch.modfiles
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported/_the.jdk.unsupported_batch.modfiles.fixed
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported/_the.jdk.unsupported_internalapi
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported/_the.jdk.unsupported_pubapi
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported/com/sun/nio/file/ExtendedCopyOption.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported/com/sun/nio/file/ExtendedOpenOption.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported/com/sun/nio/file/ExtendedWatchEventModifier.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported/com/sun/nio/file/SensitivityWatchEventModifier.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported/module-info.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported/sun/misc/Signal$InternalMiscHandler.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported/sun/misc/Signal$SunMiscHandler.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported/sun/misc/Signal.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported/sun/misc/SignalHandler.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported/sun/misc/Unsafe.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported/sun/reflect/ReflectionFactory$1.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.unsupported/sun/reflect/ReflectionFactory.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/_the.jdk.xml.dom-javacserver.conf
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/_the.jdk.xml.dom.config_vardeps
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/_the.jdk.xml.dom.vardeps
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/_the.jdk.xml.dom_batch
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/_the.jdk.xml.dom_batch.cmdline
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/_the.jdk.xml.dom_batch.filelist
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/_the.jdk.xml.dom_batch.log
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/_the.jdk.xml.dom_batch.modfiles
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/_the.jdk.xml.dom_batch.modfiles.fixed
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/_the.jdk.xml.dom_internalapi
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/_the.jdk.xml.dom_pubapi
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/module-info.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/css/CSS2Properties.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/css/CSSCharsetRule.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/css/CSSFontFaceRule.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/css/CSSImportRule.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/css/CSSMediaRule.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/css/CSSPageRule.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/css/CSSPrimitiveValue.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/css/CSSRule.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/css/CSSRuleList.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/css/CSSStyleDeclaration.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/css/CSSStyleRule.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/css/CSSStyleSheet.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/css/CSSUnknownRule.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/css/CSSValue.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/css/CSSValueList.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/css/Counter.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/css/DOMImplementationCSS.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/css/DocumentCSS.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/css/ElementCSSInlineStyle.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/css/RGBColor.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/css/Rect.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/css/ViewCSS.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLAnchorElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLAppletElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLAreaElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLBRElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLBaseElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLBaseFontElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLBodyElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLButtonElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLCollection.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLDListElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLDOMImplementation.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLDirectoryElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLDivElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLDocument.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLFieldSetElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLFontElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLFormElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLFrameElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLFrameSetElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLHRElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLHeadElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLHeadingElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLHtmlElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLIFrameElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLImageElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLInputElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLIsIndexElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLLIElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLLabelElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLLegendElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLLinkElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLMapElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLMenuElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLMetaElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLModElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLOListElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLObjectElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLOptGroupElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLOptionElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLParagraphElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLParamElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLPreElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLQuoteElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLScriptElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLSelectElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLStyleElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLTableCaptionElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLTableCellElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLTableColElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLTableElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLTableRowElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLTableSectionElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLTextAreaElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLTitleElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/html/HTMLUListElement.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/stylesheets/DocumentStyle.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/stylesheets/LinkStyle.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/stylesheets/MediaList.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/stylesheets/StyleSheet.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/stylesheets/StyleSheetList.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/xpath/XPathEvaluator.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/xpath/XPathException.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/xpath/XPathExpression.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/xpath/XPathNSResolver.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/xpath/XPathNamespace.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.xml.dom/org/w3c/dom/xpath/XPathResult.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/_the.jdk.zipfs-javacserver.conf
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/_the.jdk.zipfs.config_vardeps
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/_the.jdk.zipfs.vardeps
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/_the.jdk.zipfs_batch
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/_the.jdk.zipfs_batch.cmdline
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/_the.jdk.zipfs_batch.filelist
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/_the.jdk.zipfs_batch.log
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/_the.jdk.zipfs_batch.modfiles
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/_the.jdk.zipfs_batch.modfiles.fixed
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/_the.jdk.zipfs_internalapi
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/_the.jdk.zipfs_pubapi
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ByteArrayChannel.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipCoder$UTF8.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipCoder.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipConstants.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipDirectoryStream$1.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipDirectoryStream.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipFileAttributeView$AttrID.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipFileAttributeView.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipFileAttributes.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipFileStore$ZipFileStoreAttributes.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipFileStore.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipFileSystem$1.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipFileSystem$2.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipFileSystem$DeflatingEntryOutputStream.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipFileSystem$END.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipFileSystem$Entry.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipFileSystem$EntryInputStream.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipFileSystem$EntryOutputChannel.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipFileSystem$EntryOutputStream.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipFileSystem$EntryOutputStreamCRC32.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipFileSystem$EntryOutputStreamDef.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipFileSystem$FileRolloverOutputStream.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipFileSystem$IndexNode.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipFileSystem$ParentLookup.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipFileSystem$PosixEntry.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipFileSystem.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipFileSystemProvider.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipInfo.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipPath$1.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipPath$2.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipPath.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipPosixFileAttributeView$1.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipPosixFileAttributeView.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipUtils$1.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/jdk/nio/zipfs/ZipUtils.class
+/usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.zipfs/module-info.class
+/usr/lib/jvm/openjdk-21.0.7-internal/release
 
 %files bin
 %defattr(-,root,root,-)
@@ -30064,3 +30213,10 @@ ln -sf "/usr/lib${stripped_target}" "{}";
 /usr/lib/jvm/openjdk-21.0.7-internal/lib/server/libjsig.so
 /usr/lib/jvm/openjdk-21.0.7-internal/lib/server/libjvm.so
 /usr/lib/jvm/openjdk-21.0.7-internal/modules/jdk.jpackage/jdk/jpackage/internal/resources/libjpackageapplauncheraux.so
+/usr/lib64/libjli.so
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/openjdk/570f5344ea5facacb5e0bbb3fe4e0674189a5f0e
+/usr/share/package-licenses/openjdk/a4fb972c240d89131ee9e16b845cd302e0ecb05f
+/usr/share/package-licenses/openjdk/f9c9a2d3495a0766b4cf20d4b90cfe714dab3dc1
